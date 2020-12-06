@@ -1,0 +1,16 @@
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagament.exe
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagament.deps.json
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagament.runtimeconfig.json
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagament.runtimeconfig.dev.json
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagament.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagament.pdb
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagamentLibrary.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\BankAccountManagamentLibrary.pdb
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.csprojAssemblyReference.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.csproj.CoreCompileInputs.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.AssemblyInfoInputs.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.AssemblyInfo.cs
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.csproj.CopyComplete
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.pdb
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.genruntimeconfig.cache

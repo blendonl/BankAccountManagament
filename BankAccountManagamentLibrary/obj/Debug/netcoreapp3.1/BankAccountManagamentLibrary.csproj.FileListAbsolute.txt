@@ -1,0 +1,9 @@
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\BankAccountManagamentLibrary.deps.json
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\BankAccountManagamentLibrary.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\BankAccountManagamentLibrary.pdb
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.csprojAssemblyReference.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.csproj.CoreCompileInputs.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.AssemblyInfoInputs.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.AssemblyInfo.cs
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.pdb
