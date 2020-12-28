@@ -9,6 +9,7 @@ using BankAccountManagamentLibrary.Models.ClientModel;
 namespace BankAccountManagamentLibrary.Services {
     public static class ClientServices {
 
+        private static int count;
         public static bool Add(long personalNumber, string name, string lastName, string password, string address, long phoneNumber, string email) {
             if (FindIndex(personalNumber) == -1 ) {
                 Client client = new Client(){
@@ -19,7 +20,7 @@ namespace BankAccountManagamentLibrary.Services {
                     PhoneNumber = phoneNumber,
                     Email = email,
                     Password = password,
-                    ClientId = Database.Clients.Count.ToString(),
+                    ClientId = count++.ToString(),
                     DateBecameClient = new DateTime()
                 };
                 Database.Clients.Add(client);

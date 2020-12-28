@@ -8,12 +8,15 @@ namespace BankAccountManagamentLibrary.Services {
 
         public static Account Add(Client client, AccountType accountType, decimal initialBalance) {
             Account account = new Account();
-            account.AccountNumber = NumberGenerator.GenerateAccountNumber();
             account.AccountType = accountType;
             account.Balance = initialBalance;
             account.Active = true;
             account.Client = client;
             Database.Accounts.Add(account);
+            do {
+                account.AccountNumber = NumberGenerator.GenerateAccountNumber();
+            } while (Get(account.AccountNumber) != null);
+
             return account;
         }
 
