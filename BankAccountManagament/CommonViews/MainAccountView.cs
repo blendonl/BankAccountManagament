@@ -12,25 +12,17 @@ namespace BankAccountManagament.CommonViews {
             get;
         }
 
-        public override string[] Choices => new string[] {
-            "go to balance",
-            "go to transactions",
-            "send money",
-            "go back"
-        }; 
-        public override string Title => "Account";
-
-        public override void Function1() {
-                new BalanceUserView(AccountServices.Get(AccountNumber)).Show();
+        public void GoToBalance() {
 
         }
 
-        public override void Function2() {
+        public void ViewTransactions() {
             Common.Title("Transaction View");
             Console.WriteLine(Convertor.GetAllTransactions(AccountNumber));
         }
 
-        public override void Function3() {
+        public void SendMoney() {
+            
             ClientUtils.SendingMoney(AccountNumber, 0);            
         }
     }

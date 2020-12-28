@@ -1,7 +1,7 @@
 ﻿using System;
-using BankAccountManagament.AdminsView.AccountsView;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Utils;
+using Container = BankAccountManagament.Controller.Container;
 
 namespace BankAccountManagament.CommonViews {
     public abstract class EditClientView : Menu {
@@ -9,22 +9,17 @@ namespace BankAccountManagament.CommonViews {
             get;
         }
         
-        public override string[] Choices =>  new[] {
-            "View All Accounts",
-            "Edit Account",
-            "Back",
-        };
-        public override string Title => "Edit Client"; 
-        public override void Function1() {
+       
+        public void ViewAccounts() {
             Common.Title("All Accounts");
             Console.WriteLine(Convertor.GetAllAccounts(ClientId));
         }
-        public override void Function2() {
+        public void SelectAccount() {
             Common.Title("Select Account");
             Console.WriteLine(Convertor.GetAllAccounts(ClientId));
             Console.WriteLine();
             long accountNumber = Common.LoopInput("Account number", 8);
-            new MainAccountAdminView(accountNumber).Show();
+            Container.GetDependency("MainAccuntAdminView", new[] {accountNumber.ToString()}).InvokeMethod("Show", null);
         }
     }
 }

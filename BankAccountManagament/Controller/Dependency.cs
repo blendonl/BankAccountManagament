@@ -48,7 +48,7 @@ namespace BankAccountManagament.Controller {
             if (GetConstructorParams().Count > 1) { }
             else { 
                 Initialised = true;
-                return ActualObject = TypeOfObject.GetConstructors()[0].Invoke(paramters.Length > 1 ? new[] {paramters} : paramters); 
+                return ActualObject = TypeOfObject.GetConstructors()[0].Invoke(paramters != null ? paramters.Length > 1 ? new[] {paramters} :  paramters : null); 
             }
             return null;
         } 
@@ -88,7 +88,7 @@ namespace BankAccountManagament.Controller {
             prop.SetValue(ActualObject, value);
         }
         
-        private MethodInfo GetMethod(string method) {
+        public MethodInfo GetMethod(string method) {
             return GetMethods().First(mth => mth.Name.Equals(method));
         }
 

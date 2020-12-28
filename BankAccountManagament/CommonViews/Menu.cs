@@ -1,93 +1,51 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using BankAccountManagament.Controller;
 using BankAccountManagament.Utils;
 
 namespace BankAccountManagament.CommonViews{
     public abstract class Menu {
 
-        public abstract string[] Choices {
-            get;
-        }
-        public abstract string Title { get; }
+        public void Show(params object[] parms) {
 
-        private string a;
+            Console.Clear();
+            Dependency dependency; 
+            
+            if (parms != null) {
+                dependency = Container.GetDependency(GetType().Name, parms);
+            }
+            else {
+               dependency = Container.GetDependency(GetType().Name);
+            }
 
-        
-        public void Show() {
-            Console.ReadLine();
-            int choice = Common.Menu(Title, Choices);
+            int choice = Common.Menu(GetType().Name, dependency.GetMethodsName());
+            string methodName = dependency.GetMethodName(choice);
 
-            try {
-                switch (choice) {
-                    case 0:
-                        Function1();
-                        Show();
-                        break;
-                    case 1:
-                        Function2();
-                        Show();
-                        break;
-                    case 2:
-                        Function3();
-                        Show();
-                        break;
-                    case 3:
-                        Function4();
-                        Show();
-                        break;
-                    case 4:
-                        Function5();
-                        Show();
-                        break;
-                    case 5:
-                        Function6();
-                        Show();
-                        break;
-                    case 6:
-                        Function7();
-                        Show();
-                        break;
-                    case 7:
-                        break;
-                    default:
-                        Show();
-                        break;
+            if (methodName.StartsWith("GoTo")) {
+                try {
+                    object parm = null;
+
+                    if (!dependency.GetMethod(methodName).ReturnType.Name.Equals("Void")) {
+                        parm = (object) dependency.InvokeMethod(methodName, null);
+                    }
+
+                    Container.GetDependency(methodName.Remove(0, 4), (parm != null) ? new[] {parm} : null)
+                        .InvokeMethod("Show", new[] {parm});
+                }
+                catch (TargetParameterCountException) {
+                    Console.WriteLine("Does not exits");
                 }
             }
-            catch (NotImplementedException e) {
-                Show();
-            }
-
+            else 
+                dependency.InvokeMethod(methodName, null);
+            
+            Console.ReadLine();
+            Show();
         }
 
-        public virtual void Function1() {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Function2() {
-
-            throw new NotImplementedException();
-
-        }
-
-        public virtual void Function3() {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Function4() {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Function5() {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Function6() {
-            throw new NotImplementedException();
-
-        } 
-        public virtual void Function7() {
-            throw new NotImplementedException();
-         
+        public void GoBack() {
+            
         }
     }
 }

@@ -8,15 +8,7 @@ using BankaccountManagamentLibrary.Services;
 namespace BankAccountManagament {
     public abstract class BalanceView : Menu{
         
-        string[] choices = {
-                "view balance",
-                "deposit",
-                "withdraw",
-                "go back"
-            };
-
-        string title = "Balance";
-
+      
         public abstract Account Account {
             get;
         }
@@ -26,11 +18,7 @@ namespace BankAccountManagament {
         }
 
         
-
-        public override string[] Choices { get => choices; }
-        public override string Title { get => title; }
-
-        public override void Function1() {
+        public void ViewBalance() {
 
             // View's balance
             Common.Title("Balance");
@@ -38,7 +26,7 @@ namespace BankAccountManagament {
 
         }
 
-        public override void Function2() {
+        public void Deposit() {
 
 
             // titel
@@ -56,7 +44,7 @@ namespace BankAccountManagament {
 
         }
 
-        public override void Function3() {
+        public void Withdraw() {
 
             // title
             Common.Title("WithDrawing");

@@ -64,7 +64,7 @@ namespace BankAccountManagament.Controller {
             var tpe = GetType(type, typeof(Container)); 
             Dependency dep = new Dependency(tpe);
             if (dependencies.Find(t => t.TypeOfObject != null && t.TypeOfObject.Name.Equals(tpe.Name)) == null) { 
-                if(dep.TypeOfObject.Name.Contains("Service")) 
+                if(dep.TypeOfObject.Name.Contains("Service") || dep.TypeOfObject.BaseType.Name.Equals("Menu")) 
                     dependencies.Add(dep); 
                 dep.Initialise(paramters); 
             }

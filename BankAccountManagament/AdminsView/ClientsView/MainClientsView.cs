@@ -1,5 +1,6 @@
 ﻿using System;
 using BankAccountManagament.CommonViews;
+using BankAccountManagament.Controller;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
@@ -7,28 +8,23 @@ using BankAccountManagamentLibrary.Utils;
 namespace BankAccountManagament.AdminsView.ClientsView {
     class MainClientsView : Menu {
 
-        public override string[] Choices => new[] {
-            "View All Clients",
-            "Add Client",
-            "Edit Client",
-            "Remove Client",
-            "Go Back"
-        };
-
-        public override string Title => "Clients View"; 
-
-        public override void Function2() {
+        public void AddClient() {
             Common.Title("Adding Client");
             ClientUtils.CreateClient();
         }
 
-        public override void Function3() {
+        public string GoToClientAdminView() {
             Common.Title("Selecting Client");
             string clientId = Common.Input("Client Id: ", 1);
-            new EditClientAdminView(clientId).Show();
+            if (ClientServices.Get(clientId) != null) {
+                return clientId;
+            }
+            else {
+                return null;
+            }
         }
 
-        public override void Function4() {
+        public void RemoveClient() {
             Common.Title("Removing Client");
             string clientId = Common.Input("Client Id: ", 1);
             if(ClientServices.Remove(clientId)) 
@@ -38,7 +34,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             }
         }
 
-        public override void Function1() {
+        public void ViewClients() {
             Common.Title("All Clients");
             Console.WriteLine(Convertor.GetAllClients());
         }
