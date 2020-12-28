@@ -7,7 +7,6 @@ using BankAccountManagament.UserView;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
-using Container = BankAccountManagament.Controller.Container;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
     class ClientAdminView: EditClientView {
@@ -20,13 +19,11 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             ClientId = clientId;
         }
          public void AddAccount() {
-            Common.Title("Create Account");
             Console.WriteLine(Convertor.GetAllAccountTypes());
             ClientUtils.AddAccount(ClientId);
          }
                 
          public long GoToMainAccountAdminView() {
-            Common.Title("Select Account");
             Console.WriteLine(Convertor.GetAllAccounts(ClientId));
             Console.WriteLine();
             long accountNumber = Common.LoopInput("Account number", 8);

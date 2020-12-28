@@ -9,17 +9,9 @@ namespace BankAccountManagament.CommonViews {
             get;
         }
         
-       
         public void ViewAccounts() {
-            Common.Title("All Accounts");
             Console.WriteLine(Convertor.GetAllAccounts(ClientId));
         }
-        public void SelectAccount() {
-            Common.Title("Select Account");
-            Console.WriteLine(Convertor.GetAllAccounts(ClientId));
-            Console.WriteLine();
-            long accountNumber = Common.LoopInput("Account number", 8);
-            Container.GetDependency("MainAccuntAdminView", new[] {accountNumber.ToString()}).InvokeMethod("Show", null);
-        }
+       
     }
 }

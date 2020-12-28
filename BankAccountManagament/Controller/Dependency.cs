@@ -93,7 +93,12 @@ namespace BankAccountManagament.Controller {
         }
 
         public MethodInfo[] GetMethods() {
-            return TypeOfObject.GetMethods().Where(method => method.IsPublic).ToArray();
+            return TypeOfObject
+                .GetMethods()
+                .Where(method => method.IsPublic 
+                                && !method.IsSpecialName 
+                                )
+                .ToArray();
         } 
        
         
@@ -110,6 +115,7 @@ namespace BankAccountManagament.Controller {
             int count = 0;
             foreach (var method in GetMethods()) {
                 if(
+                    !method.IsSpecialName &&
                     !method.Name.Equals("Show") &&
                     !method.Name.Equals("Equals") &&
                     !method.Name.Equals("ToString") &&

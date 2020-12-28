@@ -14,13 +14,13 @@ namespace BankAccountManagament.UserView {
         public EditClientUserView(string clientId) {
             this.ClientId = clientId;
         }
-        public void SelectAccount() {
-              Common.Title("Select Account");
+        public long GoToMainAccountView() {
+            
               Console.WriteLine(Convertor.GetAllAccounts(ClientId));
               Console.WriteLine();
-              long accountNumber = Common.LoopInput("Account number", 8);
+              return Common.LoopInput("Account number", 8);
               
-              Container.GetDependency("MainAccountView", new[] {accountNumber.ToString()}).InvokeMethod("Show", null);
+             
         }
 
     }

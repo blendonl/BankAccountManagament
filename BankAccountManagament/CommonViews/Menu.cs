@@ -8,40 +8,40 @@ namespace BankAccountManagament.CommonViews{
     public abstract class Menu {
 
         public void Show(params object[] parms) {
-
-            Console.Clear();
-            Dependency dependency; 
             
-            if (parms != null) {
-                dependency = Container.GetDependency(GetType().Name, parms);
-            }
-            else {
-               dependency = Container.GetDependency(GetType().Name);
-            }
+            Console.Clear();
+            Dependency dependency = Container.GetDependency(GetType().Name, parms);
 
-            int choice = Common.Menu(GetType().Name, dependency.GetMethodsName());
-            string methodName = dependency.GetMethodName(choice);
+            int choice = Common.Menu(StringManipulations.AddSpacesBeetween(GetType().Name), StringManipulations.AddSpacesBeetween(dependency.GetMethodsName()));
+            
+            string methodName = dependency.GetMethodsName()[choice];
 
             if (methodName.StartsWith("GoTo")) {
                 try {
-                    object parm = null;
+                    object parm = InvokeMethod(dependency, methodName);
 
-                    if (!dependency.GetMethod(methodName).ReturnType.Name.Equals("Void")) {
-                        parm = (object) dependency.InvokeMethod(methodName, null);
-                    }
-
-                    Container.GetDependency(methodName.Remove(0, 4), (parm != null) ? new[] {parm} : null)
+                    Container
+                        .GetDependency(methodName.Remove(0, 4), (parm != null && !parm.ToString().Equals("-1")) ? new[] {parm} : null)
                         .InvokeMethod("Show", new[] {parm});
+                    Show(parms);
+                
                 }
                 catch (TargetParameterCountException) {
                     Console.WriteLine("Does not exits");
                 }
             }
-            else 
-                dependency.InvokeMethod(methodName, null);
+            else if (!methodName.Equals("GoBack")) {
+                InvokeMethod(dependency, methodName);
+                Console.ReadLine();
+                Show(parms);
+            }
+
+        }
+
+        private object InvokeMethod(Dependency dependency, string method) { 
+            Common.Title(StringManipulations.AddSpacesBeetween(method));
             
-            Console.ReadLine();
-            Show();
+            return (object) dependency.InvokeMethod(method, null); 
         }
 
         public void GoBack() {

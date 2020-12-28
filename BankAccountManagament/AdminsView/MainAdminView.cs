@@ -8,7 +8,6 @@ using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagament.AdminsView {
     public class MainAdminView: Menu {
-       
 
         public void ViewBalance() {
             Console.WriteLine($"Banks Balance is: {Bank.BankBalance}");
@@ -20,12 +19,10 @@ namespace BankAccountManagament.AdminsView {
         }
 
         public void ViewTransactions() {
-            Common.Title("Transactions");
             Console.WriteLine(Convertor.GetAllTransactions());
         }
 
         public void ViewLoans() {
-            Common.Title("Loans");
             Console.WriteLine(Convertor.GetAllLoans());
         }
     }

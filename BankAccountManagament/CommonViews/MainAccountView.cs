@@ -12,18 +12,10 @@ namespace BankAccountManagament.CommonViews {
             get;
         }
 
-        public void GoToBalance() {
-
-        }
 
         public void ViewTransactions() {
-            Common.Title("Transaction View");
             Console.WriteLine(Convertor.GetAllTransactions(AccountNumber));
         }
 
-        public void SendMoney() {
-            
-            ClientUtils.SendingMoney(AccountNumber, 0);            
-        }
     }
 }

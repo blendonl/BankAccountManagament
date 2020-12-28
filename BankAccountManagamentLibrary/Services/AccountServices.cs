@@ -13,10 +13,12 @@ namespace BankAccountManagamentLibrary.Services {
             account.Active = true;
             account.Client = client;
             Database.Accounts.Add(account);
+            long accountNumber = -1;
             do {
-                account.AccountNumber = NumberGenerator.GenerateAccountNumber();
-            } while (Get(account.AccountNumber) != null);
+                accountNumber = NumberGenerator.GenerateAccountNumber();
+            } while (Get(accountNumber) != null);
 
+            account.AccountNumber = accountNumber;
             return account;
         }
 

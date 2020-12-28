@@ -20,17 +20,11 @@ namespace BankAccountManagament {
         
         public void ViewBalance() {
 
-            // View's balance
-            Common.Title("Balance");
             Console.WriteLine("Account's balance is: " + Account.Balance + "$");
 
         }
 
         public void Deposit() {
-
-
-            // titel
-            Common.Title("Depositing");
 
             // get's amouunt from input 
             decimal amount = Common.LoopInput("Amount", 1);
@@ -45,9 +39,6 @@ namespace BankAccountManagament {
         }
 
         public void Withdraw() {
-
-            // title
-            Common.Title("WithDrawing");
 
             // gets amount from input
             decimal amount = Common.LoopInput("Amount", 1);

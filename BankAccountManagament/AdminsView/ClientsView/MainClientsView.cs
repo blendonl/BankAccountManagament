@@ -14,7 +14,6 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         }
 
         public string GoToClientAdminView() {
-            Common.Title("Selecting Client");
             string clientId = Common.Input("Client Id: ", 1);
             if (ClientServices.Get(clientId) != null) {
                 return clientId;
@@ -25,7 +24,6 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         }
 
         public void RemoveClient() {
-            Common.Title("Removing Client");
             string clientId = Common.Input("Client Id: ", 1);
             if(ClientServices.Remove(clientId)) 
                 Console.WriteLine("Client Removed Succesfully");
@@ -35,7 +33,6 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         }
 
         public void ViewClients() {
-            Common.Title("All Clients");
             Console.WriteLine(Convertor.GetAllClients());
         }
     }
