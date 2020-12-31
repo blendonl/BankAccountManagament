@@ -8,8 +8,7 @@ using BankAccountManagamentLibrary.Utils;
 namespace BankAccountManagamentLibrary.Services {
     public static class CreditCardServices {
 
-        public static bool Add(long accountNumber, CreditCardType creditCardType ) {
-            Account account = AccountServices.Get(accountNumber);
+        public static bool Add(Account account, CreditCardType creditCardType ) {
             if(account.CreditCard == null) {
                 account.CreditCard = new CreditCard() {
                     CreditCardHolderName = account.Client.Name,

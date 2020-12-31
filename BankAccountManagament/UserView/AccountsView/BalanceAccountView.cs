@@ -1,4 +1,5 @@
-﻿using BankAccountManagamentLibrary.Models.AccountModel;
+﻿using BankAccountManagament.CommonViews;
+using BankAccountManagamentLibrary.Models.AccountModel;
 
 namespace BankAccountManagament.UserView.AccountsView {
 

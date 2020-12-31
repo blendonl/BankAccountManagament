@@ -1,4 +1,4 @@
-﻿namespace BankAccountManagament.Controller {
+﻿namespace Controller {
     public class Parameter {
         public string ParameterName { get; set; }
         public string ParameterType { get; set; }

@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Threading.Channels;
-using BankAccountManagament.Models;
-using BankAccountManagamentLibrary.DataAccess;
-using BankAccountManagamentLibrary.Models.TransactionModel;
 
-namespace BankAccountManagament.Utils {
+namespace Controller {
 
 
     /// <summary>
     /// Common methods used more than once in console view
     /// </summary>
-    static class Common {
+    public static class Common {
         
 
        public static int Menu(string menu, string[] choices) {
             
-            Common.Title(menu);
+            Title(menu);
 
             // prints all the choices
             for (int i = 0; i < choices.Length; i++)
@@ -34,11 +30,6 @@ namespace BankAccountManagament.Utils {
             return choice;
         }
 
-        /// <summary>
-        /// Method that asks user for input
-        /// </summary>
-        /// <param name="inputType">Input type</param>
-        /// <returns>return the user input</returns>
         public static string Input(string inputType, int length) {
 
             // returns the input from user
@@ -51,10 +42,7 @@ namespace BankAccountManagament.Utils {
             return s;
         }
 
-        /// <summary>
-        /// Prints title
-        /// </summary>
-        /// <param name="title"></param>
+     
         public static void Title(string title) {
 
             // Prints title
@@ -65,11 +53,7 @@ namespace BankAccountManagament.Utils {
         }
 
 
-        /// <summary>
-        /// Loops input in the cases user doesnt press a number
-        /// </summary>
-        /// <param name="title">the title of the input(for example name)</param>
-        /// <returns></returns>
+      
         public static long LoopInput(string title, int length) {
 
             // check if the value from user can be converted to long
@@ -92,7 +76,6 @@ namespace BankAccountManagament.Utils {
         }
         
          public static decimal LoopMoneyInput(string title, int length) {
-             // check if the value from user can be converted to long
             decimal value;
             if(!decimal.TryParse(Input(title, 1), out value)) {
                 
@@ -110,13 +93,6 @@ namespace BankAccountManagament.Utils {
         
         }
 
-        public static void PrintCreditCardTypes() {
-            var types = Enum.GetValues(typeof(CreditCardType));
-            for (int i = 0; i < types.Length; i++) {
-                Console.WriteLine($"Press {i} to select {types.GetValue(i)}");
-            }
-        }
-          
 
     }
 }

@@ -4,7 +4,7 @@ using BankAccountManagamentLibrary.Models.AccountModel;
 
 namespace BankAccountManagamentLibrary.Models.ClientModel {
     public class Client {
-        public string ClientId { get; set; }
+        public string ClientId { get;  }
         
         public long PersonalNumber { get; set; }
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace BankAccountManagamentLibrary.Models.ClientModel {
         public string Address { get; set; }
         public long PhoneNumber { get; set; }
         public string Email { get; set; }
-        public DateTime DateBecameClient { get; set; }
+        public DateTime DateBecameClient { get;  }
 
         public string ToString() {
             return

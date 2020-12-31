@@ -7,6 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BankAccountManagamentLibrary\BankAccountManagamentLibrary.csproj" />
+      <ProjectReference Include="..\Controller\Controller.csproj" />
     </ItemGroup>
 
 </Project>

@@ -2,16 +2,17 @@
 using System.Globalization;
 using BankAccountManagamentLibrary.DataAccess;
 using BankAccountManagamentLibrary.Models;
+using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
 
 namespace BankAccountManagamentLibrary.Services {
     public static class LoanServices {
 
-        public static bool Add(long accountNumber, decimal amount, int months, decimal intresRate) {
+        public static bool Add(Account account, decimal amount, int months, decimal intresRate) {
 
-            if (amount <= Bank.BankBalance && Get(accountNumber) == null) {
+            if (amount <= Bank.BankBalance && Get(account.AccountNumber) == null) {
                 Loan loan = new Loan() {
-                    AccountNumber = accountNumber,
+                    AccountNumber = account.AccountNumber,
                     Amount = amount,
                     StartingDate = new DateTime(),
                     ExperationDateInMonths = months,
@@ -20,7 +21,7 @@ namespace BankAccountManagamentLibrary.Services {
 
                 Database.Loans.Add(loan);
                 BankServices.UpdateBalance(amount, TransactionType.Loan);
-                AccountServices.Get(accountNumber).Deposit(loan.Amount, 0);
+                account.Deposit(loan.Amount, 0);
                 return true;
             }
             return false;
@@ -31,9 +32,9 @@ namespace BankAccountManagamentLibrary.Services {
             Loan loan = Get(loanId);
             if (loan.Paid < loan.Amount) {
                 if (loan.IsMonth()) {
-                    if (!AccountServices.Get(loan.AccountNumber).WithDraw(loan.MonthlyFee(), loan.InteresRate)) {
+                   // if (!AccountServices.Get(loan.AccountNumber).WithDraw(loan.MonthlyFee(), loan.InteresRate)) {
                         loan.InteresRate++;
-                    } 
+                   // } 
                 }
             }
         }

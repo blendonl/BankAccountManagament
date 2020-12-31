@@ -1,7 +1,4 @@
-﻿using System;
-using BankAccountManagament.Utils;
-using BankAccountManagamentLibrary.Utils;
-using Container = BankAccountManagament.Controller.Container;
+﻿using Controller;
 
 namespace BankAccountManagament.CommonViews {
     public abstract class EditClientView : Menu {
@@ -9,8 +6,8 @@ namespace BankAccountManagament.CommonViews {
             get;
         }
         
-        public void ViewAccounts() {
-            Console.WriteLine(Convertor.GetAllAccounts(ClientId));
+        public string ViewAccounts() {
+            return ClientId;
         }
        
     }

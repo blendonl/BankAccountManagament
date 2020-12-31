@@ -1,6 +1,6 @@
-﻿namespace BankAccountManagament.Utils {
+﻿namespace Controller {
     public class StringManipulations {
-           public static string AddSpacesBeetween(string text) {
+        public static string AddSpacesBeetween(string text) {
                     string rez = "";
         
                     for (int i = 0; i < text.Length; i++) {
@@ -22,7 +22,7 @@
                     return rez;
                 }
                 
-                public static string RemoveSpaces(string text) {
+        public static string RemoveSpaces(string text) {
                     string rez = "";
                     foreach (var chr in text) {
                         if (!char.IsWhiteSpace(chr))
@@ -30,5 +30,6 @@
                     }
                     return rez;
                 }
+                
     }
 }

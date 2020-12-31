@@ -1,8 +1,4 @@
-﻿using System;
-using BankAccountManagament.UserView.AccountsView;
-using BankAccountManagament.Utils;
-using BankAccountManagamentLibrary.Services;
-using BankAccountManagamentLibrary.Utils;
+﻿using Controller;
 
 namespace BankAccountManagament.CommonViews {
     public abstract class MainAccountView : Menu {
@@ -13,8 +9,8 @@ namespace BankAccountManagament.CommonViews {
         }
 
 
-        public void ViewTransactions() {
-            Console.WriteLine(Convertor.GetAllTransactions(AccountNumber));
+        public long ViewTransactions() {
+            return AccountNumber;
         }
 
     }

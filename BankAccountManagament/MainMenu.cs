@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Reflection;
 using BankAccountManagament.AdminsView;
-using BankAccountManagament.AdminsView.ClientsView;
-using BankAccountManagament.CommonViews;
-using BankAccountManagament.Utils;
+using BankAccountManagament.UserView;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.ClientModel;
-using BankAccountManagamentLibrary.Services;
+using Controller;
 
 namespace BankAccountManagament {
     public class MainMenu : Menu {
        
         public void InitialiseBank() {
+            var type = GetType().Assembly.GetReferencedAssemblies();
+            //
+                           // foreach (var VARIABLE in GetType().Assembly.GetTypes()) {
+                           //     type = VARIABLE;
+                           // } 
             if (String.IsNullOrEmpty(Bank.Admin)) {
                 Common.Title("Initial");
 
@@ -30,13 +34,52 @@ namespace BankAccountManagament {
                 Console.WriteLine("All setup");
                 Console.ReadLine();
 
+         
             }
-            
-            ClientUtils.Login();
 
+            Login();
         } 
         
-      
+         private static void Login() { 
+             string clientId = Common.Input("ClientId", 1); 
+                     
+             if (!clientId.Equals(Bank.Admin)) {
+
+                 Client client = null; //ClientServices.Get(clientId);
+             
+                if (LoopPassword(client)) 
+                    new EditClientUserView(client.ClientId).Show(); 
+                
+                else Console.WriteLine("Client dose not exist"); 
+                
+             } else if(Common.Input("Password", 3).Equals(Bank.AdminPassword))
+                 new MainAdminView().Show();
+             else {
+                 Console.WriteLine("Password was not correct");
+             }
+          
+         }
+        
+        private static bool LoopPassword(Client client) {
+
+            string password = Common.Input("Password", 3);
+            try {
+                
+                if (client.Password.Equals(password))
+                    return true;
+                else {
+
+                    Console.WriteLine("Password was not correct");
+
+                    return LoopPassword(client);
+                }
+            }
+            catch (NullReferenceException e) {
+                Console.WriteLine("Client dose not exists");
+            }
+
+            return false;
+        } 
     }
     
     

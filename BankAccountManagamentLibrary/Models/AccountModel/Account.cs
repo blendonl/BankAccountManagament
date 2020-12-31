@@ -13,11 +13,7 @@ namespace BankAccountManagamentLibrary.Models.AccountModel {
         public CreditCard CreditCard { get; set; }
         public decimal Balance { get; set; }
         public bool Active {get; set;}
-        
-        
-
-
-
+     
         public bool Deposit(decimal amount, decimal provision) {
             if(Active) {
                 Balance += (amount - provision);

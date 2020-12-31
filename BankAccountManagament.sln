@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankAccountManagamentLibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankAccountManagament", "BankAccountManagament\BankAccountManagament.csproj", "{65CFCF4B-2DDF-4231-A65F-77FEFB24189C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{366D9410-BA47-4DA2-98C5-AC60DD385162}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{65CFCF4B-2DDF-4231-A65F-77FEFB24189C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65CFCF4B-2DDF-4231-A65F-77FEFB24189C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65CFCF4B-2DDF-4231-A65F-77FEFB24189C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{366D9410-BA47-4DA2-98C5-AC60DD385162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{366D9410-BA47-4DA2-98C5-AC60DD385162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{366D9410-BA47-4DA2-98C5-AC60DD385162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{366D9410-BA47-4DA2-98C5-AC60DD385162}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

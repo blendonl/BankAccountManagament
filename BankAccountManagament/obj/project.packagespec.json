@@ -18,6 +18,9 @@
         "projectReferences": {
           "C:\\Users\\blend\\RiderProjects\\BankAccountManagament\\BankAccountManagamentLibrary\\BankAccountManagamentLibrary.csproj": {
             "projectPath": "C:\\Users\\blend\\RiderProjects\\BankAccountManagament\\BankAccountManagamentLibrary\\BankAccountManagamentLibrary.csproj"
+          },
+          "C:\\Users\\blend\\RiderProjects\\BankAccountManagament\\Controller\\Controller.csproj": {
+            "projectPath": "C:\\Users\\blend\\RiderProjects\\BankAccountManagament\\Controller\\Controller.csproj"
           }
         }
       }

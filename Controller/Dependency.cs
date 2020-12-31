@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BankAccountManagamentLibrary.Models.ClientModel;
 
-namespace BankAccountManagament.Controller {
+namespace Controller {
     public class Dependency {
         public Type  TypeOfObject { get; set; }
         public object? ActualObject { get; set; }
@@ -44,54 +43,84 @@ namespace BankAccountManagament.Controller {
          
             return null;
         } 
-        public object? Initialise(object[] paramters) { 
+        public object Initialise(object[] paramters) { 
             if (GetConstructorParams().Count > 1) { }
             else { 
                 Initialised = true;
                 return ActualObject = TypeOfObject.GetConstructors()[0].Invoke(paramters != null ? paramters.Length > 1 ? new[] {paramters} :  paramters : null); 
             }
             return null;
-        } 
-        public object? InvokeMethod(string method, object parms) { 
-            return GetMethod(method).Invoke(ActualObject, (GetMethod(method).GetParameters().Length > 0) ? (GetMethod(method).ContainsGenericParameters) ? new[] {Activator.CreateInstance(typeof(Client))} : new[] {parms} : null);
+        }
+        
+        public object Initialise(Type generic, object[] parameters) {
+             if (GetConstructorParams().Count < 1) { 
+                 Initialised = true;
+                if (TypeOfObject.ContainsGenericParameters) {
+                    var gener = TypeOfObject.MakeGenericType(new Type[] {generic});
+                    return ActualObject = Activator.CreateInstance(gener);
+                }
+                else {
+                    Initialised = true;
+                    return ActualObject = Activator.CreateInstance(TypeOfObject);
+                } 
+             }
+
+             return null;
+        }
+        public object? InvokeMethod(string method, object parameters) { 
+            return GetMethod(method).Invoke(ActualObject, (GetMethod(method).GetParameters().Length > 0) ? (GetMethod(method).ContainsGenericParameters) ? new[] {parameters} : new[] {parameters} : null);
         }
 
-         public object? InvokeMethod(string method, Type type, object parms) {
+         public object? InvokeMethod(string method, Type type, object parameters) {
               if (GetMethod(method).ContainsGenericParameters) {
                   var genericMethod = GetMethod(method).MakeGenericMethod(new[] {type});
-                  return genericMethod.Invoke(ActualObject,
-                      GetMethod(method).GetParameters().Length > 0
-                          ? parms == null ? new [] {parms} : new[] {parms} 
+                  return genericMethod.Invoke((GetMethod(method).IsStatic) ? null : ActualObject,
+                      (parameters != null)
+                          ? new[] {parameters}
                           : null);
               }
               else {
                   return GetMethod(method).Invoke(ActualObject, 
                       GetMethod(method).GetParameters().Length > 0
-                          ? new[] {parms}
+                          ? new[] {parameters}
                           : null);
               }
          }
 
-         public object[] GetParameters(Type info, object parms) {
-             var constructor = info.GetConstructors()[0];
-             return (parms == null) ? (info.IsArray
-                 ) ? new[] {new [] {constructor.GetParameters().Length > 0 }} : new[] {Activator.CreateInstance(info)} : null;
-         }
-         
-         
-        // public object? InvokeMethod(string method, object[] parms) { 
-        //     return GetMethod(method).Invoke(ActualObject, parms); 
+        // public object? InvokeMethod(string method, object[] parameters) { 
+        //     return GetMethod(method).Invoke(ActualObject, parameters); 
         // }
 
         public void InitialiseProp( string propType,string propName, object value) {
-            var prop = GetProps().First(prop => prop.PropertyType.Name.Equals(propType) && prop.Name.Equals(propName));
+            var prop = GetProperties().First(prop => prop.PropertyType.Name.Equals(propType) && prop.Name.Equals(propName));
             prop.SetValue(ActualObject, value);
         }
-        
+         public object[] GetConstructorParameters(Type methodInfo, object parameters) {
+            var constructor = methodInfo.GetConstructors()[0];
+            return (parameters == null) 
+                ? (methodInfo.IsArray) 
+                    ? new[] {new [] {constructor.GetParameters().Length > 0 }} 
+                    : new[] {Activator.CreateInstance(methodInfo)} 
+                : null;
+         }
         public MethodInfo GetMethod(string method) {
             return GetMethods().First(mth => mth.Name.Equals(method));
         }
-
+        
+        private MethodInfo GetMethod(int method) {
+            if(method > -1 && method < GetMethods().Length)
+                return GetMethods()[method];
+            return null;
+        }
+                
+        public string GetMethodName( int choice) {
+            return GetMethod( choice).Name;
+        }
+                
+        public string GetMethodName(string method) {
+            return GetMethod(method).Name;
+        }
+        
         public MethodInfo[] GetMethods() {
             return TypeOfObject
                 .GetMethods()
@@ -100,14 +129,6 @@ namespace BankAccountManagament.Controller {
                                 )
                 .ToArray();
         } 
-       
-        
-        private MethodInfo[] GetViewMethods() {
-            if (TypeOfObject != null)
-               return TypeOfObject.GetMethods().Where(method => !method.IsAbstract && !method.IsSpecialName && !method.IsPrivate).ToArray();
-            return null;
-        }
-        
        
         public string[] GetMethodsName() {
             List<string> arr = new List<string>(); 
@@ -126,22 +147,6 @@ namespace BankAccountManagament.Controller {
             }
         
             return arr.ToArray();
-        }
-        
-        
-        
-        private MethodInfo GetMethod(int method) {
-            if(method > -1 && method < GetMethods().Length)
-                return GetMethods()[method];
-            return null;
-        }
-        
-        public string GetMethodName( int choice) {
-            return GetMethod( choice).Name;
-        }
-        
-        public string GetMethodName( string method) {
-            return GetMethod( method).Name;
         }
         
         public ParameterInfo[] GetMethodParams(string method) {
@@ -171,17 +176,19 @@ namespace BankAccountManagament.Controller {
 
             return rez;
         }
-  
-        public PropertyInfo[] GetProps() {
-            return TypeOfObject.GetProperties().Where(prop => 
-            //    !(prop.Name.Contains("Id") || prop.Name.Contains("Date"))
-                prop.CanWrite
-            ).ToArray();
+       
+        public PropertyInfo[] GetProperties() {
+           
+             return TypeOfObject.GetProperties().Where(prop => 
+                         //    !(prop.Name.Contains("Id") || prop.Name.Contains("Date"))
+                             (prop.PropertyType.IsPrimitive && prop.CanRead) ||
+                             (prop.PropertyType.Name.Equals("String") && prop.CanWrite)
+                         ).ToArray();
         }
-        public string[] GetPropsName() {
-            string[] rez = new string[GetProps().Length];
+        public string[] GetPropertiesName() {
+            string[] rez = new string[GetProperties().Length];
             int count = 0;
-            foreach (var VARIABLE in GetProps()) {
+            foreach (var VARIABLE in GetProperties()) {
                 rez[count] = VARIABLE.Name;
                 count++;
             }
@@ -189,17 +196,22 @@ namespace BankAccountManagament.Controller {
             return rez;
         }
         
-        public string[] GetPropsType() {
-            string[] rez = new string[GetProps().Length];
+        public string[] GetPropertiesType() {
+            string[] rez = new string[GetProperties().Length];
             int count = 0;
-            foreach (var VARIABLE in GetProps()) {
+            foreach (var VARIABLE in GetProperties()) {
                 rez[count] = VARIABLE.PropertyType.Name;
                 count++;
             }
 
             return rez;
         }
-                
-                    
+
+        private MethodInfo[] GetViewMethods() {
+            if (TypeOfObject != null)
+               return TypeOfObject.GetMethods().Where(method => !method.IsAbstract && !method.IsSpecialName && !method.IsPrivate).ToArray();
+            return null;
+        }
+       
     }
 }

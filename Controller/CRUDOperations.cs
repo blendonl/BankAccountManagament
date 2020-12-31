@@ -1,40 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
-using BankAccountManagament.Controller;
-using Parameter = BankAccountManagament.Controller.Parameter;
 
-namespace BankAccountManagament.Utils {
-    public class CRUDOperations {
+namespace Controller {
+    public class CrudOperations {
         
-         public T Create<T>(string id) {
+        public bool Create<T>() {
              
             string typeName = typeof(T).Name; 
             
-            var props = GetPropsFromInput(Container.GetDependency(typeName));
-          
-            return (T)Container.GetDependency($"{typeName}Services").InvokeMethod("Add", props.ToArray());        
+            Dependency item = Container.GetDependency(typeName, typeof(T)); 
+            object obj = item.Initialise(); 
+            
+            var props = GetPropsFromInput(item);
+            
+            for(int i = 0; i < props.Count; i++) 
+               item.InitialiseProp(props[i].ParameterType, props[i].ParameterName, props[i].Value);
+            
+            // ReSharper disable once PossibleNullReferenceException
+            return (bool)Container.GetDependency($"{typeName}Services", typeof(T)).InvokeMethod("Add", obj);        
         }
 
         public T Create<T>(object[] givenProps) {
             
             string typeName = typeof(T).Name;
-            
-            Dependency item = Container.GetDependency(typeName); 
+
+            Dependency item = Container.GetDependency(typeName, typeof(T));
+            object obj = item.Initialise();
             
             var props = GetPropsFromInput(item);
             
             if(givenProps.Length > 0 && ((Parameter)givenProps[0]).ParameterType != null)
                 props.AddRange((Parameter[])givenProps);
+            
+            for(int i = 0; i < props.Count; i++) 
+                item.InitialiseProp(props[i].ParameterType, props[i].ParameterName, props[i].Value);
           
-            return (T)Container.GetDependency($"{typeName}Services").InvokeMethod("Add", typeof(T), props.ToArray());        
+            return (T)Container.GetDependency($"Services", typeof(T)).InvokeMethod("Add",  obj);        
         }
 
         public List<Parameter> GetPropsFromInput(Dependency dependency) {
                         
             List<Parameter> props = new List<Parameter>();
-            string[] paramNames = dependency.GetPropsName();
-            string[] paramTypes = dependency.GetPropsType();
+            string[] paramNames = dependency.GetPropertiesName();
+            string[] paramTypes = dependency.GetPropertiesType();
 
             for (int i = 0; i < paramNames.Length; i++) {
                 if (paramTypes[i].Equals("String"))
@@ -68,27 +76,25 @@ namespace BankAccountManagament.Utils {
             
         }
 
-        public void ViewAll<T>(string id) {
-            Common.Title(typeof(T).Name);
+        public void View<T>(string id) {
             // ReSharper disable once PossibleNullReferenceException
-            foreach (var VARIABLE in (List<string>) Container.GetDependency($"{typeof(T).Name}Services")
+            foreach (var variable in (List<string>) Container.GetDependency($"{typeof(T).Name}Services", typeof(T))
                  .InvokeMethod($"GetAllItemsToString", id)) { 
-                 Console.WriteLine(VARIABLE.ToString());
+                 Console.WriteLine(variable.ToString());
              }
         }
 
         public T Select<T>(Parameter parameters) {
             Common.Title(typeof(T).Name);
-            return (T) Container.GetDependency($"{typeof(T).Name}Services").InvokeMethod("Get", parameters.Value);
+            return (T) Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Get", parameters.Value);
         }
-        
 
         public bool Remove<T>() {
             Common.Title(typeof(T).Name);
             string clientId = Common.Input("ClientId", 1);
 
             // ReSharper disable once PossibleNullReferenceException
-            return ((bool) Container.GetDependency($"{typeof(T).Name}Services").InvokeMethod("Remove", clientId)) ;
+            return ((bool) Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Remove", clientId)) ;
         }
     }
 }
