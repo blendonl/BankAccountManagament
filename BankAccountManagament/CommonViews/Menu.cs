@@ -1,5 +1,6 @@
 ﻿using System;
 using BankAccountManagament.Utils;
+using Controller;
 
 namespace BankAccountManagament.CommonViews{
     public abstract class Menu {
@@ -13,49 +14,21 @@ namespace BankAccountManagament.CommonViews{
 
         
         public void Show() {
-            Console.ReadLine();
-            int choice = Common.Menu(Title, Choices);
+            Dependency dependency = Container.GetDependency(GetType());
+            string[] methods = dependency.GetMethodsName();
+            int choice = Common.Menu(GetType().Name, methods);
+            
+            // if(methods[choice].StartsWith("GoTo")) {
+            //     dependency = Container.GetDependency(methods[choice]);
+            //     dependency.InvokeMethod("Show", null);
+            // }
+            // else {
+                dependency.InvokeMethod(methods[choice], null);
+                
+            // }
 
-            try {
-                switch (choice) {
-                    case 0:
-                        Function1();
-                        Show();
-                        break;
-                    case 1:
-                        Function2();
-                        Show();
-                        break;
-                    case 2:
-                        Function3();
-                        Show();
-                        break;
-                    case 3:
-                        Function4();
-                        Show();
-                        break;
-                    case 4:
-                        Function5();
-                        Show();
-                        break;
-                    case 5:
-                        Function6();
-                        Show();
-                        break;
-                    case 6:
-                        Function7();
-                        Show();
-                        break;
-                    case 7:
-                        break;
-                    default:
-                        Show();
-                        break;
-                }
-            }
-            catch (NotImplementedException e) {
-                Show();
-            }
+            Console.ReadLine();
+            Show();
 
         }
 
