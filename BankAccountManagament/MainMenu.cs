@@ -9,15 +9,8 @@ using BankAccountManagamentLibrary.Services;
 
 namespace BankAccountManagament {
     public class MainMenu : Menu {
-         public override string[] Choices => new string[] {
-                    "Login",
-                    "exit"
-         };
-        
-        public override string Title => "Login View";
-                
 
-        public override void Function1() {
+        public void InitialiseBank() {
             if (String.IsNullOrEmpty(Bank.Admin)) {
                 Common.Title("Initial");
 

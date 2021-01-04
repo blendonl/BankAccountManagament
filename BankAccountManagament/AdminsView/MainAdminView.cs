@@ -8,33 +8,23 @@ using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagament.AdminsView {
     public class MainAdminView: Menu {
-        public override string[] Choices => new[] {
-                "to check Balance",
-                "to go to clients",
-                "to view all Transactions",
-                "to view all Loans",
-                "to go back"
-        };
+      
 
-        public override string Title => "Main";
-
-        public override void Function1() {
+        public void ViewBalance() {
             Console.WriteLine($"Banks Balance is: {Bank.BankBalance}");
             Console.WriteLine($"All account balance is {BankServices.GetALlClientsMoney()}");
             Console.WriteLine($"All: {Bank.BankBalance + BankServices.GetALlClientsMoney()}");
         }
 
-        public override void Function2() {
+        public void GoToMainClientsView() {
             new MainClientsView().Show();
         }
 
-        public override void Function3() {
-            Common.Title("Transactions");
+        public void ViewTransactions() {
             Console.WriteLine(Convertor.GetAllTransactions());
         }
 
-        public override void Function4() {
-            Common.Title("Loans");
+        public void ViewLoans() {
             Console.WriteLine(Convertor.GetAllLoans());
         }
     }

@@ -8,14 +8,6 @@ using BankaccountManagamentLibrary.Services;
 namespace BankAccountManagament {
     public abstract class BalanceView : Menu{
         
-        string[] choices = {
-                "view balance",
-                "deposit",
-                "withdraw",
-                "go back"
-            };
-
-        string title = "Balance";
 
         public abstract Account Account {
             get;
@@ -24,25 +16,15 @@ namespace BankAccountManagament {
         public abstract decimal Provision {
             get;
         }
-
         
 
-        public override string[] Choices { get => choices; }
-        public override string Title { get => title; }
+        public void ViewBalance() {
 
-        public override void Function1() {
-
-            // View's balance
-            Common.Title("Balance");
             Console.WriteLine("Account's balance is: " + Account.Balance + "$");
 
         }
 
-        public override void Function2() {
-
-
-            // titel
-            Common.Title("Depositing");
+        public void Deposit() {
 
             // get's amouunt from input 
             decimal amount = Common.LoopInput("Amount", 1);
@@ -56,10 +38,7 @@ namespace BankAccountManagament {
 
         }
 
-        public override void Function3() {
-
-            // title
-            Common.Title("WithDrawing");
+        public void Withdraw() {
 
             // gets amount from input
             decimal amount = Common.LoopInput("Amount", 1);

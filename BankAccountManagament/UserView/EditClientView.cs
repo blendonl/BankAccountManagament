@@ -15,8 +15,7 @@ namespace BankAccountManagament.UserView {
         public EditClientUserView(string clientId) {
             this.ClientId = clientId;
         }
-        public override void Function2() {
-              Common.Title("Select Account");
+        public void SelectAccount() {
               Console.WriteLine(Convertor.GetAllAccounts(ClientId));
               Console.WriteLine();
               long accountNumber = Common.LoopInput("Account number", 8);

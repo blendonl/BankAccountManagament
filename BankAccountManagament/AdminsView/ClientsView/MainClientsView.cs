@@ -7,29 +7,17 @@ using BankAccountManagamentLibrary.Utils;
 namespace BankAccountManagament.AdminsView.ClientsView {
     class MainClientsView : Menu {
 
-        public override string[] Choices => new[] {
-            "View All Clients",
-            "Add Client",
-            "Edit Client",
-            "Remove Client",
-            "Go Back"
-        };
-
-        public override string Title => "Clients View"; 
-
-        public override void Function2() {
-            Common.Title("Adding Client");
+        
+        public void CreateClient() { 
             ClientUtils.CreateClient();
         }
 
-        public override void Function3() {
-            Common.Title("Selecting Client");
+        public void SelectClient() {
             string clientId = Common.Input("Client Id: ", 1);
             new EditClientAdminView(clientId).Show();
         }
 
-        public override void Function4() {
-            Common.Title("Removing Client");
+        public void RemoveClient() {
             string clientId = Common.Input("Client Id: ", 1);
             if(ClientServices.Remove(clientId)) 
                 Console.WriteLine("Client Removed Succesfully");
@@ -38,8 +26,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             }
         }
 
-        public override void Function1() {
-            Common.Title("All Clients");
+        public void ViewClients() {
             Console.WriteLine(Convertor.GetAllClients());
         }
     }

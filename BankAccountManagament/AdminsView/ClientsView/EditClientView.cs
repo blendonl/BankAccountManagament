@@ -12,28 +12,16 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         public override string ClientId {
             get;
         } 
-        public override string[] Choices {
-            get {
-                return new[] {
-                    "View All Accounts",
-                    "Add Account",
-                    "Edit Account",
-                    "Back",
-                };
-            }
-        }
-
+     
         public EditClientAdminView(string clientId)  {
             ClientId = clientId;
         }
-         public override void Function2() {
-                    Common.Title("Create Account");
-                    Console.WriteLine(Convertor.GetAllAccountTypes());
-                    ClientUtils.AddAccount(ClientId);
+         public void CreateAccount() { 
+             Console.WriteLine(Convertor.GetAllAccountTypes()); 
+             ClientUtils.AddAccount(ClientId);
          }
                 
-         public override void Function3() {
-            Common.Title("Select Account");
+         public void SelectAccount() {
             Console.WriteLine(Convertor.GetAllAccounts(ClientId));
             Console.WriteLine();
             long accountNumber = Common.LoopInput("Account number", 8);

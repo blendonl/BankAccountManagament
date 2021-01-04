@@ -13,18 +13,8 @@ namespace BankAccountManagament.AdminsView.AccountsView {
     class MainAccountAdminView: MainAccountView {
         public override long AccountNumber { get; }
 
-        public override string[] Choices => new[] {
-            "go to Balance",
-            "go account transactions",
-            "go to account status",
-            "send money",
-            "go to credit card",
-            "loan",
-            "remove account",
-            "go back"
-        };
-
-        public override void Function1() {
+        
+        public void Function1() {
             new BalanceAdminView(AccountServices.Get(AccountNumber)).Show();
         }
 
@@ -32,24 +22,19 @@ namespace BankAccountManagament.AdminsView.AccountsView {
             this.AccountNumber = accountNumber;
         }
 
-        public override void Function3() {
-
-            Common.Title("Status");
+        public void CheckStatus() {
             ClientUtils.ChangeAccountStatus(AccountNumber);
         }
 
-        public override void Function5() {
-            Common.Title("CreditCard");
+        public void CreditCard() {
             ClientUtils.AddCreditCard(AccountNumber);
         }
 
-        public override void Function4() {
-            Common.Title("Sending Money");
+        public void SendMoney() {
             ClientUtils.SendingMoney(AccountNumber, Bank.Provision);
         }
 
-        public override void Function6() {
-            Common.Title("Loan");
+        public void Loan() {
             if (LoanServices.Get(AccountNumber) == null) {
                  ClientUtils.AddLoan(AccountNumber); 
             }
@@ -74,9 +59,7 @@ namespace BankAccountManagament.AdminsView.AccountsView {
         
         
 
-        public override void Function7() {
-
-            Common.Title("Removing account");
+        public void RemoveAccount() {
 
             if (AccountServices.Remove(AccountNumber))
                Console.WriteLine("Account removed succesfully");
