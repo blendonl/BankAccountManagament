@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace BankAccountManagament {
+namespace Controller {
     public class Dependency {
         public Type  TypeOfObject { get; set; }
         public object? ActualObject { get; set; }

@@ -1,8 +1,8 @@
 ﻿using System;
 using BankAccountManagament.AdminsView.AccountsView;
-using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Utils;
+using Controller;
 
 namespace BankAccountManagament.CommonViews {
     public abstract class EditClientView : Menu {

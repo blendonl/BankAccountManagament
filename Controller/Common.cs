@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Threading.Channels;
-using BankAccountManagament.Models;
-using BankAccountManagamentLibrary.DataAccess;
-using BankAccountManagamentLibrary.Models.TransactionModel;
 
-namespace BankAccountManagament.Utils {
+namespace Controller {
 
 
     /// <summary>
     /// Common methods used more than once in console view
     /// </summary>
-    static class Common {
+    public static class Common {
         
 
        public static int Menu( string[] choices) {
@@ -108,12 +104,6 @@ namespace BankAccountManagament.Utils {
         
         }
 
-        public static void PrintCreditCardTypes() {
-            var types = Enum.GetValues(typeof(CreditCardType));
-            for (int i = 0; i < types.Length; i++) {
-                Console.WriteLine($"Press {i} to select {types.GetValue(i)}");
-            }
-        }
           
 
     }

@@ -7,6 +7,7 @@ using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
+using Controller;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
    class MainClientsView : Menu {
@@ -15,7 +16,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             Console.WriteLine(Container.GetDependency("ClientServices").InvokeMethod("GetAll", null));
         } 
         public void CreateClient() { 
-            if(ClientUtils.Create<Client>())
+            if(CrudOperations.Create<Client>())
                 Console.WriteLine("Client added succesfully");
             else {
                 Console.WriteLine("Client could not be added");
@@ -30,7 +31,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
 
         public void RemoveClient() {
             string clientId = Common.Input("Client Id: ", 1);
-            if (ClientUtils.Remove<Client>(clientId)) 
+            if (CrudOperations.Remove<Client>(clientId)) 
                 Console.WriteLine("Client Removed Succesfully");
             else {
                 Console.WriteLine("Client dose not exists");

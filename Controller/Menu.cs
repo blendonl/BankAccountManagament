@@ -1,7 +1,6 @@
 ﻿using System;
-using BankAccountManagament.Utils;
 
-namespace BankAccountManagament.CommonViews{
+namespace Controller{
     public abstract class Menu {
 
         public void Show() {

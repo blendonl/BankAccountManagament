@@ -1,8 +1,8 @@
 ﻿using System;
 using BankAccountManagament.CommonViews;
-using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
+using Controller;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
     class EditClientAdminView: EditClientView {
@@ -15,7 +15,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             Client= client;
         }
          public void CreateAccount() { 
-             if(ClientUtils.Create<Account>(new Property("Client", "Client", Client) ))
+             if(CrudOperations.Create<Account>(new Property("Client", "Client", Client) ))
                  Console.WriteLine("Account added succesfully");
              else {
                  Console.WriteLine("Account could not be added");
@@ -39,7 +39,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
 
          public void RemoveAccount() {
              long accountNumber = Common.LoopInput("Account Number", 8);
-             if(ClientUtils.Remove<Account>(accountNumber))
+             if(CrudOperations.Remove<Account>(accountNumber))
                  Console.WriteLine("Account removed succesfully");
              else
                  Console.WriteLine("Account could not be removed");

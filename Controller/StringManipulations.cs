@@ -1,4 +1,4 @@
-﻿namespace BankAccountManagament.Utils {
+﻿namespace Controller {
     public class StringManipulations {
         
          public static string AddSpacesBeetween(string text) {

@@ -2,11 +2,11 @@
 using BankAccountManagament.AdminsView.AccountsView;
 using BankAccountManagament.CommonViews;
 using BankAccountManagament.UserView.AccountsView;
-using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
+using Controller;
 
 namespace BankAccountManagament.UserView {
     class EditClientUserView : EditClientView {

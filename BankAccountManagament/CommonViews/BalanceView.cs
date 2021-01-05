@@ -1,9 +1,9 @@
 ﻿using System;
 using BankAccountManagament.CommonViews;
-using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
 using BankaccountManagamentLibrary.Services;
+using Controller;
 
 namespace BankAccountManagament {
     public abstract class BalanceView : Menu{

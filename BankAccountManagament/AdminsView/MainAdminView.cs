@@ -1,10 +1,10 @@
 ﻿using System;
 using BankAccountManagament.AdminsView.ClientsView;
 using BankAccountManagament.CommonViews;
-using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
+using Controller;
 
 namespace BankAccountManagament.AdminsView {
     public class MainAdminView: Menu {
@@ -17,7 +17,6 @@ namespace BankAccountManagament.AdminsView {
         }
 
         public void GoToMainClientsView() {
-           new MainClientsView().Show();
         }
 
         public void ViewTransactions() {

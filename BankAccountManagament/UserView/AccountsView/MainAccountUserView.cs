@@ -1,7 +1,6 @@
 using System;
 using BankAccountManagament.AdminsView.AccountsView;
 using BankAccountManagament.CommonViews;
-using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Utils;
 
