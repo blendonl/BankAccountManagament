@@ -11,35 +11,7 @@ namespace BankAccountManagamentLibrary.Utils {
 
        
 
-        public static string GetAllTransactions() {
-            string rez = "";
-
-            foreach (var transaction in Database.Transactions) {
-                rez += transaction.ToString() + "\n";
-            }
-
-            return rez;
-        }
-        
-         public static string GetAllTransactions(long accountNumber) {
-                string rez = "";
-        
-                foreach (var transaction in Database.Transactions) {
-                    if(accountNumber == transaction.AccountNumber)
-                        rez += transaction.ToString() + "\n";
-                }
-        
-                return rez;
-         } 
-         public static string GetAllTransactions(string clientId) {
-             string rez = "";
-        
-             foreach (var transaction in Database.Transactions) { 
-                 if(clientId.Equals(transaction.ClientId)) 
-                     rez += transaction.ToString() + "\n";
-             }
-             return rez;
-         }
+     
 
         public static string GetAllLoans() {
             string rez = "";

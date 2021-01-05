@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using BankAccountManagament.AdminsView;
 using BankAccountManagament.Models;
-using BankAccountManagament.UserView;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Models.CreditCardModel;
+using BankAccountManagamentLibrary.Models.TransactionModel;
 using BankaccountManagamentLibrary.Services;
-using BankAccountManagamentLibrary.Services;
-using BankAccountManagamentLibrary.Utils;
+
 
 namespace BankAccountManagament.Utils {
     static class ClientUtils {
@@ -84,7 +83,7 @@ namespace BankAccountManagament.Utils {
                 return false;
             }
         }
-        
+         
         public static List<Property> GetPropsFromInput(Dependency dependency) {
 
             List<Property> props = dependency.GetProperties(); 
@@ -108,7 +107,16 @@ namespace BankAccountManagament.Utils {
             return props;
             
         }
-
+        
+        
+        public static bool Remove<T>(object id) {
+            // ReSharper disable once PossibleNullReferenceException
+            return (bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Remove", id);
+            //     Console.WriteLine($"{typeof(T).Name} removed successfully");
+            // else {
+            //     Console.WriteLine($"{typeof(T).Name} could not be removed");
+            // }
+        }
         // public static void AddAccount(string clientId) {
         //     
         //     AccountType accountType = (AccountType) Common.LoopInput("Account Type", 1);
@@ -160,8 +168,18 @@ namespace BankAccountManagament.Utils {
             Console.WriteLine();
             Account account1 = (Account)Container.GetDependency("AccountServices").InvokeMethod("Get", Common.LoopInput("Account's number", 0));
             decimal amount = Common.LoopMoneyInput("Amount", 1);
+
+            Transaction transaction = new Transaction() {
+                Account = account,
+                Account1 = account1,
+                Amount = amount,
+                Client = account.Client,
+                Client1 = account.Client,
+                TransactionType = TransactionType.Send,
+                Provision = Bank.Provision
+            };
          
-            if (TransactionServices.Add(account, account1, amount, intresRate)) {
+            if ((bool)Container.GetDependency("TransactionServices").InvokeMethod("Add", transaction)) {
                 Console.WriteLine("Money sended succesfully");
             }
             else {

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Transactions;
 using BankAccountManagament.UserView.AccountsView;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
+using BankaccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
 
@@ -15,7 +17,7 @@ namespace BankAccountManagament.CommonViews {
 
 
         public void ViewTransactions() {
-            Console.WriteLine(Convertor.GetAllTransactions(Account.AccountNumber));
+            Console.WriteLine(Container.GetDependency(typeof(TransactionServices)).InvokeMethod("GetAll", Account));
         }
 
         public void SendMoney() {

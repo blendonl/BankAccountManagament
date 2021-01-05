@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using BankAccountManagament.AdminsView.AccountsView;
 using BankAccountManagament.CommonViews;
-using BankAccountManagament.UserView;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
-using BankAccountManagamentLibrary.Services;
-using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
     class EditClientAdminView: EditClientView {
@@ -27,9 +22,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
              }
              
          }
-         
-         
-          public Account GoToMainAccountAdminView() { 
+         public Account GoToMainAccountAdminView() { 
               Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.ClientId));
               Console.WriteLine();
 
@@ -42,7 +35,15 @@ namespace BankAccountManagament.AdminsView.ClientsView {
                   return null;
               }
 
-          }
+         }
+
+         public void RemoveAccount() {
+             long accountNumber = Common.LoopInput("Account Number", 8);
+             if(ClientUtils.Remove<Account>(accountNumber))
+                 Console.WriteLine("Account removed succesfully");
+             else
+                 Console.WriteLine("Account could not be removed");
+         }
           
     }
 }

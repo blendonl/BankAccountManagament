@@ -19,8 +19,16 @@ namespace BankAccountManagament.AdminsView.AccountsView {
             // get's amouunt from input
             decimal amount = Common.LoopInput("Amount", 1);
     
-            // check if the depositing was succesfully
-            if (TransactionServices.Add(Account, amount, TransactionType.Deposit, Provision))
+            Transaction transaction = new Transaction() {
+                Account = Account,
+                Client = Account.Client,
+                Amount = amount, 
+                TransactionType = TransactionType.Deposit,
+                Provision = Provision
+                            
+            };
+            
+            if ((bool)Container.GetDependency(typeof(TransactionServices)).InvokeMethod("Add",transaction))
                 Console.WriteLine("Money deposited succesfully");
             else
                 Console.WriteLine("Money couldnt be deposited");
@@ -30,7 +38,14 @@ namespace BankAccountManagament.AdminsView.AccountsView {
             // gets amount from input
             decimal amount = Common.LoopInput("Amount", 1);
 
-            if (TransactionServices.Add(Account, amount, TransactionType.Withdraw, Provision)) 
+            Transaction transaction = new Transaction() {
+                Account = Account,
+                Amount = amount,
+                TransactionType = TransactionType.Withdraw,
+                Provision = Provision
+            };
+
+            if ((bool)Container.GetDependency("TransactionServices").InvokeMethod("Add",transaction))
                 Console.WriteLine("Money withdrawed succesfully");
             else
                 Console.WriteLine("Money couldnt be withdran");

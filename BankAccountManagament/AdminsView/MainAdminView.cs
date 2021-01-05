@@ -21,7 +21,7 @@ namespace BankAccountManagament.AdminsView {
         }
 
         public void ViewTransactions() {
-            Console.WriteLine(Convertor.GetAllTransactions());
+            Console.WriteLine(Container.GetDependency("TransactionServices").InvokeMethod("GetAll", null));
         }
 
         public void ViewLoans() {

@@ -10,8 +10,10 @@ using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
    class MainClientsView : Menu {
-
-
+        
+        public void ViewClients() {
+            Console.WriteLine(Container.GetDependency("ClientServices").InvokeMethod("GetAll", null));
+        } 
         public void CreateClient() { 
             if(ClientUtils.Create<Client>())
                 Console.WriteLine("Client added succesfully");
@@ -28,16 +30,14 @@ namespace BankAccountManagament.AdminsView.ClientsView {
 
         public void RemoveClient() {
             string clientId = Common.Input("Client Id: ", 1);
-            if((bool)Container.GetDependency("ClientServices").InvokeMethod("Remove", clientId))
+            if (ClientUtils.Remove<Client>(clientId)) 
                 Console.WriteLine("Client Removed Succesfully");
             else {
                 Console.WriteLine("Client dose not exists");
             }
         }
 
-        public void ViewClients() {
-            Console.WriteLine(Container.GetDependency("ClientServices").InvokeMethod("GetAll", null));
-        }
+      
         
          
     }

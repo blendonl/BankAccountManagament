@@ -70,20 +70,20 @@ namespace BankAccountManagament {
              return null;
         }
         public object? InvokeMethod(string method, object parameters) { 
-            return GetMethod(method).Invoke(ActualObject, (GetMethod(method).GetParameters().Length > 0) ? (GetMethod(method).ContainsGenericParameters) ? new[] {parameters} : new[] {parameters} : null);
+            return GetMethod(method, parameters).Invoke(ActualObject, (GetMethod(method, parameters).GetParameters().Length > 0) ? (GetMethod(method, parameters).ContainsGenericParameters) ? new[] {parameters} : new[] {parameters} : null);
         }
 
          public object? InvokeMethod(string method, Type type, object parameters) {
-              if (GetMethod(method).ContainsGenericParameters) {
-                  var genericMethod = GetMethod(method).MakeGenericMethod(new[] {type});
-                  return genericMethod.Invoke((GetMethod(method).IsStatic) ? null : ActualObject,
+              if (GetMethod(method, parameters).ContainsGenericParameters) {
+                  var genericMethod = GetMethod(method, parameters).MakeGenericMethod(new[] {type});
+                  return genericMethod.Invoke((GetMethod(method, parameters).IsStatic) ? null : ActualObject,
                       (parameters != null)
                           ? new[] {parameters}
                           : null);
               }
               else {
-                  return GetMethod(method).Invoke(ActualObject, 
-                      GetMethod(method).GetParameters().Length > 0
+                  return GetMethod(method, parameters).Invoke(ActualObject, 
+                      GetMethod(method, parameters).GetParameters().Length > 0
                           ? new[] {parameters}
                           : null);
               }
@@ -108,8 +108,18 @@ namespace BankAccountManagament {
                     : new[] {Activator.CreateInstance(methodInfo)} 
                 : null;
          }
-        public MethodInfo GetMethod(string method) {
-            return GetMethods().First(mth => mth.Name.Equals(method));
+        public MethodInfo GetMethod(string method, object parms) {
+            var methods =  GetMethods().Where(mth => mth.Name.Equals(method));
+            List<Type> paramteres = new List<Type>();
+            if(parms != null && parms.GetType().IsArray)
+                foreach (var VARIABLE in (object[])parms) {
+                    paramteres.Add(VARIABLE.GetType());
+                }
+            if(parms != null && !parms.GetType().IsArray)
+                paramteres.Add(parms.GetType());
+
+            return ActualObject.GetType().GetMethod(method, paramteres.ToArray()); 
+
         }
         
         private MethodInfo GetMethod(int method) {
@@ -122,8 +132,8 @@ namespace BankAccountManagament {
             return GetMethod( choice).Name;
         }
                 
-        public string GetMethodName(string method) {
-            return GetMethod(method).Name;
+        public string GetMethodName(string method, object parameters) {
+            return GetMethod(method, parameters).Name;
         }
         
         public MethodInfo[] GetMethods() {
@@ -154,15 +164,15 @@ namespace BankAccountManagament {
             return arr.ToArray();
         }
         
-        public ParameterInfo[] GetMethodParams(string method) {
-            return GetMethod(method).GetParameters().ToArray();
+        public ParameterInfo[] GetMethodParams(string method, object paramters) {
+            return GetMethod(method, paramters).GetParameters().ToArray();
         }
 
-        public string[] GetMethodParamsName(string method) {
+        public string[] GetMethodParamsName(string method, object parameters) {
             
-            var rez = new string[GetMethodParams(method).Length];
+            var rez = new string[GetMethodParams(method, parameters).Length];
             int i = 0;
-            foreach (var VARIABLE in GetMethodParams(method)) {
+            foreach (var VARIABLE in GetMethodParams(method, parameters)) {
                 rez[i] = VARIABLE.Name;
                 i++;
             }
@@ -171,10 +181,10 @@ namespace BankAccountManagament {
 
         }
         
-        public string[] GetMethodParamsType(string method) {
-            var rez = new string[GetMethodParams(method).Length];
+        public string[] GetMethodParamsType(string method, object paramteres) {
+            var rez = new string[GetMethodParams(method, paramteres).Length];
             int i = 0;
-            foreach (var VARIABLE in GetMethodParams(method)) {
+            foreach (var VARIABLE in GetMethodParams(method, paramteres)) {
                 rez[i] = VARIABLE.ParameterType.Name;
                 i++;
             }

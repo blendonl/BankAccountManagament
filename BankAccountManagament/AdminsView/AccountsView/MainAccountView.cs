@@ -24,7 +24,7 @@ namespace BankAccountManagament.AdminsView.AccountsView {
             ClientUtils.ChangeAccountStatus(Account);
         }
 
-        public void CreditCard() {
+        public void CreateCreditCard() {
             ClientUtils.AddCreditCard(Account);
         }
 
