@@ -1,18 +1,16 @@
 ﻿using System;
 using BankAccountManagament.Utils;
-using Controller;
 
 namespace BankAccountManagament.CommonViews{
     public abstract class Menu {
 
-        
         public void Show() {
-            
+            Common.Title(StringManipulations.AddSpacesBeetween(GetType().Name)); 
             Dependency dependency = Container.GetDependency(GetType());
             
             string[] methods = dependency.GetMethodsName();
             
-            int choice = Common.Menu(GetType().Name, methods);
+            int choice = Common.Menu(StringManipulations.AddSpacesBeetween((methods)));
             
             if(!methods[choice].Equals("GoBack")) {
                 InvokeMethod(dependency, methods[choice]);
@@ -25,10 +23,17 @@ namespace BankAccountManagament.CommonViews{
             string[] methods = dependency.GetMethodsName();
             
             try {
-                Common.Title(method); 
+                Common.Title(StringManipulations.AddSpacesBeetween(method)); 
                if(method.StartsWith("GoTo")) {
-               //     dependency = Container.GetDependency(methods[choice]);
-               //     dependency.InvokeMethod("Show", null);
+                    //   dependency = Container.GetDependency(methods[choice]);
+                    //   dependency.InvokeMethod("Show", null);
+                    object obj = dependency.InvokeMethod(method, null);
+
+                    if (obj != null) {
+                        dependency = Container.GetDependency(method.Remove(0, 4), new[] {obj});
+                        Container.Add(dependency);
+                        dependency.InvokeMethod("Show", null);
+                    }
                }
                else {
                     dependency.InvokeMethod(method, null);

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Enumeration;
 using System.Linq;
 using System.Reflection;
 
-namespace Controller { 
+namespace BankAccountManagament { 
     public class Container {
         
         private static readonly List<Dependency> Dependencies;
@@ -228,15 +227,56 @@ namespace Controller {
             return typeof(Container).Assembly.GetTypes().FirstOrDefault(service => (service.ContainsGenericParameters) ? service.Name.Equals(name+"`1") : service.Name.Equals(name));
         }
 
+        public static List<Type> GetAllRefrencedModels(Type type) {
+            List<Type> models = new List<Type>();
+
+            foreach (var VARIABLE in GetAllReferencedAssemblies(type))
+                foreach (var tpe in VARIABLE
+                     .GetTypes()
+                     .Where(t => 
+                         t.Namespace != null && 
+                         t.Namespace.Contains("Model"))) 
+                     models.Add(tpe);
+
+            return models;
+             
+        }
+
         public static List<Type> GetAllModels(Type type) {
-            List<Type> types = new List<Type>();
-             foreach (var VARIABLE in type.Assembly.GetReferencedAssemblies()) 
-                 foreach (var tpe in Assembly.Load(VARIABLE).GetTypes().Where(t => t.Namespace != null && t.Namespace.Contains(VARIABLE.Name) && t.Namespace.Contains("Model"))) 
+            return type.Assembly.GetTypes().Where(t => t.Namespace.Contains("Model")).ToList();
+        }
+
+
+        public static List<Assembly> GetAllReferencedAssemblies(Type type) {
+            List<Assembly> assemblies = new List<Assembly>();
+            foreach (var assembly in type.Assembly.GetReferencedAssemblies()) {
+                if (!assembly.FullName.Equals("System.Runtime")) {
+                    assemblies.Add(Assembly.Load(assembly));
+                }
+            }
+            return assemblies;
+        }
+
+        public static List<Type> GetAllThatExtends(Type type) {
+             List<Type> types = new List<Type>();
+
+             List<Type> models = GetAllModels(type);
+             models.AddRange(GetAllRefrencedModels(type));
+             foreach (var tpe in models) {
+                 if (tpe.BaseType != null && tpe.BaseType.Name.Equals(type.Name)) {
                      types.Add(tpe);
-
-
+                 }
+             }
              return types;
-        } 
+        }
+
+        public static List<string> GetAllThatExtendsToString(Type type) {
+            List<string> names = new List<string>();
+
+            GetAllThatExtends(type).ForEach(t => names.Add(t.Name)); 
+
+            return names;
+        }
         
        
     }

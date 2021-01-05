@@ -1,6 +1,7 @@
 ﻿using System;
 using BankAccountManagament.UserView.AccountsView;
 using BankAccountManagament.Utils;
+using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
 
@@ -8,22 +9,17 @@ namespace BankAccountManagament.CommonViews {
     public abstract class MainAccountView : Menu {
 
 
-        public abstract long AccountNumber {
+        public abstract Account Account {
             get;
         }
 
-       
-        public void GoToBalanceUserView() { 
-            new BalanceUserView(AccountServices.Get(AccountNumber)).Show();
-
-        }
 
         public void ViewTransactions() {
-            Console.WriteLine(Convertor.GetAllTransactions(AccountNumber));
+            Console.WriteLine(Convertor.GetAllTransactions(Account.AccountNumber));
         }
 
         public void SendMoney() {
-            ClientUtils.SendingMoney(AccountNumber, 0);            
+            ClientUtils.SendingMoney(Account, 0);            
         }
     }
 }

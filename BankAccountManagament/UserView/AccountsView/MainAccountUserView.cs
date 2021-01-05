@@ -2,15 +2,16 @@ using System;
 using BankAccountManagament.AdminsView.AccountsView;
 using BankAccountManagament.CommonViews;
 using BankAccountManagament.Utils;
+using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Utils;
 
 namespace  BankAccountManagament.UserView.AccountsView
 {
     class MainAccountUserView : MainAccountView {
-        public override long AccountNumber { get; }
+        public override Account Account { get; }
 
-        public MainAccountUserView(long accountNumber) {
-            this.AccountNumber = accountNumber;
+        public MainAccountUserView(Account account) {
+            this.Account = account;
         }
       
     }

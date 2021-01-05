@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using BankAccountManagament.AdminsView;
-using BankAccountManagament.AdminsView.ClientsView;
 using BankAccountManagament.Models;
 using BankAccountManagament.UserView;
 using BankAccountManagamentLibrary.Models;
@@ -19,12 +19,12 @@ namespace BankAccountManagament.Utils {
              
              if (!clientId.Equals(Bank.Admin)) {
                 
-                Client client = ClientServices.Get(clientId);
+               // Client client = ClientServices.Get(clientId);
              
-                if (LoopPassword(client)) 
-                    new EditClientUserView(client.ClientId).Show(); 
-                
-                else Console.WriteLine("Client dose not exist"); 
+                // if (LoopPassword(client)) 
+                //     new EditClientUserView(client).Show(); 
+                //
+                // else Console.WriteLine("Client dose not exist"); 
                 
              } else if(Common.Input("Password", 3).Equals(Bank.AdminPassword))
                  new MainAdminView().Show();
@@ -58,48 +58,82 @@ namespace BankAccountManagament.Utils {
             return false;
         }
 
-        public static bool CreateClient() {
-            
-            long personalNumber = Common.LoopInput("Personal Number", 8);
-            string name = Common.Input("Name", 3);
-            string lastName = Common.Input("Last Name", 3);
-            string Address = Common.Input("Adress", 3);
-            string email = Common.Input("Email", 3);
-            long phoneNumber = Common.LoopInput("Phone Number", 9);
-            string password = Common.Input("Password", 3);
-            if(ClientServices.Add(personalNumber, name, lastName, password, Address, phoneNumber, email))
+        public static bool Create<T>(params Property[] givenProperties) {
+            var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
+            int choice = Common.Menu(models);
+            Console.WriteLine();
+            try {
+                Dependency dependency = Container.GetDependency(models[choice]);
+
+                List<Property> properties = GetPropsFromInput(dependency);
+                
+                if(givenProperties != null)
+                    properties.AddRange(givenProperties);
+                
+                foreach (var property in properties) {
+                    dependency.InitialiseProp(property);
+                }
+                if((bool)Container.GetDependency($"{typeof(T).Name}Services").InvokeMethod("Add", dependency.ActualObject))
+                   //if (ClientServices.Add((T)(dependency.ActualObject))) {
+                    return true;
+
                 return false;
-            return true;
-
+            }
+            catch (IndexOutOfRangeException) {
+                return false;
+            }
         }
+        
+        public static List<Property> GetPropsFromInput(Dependency dependency) {
 
+            List<Property> props = dependency.GetProperties(); 
+           
 
-        public static void AddAccount(string clientId) {
-            AccountType accountType = (AccountType) Common.LoopInput("Account Type", 1);
-            decimal initialDeposit = Common.LoopMoneyInput("Initial Input", 0);
-            AccountServices.Add(ClientServices.Get(clientId), accountType, initialDeposit);
-            Console.WriteLine("Account Added Succesfully");
+            for (int i = 0; i < props.Count; i++) {
+                if (props[i].PropertyType.Equals("String"))
+                
+                    props[i].PropertyValue = Common.Input(props[i].PropertyName, 1);
+                
+                else if (props[i].PropertyType.Equals("Decimal")) {
+                    
+                    props[i].PropertyValue = Common.LoopMoneyInput(props[i].PropertyName, 1);
+                    
+                } else {
+                    props[i].PropertyValue = Common.LoopInput(props[i].PropertyName, 1);
+                    
+                }
+            }
+
+            return props;
             
         }
 
-        public static void AddCreditCard(long accountNumber) { 
-            if (AccountServices.Get(accountNumber).CreditCard == null) {
+        // public static void AddAccount(string clientId) {
+        //     
+        //     AccountType accountType = (AccountType) Common.LoopInput("Account Type", 1);
+        //     decimal initialDeposit = Common.LoopMoneyInput("Initial Input", 0);
+        //     AccountServices.Add(ClientServices.Get(clientId), accountType, initialDeposit);
+        //     Console.WriteLine("Account Added Succesfully");
+        //     
+        // }
+
+        public static void AddCreditCard(Account account) { 
+            if (account.CreditCard == null) {
                  Console.Write("Do you want to request a credit card (Y/N): ");
                  char c = char.Parse(Console.ReadLine());
                  if (c == 'y' || c == 'Y') {
                      Common.PrintCreditCardTypes();
                      CreditCardType creditCardType = (CreditCardType) Common.LoopInput("Choose: ", 0);
-                     CreditCardServices.Add(accountNumber, creditCardType);
+                     CreditCardServices.Add(account, creditCardType);
                      Console.WriteLine("Credit card added succesfully");
                  }
             }
-            else Console.WriteLine(AccountServices.Get(accountNumber).CreditCard.ToString());
+            else Console.WriteLine(account.CreditCard.ToString());
         }
 
-        public static void ChangeAccountStatus(long accountNumber) { 
+        public static void ChangeAccountStatus(Account account) { 
             string d = ""; // if is deactive it adds "de"
 
-            Account account = AccountServices.Get(accountNumber);
             if (account.Active) { 
                 Console.WriteLine(
                 $"{account.Client.Name}'s account is active and {account.Client.Name}'s account balance is: {account.Balance}");
@@ -116,13 +150,13 @@ namespace BankAccountManagament.Utils {
                 Console.WriteLine("Status changed succesfully");
             }    
         }
-        public static void SendingMoney(long accountNumber, decimal intresRate) {
-            Console.WriteLine(Convertor.GetAllAccounts());
+        public static void SendingMoney(Account account, decimal intresRate) {
+            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", null));
             Console.WriteLine();
-            long accountNumber1 = Common.LoopInput("Account's number", 0);
+            Account account1 = (Account)Container.GetDependency("AccountServices").InvokeMethod("Get", Common.LoopInput("Account's number", 0));
             decimal amount = Common.LoopMoneyInput("Amount", 1);
          
-            if (TransactionServices.Add(accountNumber, accountNumber1, amount, intresRate)) {
+            if (TransactionServices.Add(account, account1, amount, intresRate)) {
                 Console.WriteLine("Money sended succesfully");
             }
             else {
@@ -131,14 +165,14 @@ namespace BankAccountManagament.Utils {
                      
         }
 
-        public static void AddLoan(long accountNumber) {
+        public static void AddLoan(Account account) {
             Common.Title("Adding Loan");
             decimal amount = Common.LoopInput("Amount you want to loan", 1);
             long months = Common.LoopInput("Months you want to pay", 1);
 
-            if (LoanServices.Add(accountNumber, amount, (int) months, Bank.IntresRate)) {
+            if (LoanServices.Add(account, amount, (int) months, Bank.IntresRate)) {
                 Console.WriteLine("Loan added succesfully");
-                Console.WriteLine($"You will have to pay {LoanServices.Get(accountNumber).MonthlyFee()} each month");
+                Console.WriteLine($"You will have to pay {LoanServices.Get(account.AccountNumber).MonthlyFee()} each month");
             }
             else Console.WriteLine("You cannot loan this amount");
         }

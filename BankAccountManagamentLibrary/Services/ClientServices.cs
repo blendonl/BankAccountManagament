@@ -7,23 +7,16 @@ using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
 
 namespace BankAccountManagamentLibrary.Services {
-    public static class ClientServices {
+    public class ClientServices {
+        private List<Client> Clients;
 
-        private static int count;
-        public static bool Add(long personalNumber, string name, string lastName, string password, string address, long phoneNumber, string email) {
-            if (FindIndex(personalNumber) == -1 ) {
-                Client client = new Client(){
-                    PersonalNumber = personalNumber,
-                    Name = name,
-                    LastName = lastName,
-                    Address = address,
-                    PhoneNumber = phoneNumber,
-                    Email = email,
-                    Password = password,
-                    ClientId = count++.ToString(),
-                    DateBecameClient = new DateTime()
-                };
-                Database.Clients.Add(client);
+        public ClientServices() {
+            Clients = new List<Client>();
+        }
+
+        public bool Add(Client client) {
+            if (FindIndex(client.PersonalNumber) == -1 ) {
+                Clients.Add(client);
                 return true;
             }
             return false;
@@ -32,29 +25,38 @@ namespace BankAccountManagamentLibrary.Services {
 
      
 
-        public static bool Remove(string clientId) {
+        public bool Remove(string clientId) {
             int index = FindIndex(clientId);
             if (index != -1) {
-                Database.Clients.Remove(Database.Clients[index]);
+                Clients.Remove(Clients[index]);
                 return true;
             }
             return false;
         }
 
-        public static int FindIndex(string clientId) {
-            return Database.Clients.FindIndex(client => client.ClientId.Equals(clientId));
+        public int FindIndex(string clientId) {
+            return Clients.FindIndex(client => client.ClientId.Equals(clientId));
         }
 
-        private static int FindIndex(long personalNumber) {
-            return Database.Clients.FindIndex(client => client.PersonalNumber == personalNumber);
+        private int FindIndex(long personalNumber) {
+            return Clients.FindIndex(client => client.PersonalNumber == personalNumber);
         }
 
        
 
-        public static Client Get(string clientId) {
+        public Client Get(string clientId) {
             int index = FindIndex(clientId);
-            return (index != -1) ? Database.Clients[index] : null;
+            return (index != -1) ? Clients[index] : null;
         }
-       
+        
+        
+        public string GetAll() { 
+            string rez = "";
+        
+            foreach (var clinet in Clients) {
+                rez += clinet.ToString() + "\n";
+            }
+            return rez;
+        }
     }
 }

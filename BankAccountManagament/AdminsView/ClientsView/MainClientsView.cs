@@ -1,25 +1,34 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using BankAccountManagament.CommonViews;
 using BankAccountManagament.Utils;
+using BankAccountManagamentLibrary.Models;
+using BankAccountManagamentLibrary.Models.AccountModel;
+using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
-    class MainClientsView : Menu {
+   class MainClientsView : Menu {
 
-        
+
         public void CreateClient() { 
-            ClientUtils.CreateClient();
+            if(ClientUtils.Create<Client>())
+                Console.WriteLine("Client added succesfully");
+            else {
+                Console.WriteLine("Client could not be added");
+            }
         }
 
-        public void SelectClient() {
+        public Client GoToEditClientAdminView() {
             string clientId = Common.Input("Client Id: ", 1);
-            new EditClientAdminView(clientId).Show();
+            return (Client)Container.GetDependency("ClientServices").InvokeMethod("Get", clientId);
+            
         }
 
         public void RemoveClient() {
             string clientId = Common.Input("Client Id: ", 1);
-            if(ClientServices.Remove(clientId)) 
+            if((bool)Container.GetDependency("ClientServices").InvokeMethod("Remove", clientId))
                 Console.WriteLine("Client Removed Succesfully");
             else {
                 Console.WriteLine("Client dose not exists");
@@ -27,7 +36,9 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         }
 
         public void ViewClients() {
-            Console.WriteLine(Convertor.GetAllClients());
+            Console.WriteLine(Container.GetDependency("ClientServices").InvokeMethod("GetAll", null));
         }
+        
+         
     }
 }

@@ -1,19 +1,22 @@
 
-using System;
-using BankAccountManagament.Models;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Models.CreditCardModel;
+using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagamentLibrary.Models.AccountModel {
-    public class Account {
+    public abstract class Account {
 
-        public long AccountNumber { get; set; }
+        public long AccountNumber { get; }
         public Client Client { get; set; }
-        public AccountType AccountType { get; set; }
         public CreditCard CreditCard { get; set; }
         public decimal Balance { get; set; }
         public bool Active {get; set;}
-        
+
+
+        public Account() {
+            AccountNumber = NumberGenerator.GenerateAccountNumber();
+            Active = true;
+        }
         
 
 
@@ -40,7 +43,7 @@ namespace BankAccountManagamentLibrary.Models.AccountModel {
 
         public override string ToString()
         {
-            return $"AccountNumber: {AccountNumber} AccountType: {AccountType} Balance: {Balance} Active: {Active} ";
+            return $"AccountNumber: {AccountNumber} AccountType: {GetType().Name} Balance: {Balance} Active: {Active} ";
         }
 
     }

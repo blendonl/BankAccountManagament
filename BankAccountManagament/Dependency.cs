@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Controller {
+namespace BankAccountManagament {
     public class Dependency {
         public Type  TypeOfObject { get; set; }
         public object? ActualObject { get; set; }
@@ -93,10 +93,12 @@ namespace Controller {
         //     return GetMethod(method).Invoke(ActualObject, parameters); 
         // }
 
-        public void InitialiseProp( string propType,string propName, object value) {
-            var prop = TypeOfObject.GetProperties().FirstOrDefault(prop => prop.PropertyType.Name.Equals(propType) && prop.Name.Equals(propName));
+        public void InitialiseProp(Property property) {
+            var prop = TypeOfObject.GetProperties().FirstOrDefault(pro => 
+                pro.PropertyType.Name.Equals(property.PropertyType) && 
+                pro.Name.Equals(property.PropertyName));
             if(prop != null)
-                prop.SetValue(ActualObject, value);
+                prop.SetValue(ActualObject, property.PropertyValue);
         }
          public object[] GetConstructorParameters(Type methodInfo, object parameters) {
             var constructor = methodInfo.GetConstructors()[0];
@@ -180,7 +182,7 @@ namespace Controller {
             return rez;
         }
        
-        public PropertyInfo[] GetProperties() {
+        public PropertyInfo[] GetPropertiesInfos() {
             var types = TypeOfObject.GetProperties();
             
             return TypeOfObject.GetProperties().Where(prop =>
@@ -189,20 +191,34 @@ namespace Controller {
             ).ToArray();
         }
         public string[] GetPropertiesName() {
-            string[] rez = new string[GetProperties().Length];
+            string[] rez = new string[GetPropertiesInfos().Length];
             int count = 0;
-            foreach (var VARIABLE in GetProperties()) {
+            foreach (var VARIABLE in GetPropertiesInfos()) {
                 rez[count] = VARIABLE.Name;
                 count++;
             }
 
             return rez;
         }
+
+        public List<Property> GetProperties() {
+            List<Property> properties = new List<Property>();
+
+            foreach (var property in GetPropertiesInfos()) {
+                properties.Add(new Property() {
+                    PropertyName = property.Name,
+                    PropertyType = property.PropertyType.Name,
+                    PropertyValue = property.GetValue(ActualObject)
+                });
+            }
+
+            return properties;
+        } 
         
         public string[] GetPropertiesType() {
-            string[] rez = new string[GetProperties().Length];
+            string[] rez = new string[GetPropertiesInfos().Length];
             int count = 0;
-            foreach (var VARIABLE in GetProperties()) {
+            foreach (var VARIABLE in GetPropertiesInfos()) {
                 rez[count] = VARIABLE.PropertyType.Name;
                 count++;
             }

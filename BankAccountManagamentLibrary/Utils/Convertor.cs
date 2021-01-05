@@ -7,34 +7,9 @@ using BankaccountManagamentLibrary.Services;
 namespace BankAccountManagamentLibrary.Utils {
     public class Convertor {
         
-        public static string GetAllClients() {
-            string rez = "";
-
-            foreach (var clinet in Database.Clients) {
-                rez += clinet.ToString() + "\n";
-            }
-            return rez;
-        }
-
-        public static string GetAllAccounts() {
-            string rez = "";
-
-            foreach (var account in Database.Accounts) {
-                rez += account.ToString() + "\n";
-            }
-
-            return rez;
-        } 
-        public static string GetAllAccounts(string clinetId) {
-             string rez = "";
      
-             foreach (var account in Database.Accounts) {
-                 if(account.Client.ClientId.Equals(clinetId))
-                    rez += account.ToString() + "\n";
-             }
- 
-             return rez;
-             }
+
+       
 
         public static string GetAllTransactions() {
             string rez = "";
@@ -87,27 +62,13 @@ namespace BankAccountManagamentLibrary.Utils {
              return rez;
                      
          }
-         public static string GetAllLoans(long accountNumber) {
-             string rez = "";
-         
-             foreach (var loan in Database.Loans) {
-                 if(accountNumber == loan.AccountNumber)
-                    rez += loan.ToString() + "\n";
-             }
-         
-             return rez;
-                         
-         }
-         public static string GetAllAccountTypes() {
-            string rez = "";
-            var accountTypes =  Enum.GetValues(typeof(AccountType));
-            for (int i = 0; i < accountTypes.Length; i++) {
-                rez +=($"Press {i} to select {accountTypes.GetValue(i)} \n");
-            }
-
-            return rez;
-         }
-         
+       
+       
+            
+          
+             
+      
+        
          public static decimal ProvisionPercentage(decimal provision) {
              return provision / 100 * 100;
          }

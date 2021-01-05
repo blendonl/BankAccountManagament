@@ -1,22 +1,18 @@
 ﻿using System;
 using BankAccountManagament.AdminsView.AccountsView;
 using BankAccountManagament.Utils;
+using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagament.CommonViews {
     public abstract class EditClientView : Menu {
-        public abstract string ClientId {
+        public abstract Client Client {
             get;
         }
        
         public void ViewAccounts() {
-            Console.WriteLine(Convertor.GetAllAccounts(ClientId));
+            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.ClientId));
         }
-        public void SelectAccount() {
-            Console.WriteLine(Convertor.GetAllAccounts(ClientId));
-            Console.WriteLine();
-            long accountNumber = Common.LoopInput("Account number", 8);
-            new MainAccountAdminView(accountNumber).Show();
-        }
+       
     }
 }

@@ -1,43 +1,59 @@
-﻿using BankAccountManagamentLibrary.DataAccess;
+﻿using System.Collections.Generic;
+using BankAccountManagamentLibrary.DataAccess;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagamentLibrary.Services {
-    public static class AccountServices {
+    public class AccountServices {
 
-        public static Account Add(Client client, AccountType accountType, decimal initialBalance) {
-            Account account = new Account();
-            account.AccountType = accountType;
-            account.Balance = initialBalance;
-            account.Active = true;
-            account.Client = client;
-            Database.Accounts.Add(account);
-            do {
-                account.AccountNumber = NumberGenerator.GenerateAccountNumber();
-            } while (Get(account.AccountNumber) != null);
+        private List<Account> Accounts;
 
-            return account;
+        public AccountServices() {
+            Accounts = new List<Account>();
+        }
+        
+        public bool Add(Account account) {
+            Accounts.Add(account);
+
+            return true;
         }
 
-        public static bool Remove( long accountNumber) {
-            int index = Database.Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
+        public bool Remove( long accountNumber) {
+            int index = Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
             if (index != -1)
-                return Database.Accounts.Remove(Database.Accounts[index]);
+                return Accounts.Remove(Database.Accounts[index]);
             else
                 return false;
         }
 
-        public static Account Get(long accountNumber) {
-            int index = Database.Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
+        public Account Get(long accountNumber) {
+            int index = Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
             if (index != -1)
-                return Database.Accounts[index];
+                return Accounts[index];
             else
                 return null;
         }
         
+        
+        public string GetAll() {
+            string rez = "";
 
-      
-             
+            foreach (var account in Accounts) {
+                rez += account.ToString() + "\n";
+            }
+
+            return rez;
+        } 
+        public string GetAll(string clinetId) {
+             string rez = "";
+     
+             foreach (var account in Accounts) {
+                 if(account.Client.ClientId.Equals(clinetId))
+                    rez += account.ToString() + "\n";
+             }
+ 
+             return rez;
+        }
     }
 }

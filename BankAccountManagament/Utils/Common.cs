@@ -13,9 +13,7 @@ namespace BankAccountManagament.Utils {
     static class Common {
         
 
-       public static int Menu(string menu, string[] choices) {
-            
-            Common.Title(menu);
+       public static int Menu( string[] choices) {
 
             // prints all the choices
             for (int i = 0; i < choices.Length; i++)

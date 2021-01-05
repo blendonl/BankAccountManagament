@@ -17,7 +17,7 @@ namespace BankAccountManagament.AdminsView {
         }
 
         public void GoToMainClientsView() {
-            new MainClientsView().Show();
+           new MainClientsView().Show();
         }
 
         public void ViewTransactions() {
