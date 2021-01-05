@@ -15,6 +15,7 @@ namespace BankaccountManagamentLibrary.Services {
             transaction.AccountNumber = account.AccountNumber;
             transaction.Amount = amount;
             transaction.TransactionType = transactionType;
+            transaction.ClientId = account.Client.ClientId;
             if(transactionType.Equals(TransactionType.Deposit)) {
                 account.Deposit(amount, intresRate);
             } else if(transactionType.Equals(TransactionType.Withdraw)) {

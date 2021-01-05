@@ -6,6 +6,7 @@ using BankAccountManagament.UserView;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
+using BankAccountManagamentLibrary.Models.CreditCardModel;
 using BankaccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
@@ -124,7 +125,11 @@ namespace BankAccountManagament.Utils {
                  if (c == 'y' || c == 'Y') {
                      Common.PrintCreditCardTypes();
                      CreditCardType creditCardType = (CreditCardType) Common.LoopInput("Choose: ", 0);
-                     CreditCardServices.Add(account, creditCardType);
+                     CreditCard creditCard = new CreditCard() {
+                            CreditCardType = creditCardType
+                     };
+                     Container.GetDependency("CreditCardServices").InvokeMethod("Add", new Object[] {account, creditCard});
+                     //CreditCardServices.Add(account, creditCardType);
                      Console.WriteLine("Credit card added succesfully");
                  }
             }
@@ -170,9 +175,16 @@ namespace BankAccountManagament.Utils {
             decimal amount = Common.LoopInput("Amount you want to loan", 1);
             long months = Common.LoopInput("Months you want to pay", 1);
 
-            if (LoanServices.Add(account, amount, (int) months, Bank.IntresRate)) {
+            Loan loan = new Loan() {
+                Account = account,
+                Amount = amount,
+                ExperationDateInMonths = (int) months,
+                InteresRate = Bank.IntresRate
+            };
+
+            if ((bool)Container.GetDependency("LoanServices").InvokeMethod("Add",loan)) {
                 Console.WriteLine("Loan added succesfully");
-                Console.WriteLine($"You will have to pay {LoanServices.Get(account.AccountNumber).MonthlyFee()} each month");
+                Console.WriteLine($"You will have to pay {((Loan)Container.GetDependency("LoanServices").InvokeMethod("GetFromAccount",account.AccountNumber)).MonthlyFee()} each month");
             }
             else Console.WriteLine("You cannot loan this amount");
         }

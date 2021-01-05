@@ -30,26 +30,27 @@ namespace BankAccountManagament.AdminsView.AccountsView {
 
             
         public void Loan() {
-                if (LoanServices.Get(Account.AccountNumber) == null) {
+            Loan loan = (Loan)Container.GetDependency("LoanServices").InvokeMethod("GetFromAccount", Account.AccountNumber);
+                if (loan == null) {
+                    
                      ClientUtils.AddLoan(Account); 
                 }
                 else {
-                    Loan loan= LoanServices.Get(Account.AccountNumber);
                     Console.WriteLine("Loan Status: " + loan.ToString());
                     if (loan.Paid < loan.Amount) {
                         Console.Write("Do you want to make a payment: (Y/N) ");
-                        char c = char.Parse(Console.ReadLine());
+                        char c = char.Parse(Console.ReadLine()); 
                         if (c == 'Y' || c == 'y') {
-                            LoanServices.MonthlyFee(loan.Account.AccountNumber);
+                            Container.GetDependency("LoanServices").InvokeMethod("MonthlyFee", loan.LoanId);
                             loan.Account.WithDraw(loan.MonthlyFee(), 0);
                             Console.WriteLine("Succesfully");
-                        }
                     }
-                    else {
-                        ClientUtils.AddLoan(Account);
-                    }
-                } 
-           }    
+                }
+                else {
+                    ClientUtils.AddLoan(Account);
+                }
+            } 
+        }    
 
       
     
