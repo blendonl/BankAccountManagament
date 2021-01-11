@@ -15,7 +15,7 @@ namespace BankAccountManagament.Utils {
              string clientId = Common.Input("ClientId", 1); 
              
              if (!clientId.Equals(Bank.Admin)) {
-                
+               //TODO Fix login 
                // Client client = ClientServices.Get(clientId);
              
                 // if (LoopPassword(client)) 
@@ -28,8 +28,7 @@ namespace BankAccountManagament.Utils {
              else {
                  Console.WriteLine("Password was not correct");
              }
-          
-         }
+        }
         public static bool LoopPassword(Client client) {
             
             // geting password from input

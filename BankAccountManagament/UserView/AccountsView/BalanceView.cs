@@ -6,17 +6,14 @@ using BankaccountManagamentLibrary.Services;
 using Controller;
 
 namespace BankAccountManagament {
-    public abstract class BalanceView : Menu{
+    public class BalanceView : Menu{
         
 
-        public abstract Account Account {
+        public virtual Account Account {
             get;
         }
 
-        public abstract decimal Provision {
-            get;
-        }
-        
+      
 
         public void ViewBalance() {
 

@@ -17,6 +17,9 @@
         }
       },
       "BankAccountManagamentLibrary/1.0.0": {
+        "dependencies": {
+          "Controller": "1.0.0"
+        },
         "runtime": {
           "BankAccountManagamentLibrary.dll": {}
         }

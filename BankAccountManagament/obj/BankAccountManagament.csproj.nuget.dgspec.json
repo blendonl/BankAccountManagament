@@ -26,7 +26,11 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\blend\\RiderProjects\\BankAccountManagament\\Controller\\Controller.csproj": {
+                "projectPath": "C:\\Users\\blend\\RiderProjects\\BankAccountManagament\\Controller\\Controller.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

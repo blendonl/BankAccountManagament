@@ -9,7 +9,7 @@ using BankAccountManagamentLibrary.Services;
 using Controller;
 
 namespace BankAccountManagament {
-    public class MainMenu : Menu {
+    public class MainView : Menu {
 
         public void InitialiseBank() {
             //ToDO Fix Bank Initialisation

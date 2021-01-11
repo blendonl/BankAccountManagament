@@ -2,7 +2,6 @@
 using BankAccountManagament.AdminsView.ClientsView;
 using BankAccountManagament.CommonViews;
 using BankAccountManagamentLibrary.Models;
-using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
 using Controller;
@@ -17,17 +16,17 @@ namespace BankAccountManagament.AdminsView {
             Console.WriteLine($"All: {Bank.BankBalance + BankServices.GetALlClientsMoney()}");
         }
 
-        public void GoToMainClientsView() {
+        public void GoToMainClientsAdminView() {
         }
 
         public void ViewTransactions() {
             //TODO Fixing getting all transactions
-            Console.WriteLine(Container.GetDependency("TransactionServices").InvokeMethod("GetAll", null));
+           // Console.WriteLine(Container.GetDependency("TransactionServices").InvokeMethod("GetAll", null));
         }
 
         public void ViewLoans() {
             //TODO Fix getting all lo
-            Console.WriteLine(Convertor.GetAllLoans());
+           // Console.WriteLine(Convertor.GetAllLoans());
         }
     }
 }

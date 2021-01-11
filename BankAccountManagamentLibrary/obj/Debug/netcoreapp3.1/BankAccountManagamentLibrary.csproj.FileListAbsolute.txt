@@ -10,3 +10,5 @@ C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\
 C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\Personi.dll
 C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\Personi.pdb
 C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\obj\Debug\netcoreapp3.1\BankAccountManagamentLibrary.csproj.CopyComplete
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\Controller.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagamentLibrary\bin\Debug\netcoreapp3.1\Controller.pdb

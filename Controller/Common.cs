@@ -106,7 +106,6 @@ namespace Controller {
         }
 
         public static DateTime LoopDateInput(string title, int length) {
-             // check if the value from user can be converted to long
 
              DateTime value; 
                  

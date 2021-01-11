@@ -3,7 +3,7 @@
 using Controller;
 
 namespace BankAccountManagament.AdminsView.ClientsView {
-   class MainClientsView : Menu {
+   class MainClientsAdminView : Menu {
         
         public void ViewClients() {
         } 

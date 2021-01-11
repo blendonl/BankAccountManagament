@@ -4,6 +4,7 @@ using System.Globalization;
 using BankAccountManagamentLibrary.DataAccess;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
+using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
 
 namespace BankAccountManagamentLibrary.Services {
@@ -70,19 +71,39 @@ namespace BankAccountManagamentLibrary.Services {
             return false;
         }
         
-        
-          public string GetAll(long accountNumber) {
-              string rez = "";
-                     
-                 
-            foreach (var loan in Loans) {
-                 if(accountNumber == loan.Account.AccountNumber)
-                    rez += loan.ToString() + "\n"; 
-            }
+        public List<Loan> GetAll() {
+            List<Loan> loans =new List<Loan>();
             
-            return rez;
+            foreach (var loan in Loans) {
+                  loans.Add(loan); 
+            }
+        
+            return loans;
                                  
-          }
+        }  
+        public List<Loan> GetAll(Account account) {
+            List<Loan> loans =new List<Loan>();
+  
+            foreach (var loan in Loans) {
+                if (account.AccountNumber == loan.Account.AccountNumber) {
+                    loans.Add(loan);
+                }
+            }
 
+            return loans;
+                     
+        }
+        
+         public List<Loan> GetAll(Client client) {
+            List<Loan> loans =new List<Loan>();
+            
+            foreach (var loan in Loans) {
+                if(client.ClientId.Equals(loan.Client.ClientId))
+                  loans.Add(loan); 
+            }
+        
+            return loans;
+                                         
+         } 
     }
 }

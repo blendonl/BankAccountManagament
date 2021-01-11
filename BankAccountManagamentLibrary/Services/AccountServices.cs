@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using BankAccountManagamentLibrary.DataAccess;
+﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
-using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagamentLibrary.Services {
     public class AccountServices {
@@ -20,10 +17,10 @@ namespace BankAccountManagamentLibrary.Services {
             return true;
         }
 
-        public bool Remove( long accountNumber) {
+        public bool Remove(long accountNumber) {
             int index = Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
             if (index != -1)
-                return Accounts.Remove(Database.Accounts[index]);
+                return Accounts.Remove(Accounts[index]);
             else
                 return false;
         }
@@ -36,16 +33,14 @@ namespace BankAccountManagamentLibrary.Services {
                 return null;
         }
         
+         public List<Account> GetAll() { 
+            List<Account> items = new List<Account>();
         
-        public string GetAll() {
-            string rez = "";
-
-            foreach (var account in Accounts) {
-                rez += account.ToString() + "\n";
+            foreach (var item in Accounts) {
+                items.Add(item);
             }
-
-            return rez;
-        } 
+            return items;
+         }   
         public List<Account> GetAll(string clientId) {
             List<Account> accounts = new List<Account>();
      
@@ -55,6 +50,17 @@ namespace BankAccountManagamentLibrary.Services {
              }
  
              return accounts;
+        }
+        
+        public List<Account> GetAll(Client client) {
+            List<Account> accounts = new List<Account>();
+     
+             foreach (var account in Accounts) {
+                 if(account.Client.ClientId.Equals(client.ClientId))
+                    accounts.Add(account);
+             }
+ 
+             return accounts; 
         }
     }
 }

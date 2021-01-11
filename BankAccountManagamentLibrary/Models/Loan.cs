@@ -1,12 +1,11 @@
 ﻿using System;
-using BankAccountManagamentLibrary.DataAccess;
 using BankAccountManagamentLibrary.Models.AccountModel;
+using BankAccountManagamentLibrary.Models.ClientModel;
 
 namespace BankAccountManagamentLibrary.Models {
     public class Loan {
-        
         public string LoanId { get; set; }
-        public string ClientId { get; set; }
+        public Client Client { get; set; }
         public Account Account { get; set; }
         public decimal Amount { get; set; }
         public decimal Paid { get; set; }
@@ -26,7 +25,11 @@ namespace BankAccountManagamentLibrary.Models {
         }
 
         public override string ToString() {
-            return $"LoanId: {LoanId} ClientId: {ClientId} AccountNumber: {Account.AccountNumber} StartingDate: {StartingDate.Day}/{StartingDate.Month}/{StartingDate.Year} Month: {MonthlyFee().ToString()}";
+            return $"LoanId: {LoanId} " +
+                   $"ClientId: {Client.ClientId} " +
+                   $"AccountNumber: {Account.AccountNumber} " +
+                   $"StartingDate: {StartingDate.Day}/{StartingDate.Month}/{StartingDate.Year} " +
+                   $"Month: {MonthlyFee()}";
         }
     }
 }

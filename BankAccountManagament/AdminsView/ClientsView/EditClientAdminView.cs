@@ -18,7 +18,7 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             return new Property("Client", "Client",Client);
         } 
         
-        public Account GoToMainAccountAdminView() { 
+        public Account GoToEditAccountAdminView() { 
               Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.ClientId);
               Console.WriteLine();
 

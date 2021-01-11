@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using BankAccountManagament.Models;
-using BankAccountManagamentLibrary.DataAccess;
+﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models.AccountModel;
+using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
 using BankAccountManagamentLibrary.Services;
 using BankAccountManagamentLibrary.Utils;
@@ -33,34 +31,33 @@ namespace BankaccountManagamentLibrary.Services {
             return false;
         }
         
-        public string GetAll() {
-            string rez = "";
-
+        public List<Transaction> GetAll() {
+            List<Transaction> transactions = new List<Transaction>();
             foreach (var transaction in Transactions) {
-                rez += transaction.ToString() + "\n";
+                transactions.Add(transaction);
             }
 
-            return rez;
+            return transactions;
         }
-        
-         public string GetAll(Account account) {
-                string rez = "";
-        
+          public List<Transaction> GetAll(Account account) {
+                List<Transaction> transactions = new List<Transaction>();
                 foreach (var transaction in Transactions) {
-                    if(account.AccountNumber == transaction.Account.AccountNumber)
-                        rez += transaction.ToString() + "\n";
+                    if(transaction.Account.AccountNumber == account.AccountNumber)
+                        transactions.Add(transaction);
                 }
-        
-                return rez;
-         } 
-         public string GetAll(string clientId) {
-             string rez = "";
-        
-             foreach (var transaction in Transactions) { 
-                 if(clientId.Equals(transaction.Client.ClientId)) 
-                     rez += transaction.ToString() + "\n";
-             }
-             return rez;
-         }
+    
+                return transactions;
+            }
+          public List<Transaction> GetAll(Client client) {
+                List<Transaction> transactions = new List<Transaction>();
+                foreach (var transaction in Transactions) {
+                    if(transaction.Client.ClientId.Equals(client.ClientId))
+                        transactions.Add(transaction);
+                }
+    
+                return transactions;
+            }
+          
+       
     }
 }

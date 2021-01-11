@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 
 namespace Controller {
     
@@ -17,7 +16,7 @@ namespace Controller {
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
-                if((bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
+                if((bool)Container.GetDependency($"{(dependency.TypeOfObject.BaseType != null ? dependency.TypeOfObject.BaseType.Name : dependency.TypeOfObject.Name)}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
                    //if (ClientServices.Add((T)(dependency.ActualObject))) {
                     return true;
 
@@ -28,30 +27,30 @@ namespace Controller {
             }
         }
         public static bool Create<T>(Property givenProperties) {
-                    var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
-                    int choice = Common.Menu(models);
-                    Console.WriteLine();
-                    try {
-                        Dependency dependency = Container.GetDependency(models[choice], typeof(T));
-        
-                        List<Property> properties = GetPropsFromInput(dependency);
-                        
-                        if(givenProperties != null)
-                            properties.Add(givenProperties);
-                        
-                        foreach (var property in properties) {
-                            dependency.InitialiseProp(property);
-                        }
-                        if((bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
-                           //if (ClientServices.Add((T)(dependency.ActualObject))) {
-                            return true;
-        
-                        return false;
-                    }
-                    catch (IndexOutOfRangeException) {
-                        return false;
-                    }
+            var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
+            int choice = Common.Menu(models);
+            Console.WriteLine();
+            try {
+                Dependency dependency = Container.GetDependency(models[choice], typeof(T));
+
+                List<Property> properties = GetPropsFromInput(dependency);
+                
+                if(givenProperties != null)
+                    properties.Add(givenProperties);
+                
+                foreach (var property in properties) {
+                    dependency.InitialiseProp(property);
                 }
+                if((bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
+                   //if (ClientServices.Add((T)(dependency.ActualObject))) {
+                    return true;
+
+                return false;
+            }
+            catch (IndexOutOfRangeException) {
+                return false;
+            }
+        }
         
         
         public static bool Create<T>(Property[] givenProperties) {
@@ -134,10 +133,15 @@ namespace Controller {
         }
 
         public static object Select<T>(object parameter) { 
-            Dependency dep = Container.GetDependency($"{typeof(T).Name}Services", typeof(T));
+            Dependency dep = Container.GetDependency($"{typeof(T)}Services)", typeof(T));
             if (dep != null)
                 return dep.InvokeMethod("Get", (parameter));
             return null;
-        } 
+        }
+
+
+        private static string BaseTypeName<T>() {
+            return (typeof(T).BaseType != null) ? typeof(T).BaseType?.Name : typeof(T).Name;
+        }
     }
 }

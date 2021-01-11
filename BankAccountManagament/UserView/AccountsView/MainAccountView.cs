@@ -3,13 +3,12 @@ using BankAccountManagamentLibrary.Models.AccountModel;
 using Controller;
 
 namespace BankAccountManagament.CommonViews {
-    public abstract class MainAccountView : Menu {
+    public class MainAccountView : Menu {
 
 
-        public abstract Account Account {
+        public virtual Account Account {
             get;
         }
-
 
         public Account ViewTransactions() {
             //TODO Fix viewing Transactions

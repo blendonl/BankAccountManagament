@@ -7,14 +7,14 @@ using Controller;
 
 namespace BankAccountManagament.AdminsView.AccountsView {
 
-    class MainAccountAdminView : MainAccountView {
+    class EditAccountAdminView : MainAccountView {
         public override Account Account { get; }
 
         
         public Account GoToBalanceAdminView() {
             return Account;
         }
-        public MainAccountAdminView(Account account) {
+        public EditAccountAdminView(Account account) {
             this.Account = account;
         }
 

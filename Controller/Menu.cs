@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
+
 
 namespace Controller{
     public abstract class Menu {
@@ -17,40 +16,42 @@ namespace Controller{
             
             if (choice < methods.Length && choice >= 0) {
                 string methodName = methods[choice];
+                if (!methodName.Equals("GoBack")) {
+                    Common.Title(StringManipulations.AddSpacesBeetween(methodName));
+                    object parm = dependency.InvokeMethod(methodName, null);
 
-                Common.Title(StringManipulations.AddSpacesBeetween(methodName));
-                object parm = dependency.InvokeMethod(methodName, null);
+                    if (methodName.StartsWith("GoTo")) {
+                        GoToMethod(dependency, methodName, parm);
+                    }
+                    else {
 
-                if (methodName.StartsWith("GoTo")) {
-                    GoToMethod(dependency, methodName, parm);
-                }
-                else if (!methodName.Equals("GoBack")) {
-
-                    InvokeMethod(dependency, methodName, parm);
-                    Console.ReadLine();
+                        InvokeCrudMethod(dependency, methodName, parm);
+                        Console.ReadLine();
+                    }
+                    Show();
                 }
             }
-            
-            dependency.InvokeMethod("Show", null);
-            
+            else {
+                Show();
+            }
+
 
         }
 
 
         private void GoToMethod(Dependency dependency, string methodName, object parm) {
-            if (parm != null) {
-                if (parm.GetType().IsPrimitive || parm.GetType().Name.Equals("String")) {
+            if (parm != null && (parm.GetType().IsPrimitive || parm.GetType().Name.Equals("String"))) {
                     string modelName = Container.GetAllModels(GetType())
                         .FirstOrDefault(t => methodName.Contains(t.Name))?.Name;
-                    parm = InvokeMethod(dependency, $"Select{modelName}", parm);
-                }
+                    parm = InvokeCrudMethod(dependency, $"Select{modelName}", parm);
+                
             }else { 
                 Dependency dep = Container.GetDependency(methodName.Remove(0, 4), GetType(), (parm != null) ? new[] {parm} : null); 
                 Container.Add(dep); 
                 dep.InvokeMethod("Show", null); 
             } 
         }
-        private object InvokeMethod(Dependency dependency, string method, object parm ) {
+        private object InvokeCrudMethod(Dependency dependency, string method, object parm ) {
             Dependency crud = Container.GetDependency("CrudOperations");
             string methd = crud.GetMethodsName().FirstOrDefault(meth => method.StartsWith(meth));
             
@@ -70,7 +71,7 @@ namespace Controller{
                 // }
             }
 
-            return (object) dependency.InvokeMethod(method, null); 
+            return null;
         }
 
         private void InvokeCrudMethod(string method, Type type) {
