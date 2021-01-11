@@ -142,12 +142,13 @@ namespace Controller {
         }
         
         public MethodInfo[] GetMethods() {
-            return TypeOfObject
+           return TypeOfObject
                 .GetMethods()
                 .Where(method => method.IsPublic 
                                 && !method.IsSpecialName 
                                 )
-                .ToArray();
+                .OrderBy(meth => meth.DeclaringType.Name.Equals("Menu") && meth.DeclaringType.Name.Equals(TypeOfObject.Name)).ToArray();
+           
         } 
        
         public string[] GetMethodsName() {
@@ -198,12 +199,11 @@ namespace Controller {
         }
        
         public PropertyInfo[] GetPropertiesInfos() {
-            var types = TypeOfObject.GetProperties();
             
             return TypeOfObject.GetProperties().Where(prop =>
                 (prop.PropertyType.BaseType.Name.Equals("ValueType")  || 
                  prop.PropertyType.Name.Equals("String")) && prop.CanWrite && !prop.PropertyType.Name.Equals("Boolean")
-            ).ToArray();
+            ).OrderBy(pro => pro.DeclaringType.Name.Equals(TypeOfObject.BaseType.Name)).ToArray();
         }
         public string[] GetPropertiesName() {
             string[] rez = new string[GetPropertiesInfos().Length];

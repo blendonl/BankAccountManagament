@@ -3,6 +3,7 @@ using BankAccountManagament.CommonViews;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
+using BankAccountManagamentLibrary.Services;
 using Controller;
 
 namespace BankAccountManagament.AdminsView.AccountsView {
@@ -31,7 +32,7 @@ namespace BankAccountManagament.AdminsView.AccountsView {
             
         public void Loan() {
             //TODO: Fix creating loan automaticly
-            Loan loan = (Loan)Container.GetDependency("LoanServices").InvokeMethod("GetFromAccount", Account.AccountNumber);
+            Loan loan = (Loan)Container.GetDependency(typeof(LoanServices)).InvokeMethod("GetFromAccount", Account.AccountNumber);
                 if (loan == null) {
                     
                      ClientUtils.AddLoan(Account); 

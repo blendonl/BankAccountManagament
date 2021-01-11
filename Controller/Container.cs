@@ -17,7 +17,7 @@ namespace Controller {
             
             Dependency dep = new Dependency(tpe);
             
-            if (Dependencies.Find(t => t.TypeOfObject != null && t.TypeOfObject.Name.Equals(tpe.Name)) == null) {
+            if (Dependencies.FirstOrDefault(t => t.TypeOfObject != null && t.TypeOfObject.Name.Equals(tpe.Name)) == null) {
                 
                 if (dep.TypeOfObject.Name.Contains("Services") || (dep.TypeOfObject.BaseType != null && dep.TypeOfObject.BaseType.Name.Equals("Menu") || dep.Needed))
                     Dependencies.Add(dep);
@@ -243,7 +243,16 @@ namespace Controller {
         }
 
         public static List<Type> GetAllModels(Type type) {
-            return type.Assembly.GetTypes().Where(t => t.Namespace.Contains("Model")).ToList();
+            List<Type> models = new List<Type>();
+            models.AddRange(type.Assembly.GetTypes().Where(t => t.Namespace.Contains("Model")).ToList());
+            foreach (var assembly in GetAllReferencedAssemblies(type)) {
+                List<Type> temp = assembly.GetTypes().Where(t => !String.IsNullOrEmpty(t.Namespace) && t.Namespace.Contains("Model")).ToList();
+                if (temp != null) {
+                    models.AddRange(temp);
+                }
+            }
+
+            return models;
         }
 
 

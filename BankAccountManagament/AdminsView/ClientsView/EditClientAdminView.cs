@@ -14,21 +14,15 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         public EditClientAdminView(Client client)  {
             Client= client;
         } 
-        public Property CreateAccount() {
-            return new Property("Client", "Client",Client);
+        public Client CreateAccount() {
+            return Client;
         } 
         
-        public Account GoToEditAccountAdminView() { 
+        public long GoToEditAccountAdminView() { 
               Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.ClientId);
               Console.WriteLine();
 
-              Account account = (Account)Container.GetDependency("AccountServices")
-                  .InvokeMethod("Get", Common.LoopInput("Account Number", 8));
-
-              if (account != null) 
-                  return account;
-              else 
-                  return null;
+              return Common.LoopInput("Account Number", 8);
         }
 
          public long RemoveAccount() {

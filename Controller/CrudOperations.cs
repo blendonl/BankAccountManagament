@@ -55,10 +55,14 @@ namespace Controller {
         
         public static bool Create<T>(Property[] givenProperties) {
             var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
-            int choice = Common.Menu(models);
+            int choice = -1;
+            if (models != null) {
+                choice = Common.Menu(models);
+            }
+
             Console.WriteLine();
             try {
-                Dependency dependency = Container.GetDependency(models[choice]);
+                Dependency dependency = Container.GetDependency((choice != -1) ? models[choice] : typeof(T).Name);
 
                 List<Property> properties = GetPropsFromInput(dependency);
                 
@@ -133,7 +137,7 @@ namespace Controller {
         }
 
         public static object Select<T>(object parameter) { 
-            Dependency dep = Container.GetDependency($"{typeof(T)}Services)", typeof(T));
+            Dependency dep = Container.GetDependency($"{typeof(T).Name}Services", typeof(T));
             if (dep != null)
                 return dep.InvokeMethod("Get", (parameter));
             return null;

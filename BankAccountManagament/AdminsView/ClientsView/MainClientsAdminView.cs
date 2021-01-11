@@ -11,10 +11,10 @@ namespace BankAccountManagament.AdminsView.ClientsView {
            
         }
 
-        public Client GoToEditClientAdminView() {
+        public string GoToEditClientAdminView() {
             Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Client), null);
-            string clientId = Common.Input("Client Id: ", 1);
-            return (Client)Container.GetDependency("ClientServices").InvokeMethod("Get", clientId);
+            return Common.Input("Client Id: ", 1);
+            //return (Client)Container.GetDependency("ClientServices").InvokeMethod("Get", clientId);
             
         }
 
