@@ -10,8 +10,10 @@ namespace BankAccountManagament.CommonViews {
             get;
         }
        
-        public void ViewAccounts() {
-            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.ClientId));
+        public Client ViewAccounts() {
+            //TODO Fix viewing accounts
+           // Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.ClientId));
+           return Client;
         }
        
     }

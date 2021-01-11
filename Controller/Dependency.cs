@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Controller {
     public class Dependency {
-        public Type  TypeOfObject { get; set; }
+        public Type TypeOfObject { get; set; }
         public object? ActualObject { get; set; }
         public bool Initialised { get; set; }
         
@@ -55,7 +55,7 @@ namespace Controller {
         }
         
         public object Initialise(Type generic, object[] parameters) {
-             if (GetConstructorParams().Count < 1) { 
+             if (GetConstructorParams().Count < 1) {
                  Initialised = true;
                 if (TypeOfObject.ContainsGenericParameters) {
                     var gener = TypeOfObject.MakeGenericType(new Type[] {generic});
@@ -69,8 +69,13 @@ namespace Controller {
 
              return null;
         }
-        public object? InvokeMethod(string method, object parameters) { 
-            return GetMethod(method, parameters).Invoke(ActualObject, (GetMethod(method, parameters).GetParameters().Length > 0) ? (GetMethod(method, parameters).ContainsGenericParameters) ? new[] {parameters} : new[] {parameters} : null);
+        public object? InvokeMethod(string method, object parameters) {
+            var methodInfo = GetMethod(method, parameters);
+            return methodInfo.Invoke(ActualObject, (methodInfo.GetParameters().Length > 0) ? 
+                (methodInfo.ContainsGenericParameters) ? 
+                    new[] {parameters} : 
+                    new[] {parameters} 
+                : null);
         }
 
          public object? InvokeMethod(string method, Type type, object parameters) {

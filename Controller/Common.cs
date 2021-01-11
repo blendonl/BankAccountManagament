@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Controller {
 
@@ -92,11 +93,11 @@ namespace Controller {
                 
                 // shows message and repeats the above steps
                 // Console.WriteLine("Please enter a valid number");
-                return LoopInput(title, length);
+                return LoopMoneyInput(title, length);
             }
             else if(value.ToString().Length < length) { 
                 Console.WriteLine($"Please enter a {length} digits number"); 
-                return LoopInput(title, length);
+                return LoopMoneyInput(title, length);
             } 
             // return the value from user
             
@@ -104,7 +105,23 @@ namespace Controller {
         
         }
 
-          
+        public static DateTime LoopDateInput(string title, int length) {
+             // check if the value from user can be converted to long
+
+             DateTime value; 
+                 
+             try {
+                 value = Convert.ToDateTime(Input(title, length) + " 00:00:00 AM", new CultureInfo("en-US"));
+                 
+             }
+             catch (Exception) {
+                 Console.WriteLine($"Please enter a valid date (ex: 14/06/2001)");
+                 return LoopDateInput(title, length);
+             }
+            
+            return value;
+        
+        }
 
     }
 }

@@ -6,15 +6,15 @@ using BankaccountManagamentLibrary.Services;
 using Controller;
 
 namespace BankAccountManagament.AdminsView.AccountsView {
-    public class BalanceAdminView: BalanceView{
+    public class BalanceAdminView: BalanceView {
         public override Account Account { get; }
         public override decimal Provision => Bank.Provision;
 
         public BalanceAdminView(Account account) {
             this.Account = account;
         }
-            
-       public void Deposit() {
+        
+        public void Deposit() {
     
             // get's amouunt from input
             decimal amount = Common.LoopInput("Amount", 1);

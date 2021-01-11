@@ -1,11 +1,5 @@
-﻿using System;
-using System.Transactions;
-using BankAccountManagament.UserView.AccountsView;
-using BankAccountManagament.Utils;
+﻿using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models.AccountModel;
-using BankaccountManagamentLibrary.Services;
-using BankAccountManagamentLibrary.Services;
-using BankAccountManagamentLibrary.Utils;
 using Controller;
 
 namespace BankAccountManagament.CommonViews {
@@ -17,8 +11,10 @@ namespace BankAccountManagament.CommonViews {
         }
 
 
-        public void ViewTransactions() {
-            Console.WriteLine(Container.GetDependency(typeof(TransactionServices)).InvokeMethod("GetAll", Account));
+        public Account ViewTransactions() {
+            //TODO Fix viewing Transactions
+            //Console.WriteLine(Container.GetDependency(typeof(TransactionServices)).InvokeMethod("GetAll", Account));
+            return Account;
         }
 
         public void SendMoney() {

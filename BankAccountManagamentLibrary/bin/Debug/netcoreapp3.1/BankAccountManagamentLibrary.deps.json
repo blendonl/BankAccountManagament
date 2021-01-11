@@ -7,8 +7,19 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "BankAccountManagamentLibrary/1.0.0": {
+        "dependencies": {
+          "Personi": "1.0.0.0"
+        },
         "runtime": {
           "BankAccountManagamentLibrary.dll": {}
+        }
+      },
+      "Personi/1.0.0.0": {
+        "runtime": {
+          "Personi.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -16,6 +27,11 @@
   "libraries": {
     "BankAccountManagamentLibrary/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Personi/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

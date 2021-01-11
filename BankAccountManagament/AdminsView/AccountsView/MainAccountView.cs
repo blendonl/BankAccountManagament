@@ -7,14 +7,13 @@ using Controller;
 
 namespace BankAccountManagament.AdminsView.AccountsView {
 
-    class MainAccountAdminView: MainAccountView {
+    class MainAccountAdminView : MainAccountView {
         public override Account Account { get; }
 
         
         public Account GoToBalanceAdminView() {
             return Account;
         }
-
         public MainAccountAdminView(Account account) {
             this.Account = account;
         }
@@ -23,12 +22,15 @@ namespace BankAccountManagament.AdminsView.AccountsView {
             ClientUtils.ChangeAccountStatus(Account);
         }
 
-        public void CreateCreditCard() {
-            ClientUtils.AddCreditCard(Account);
+        public Account CreateCreditCard() {
+            //TODO Fix Creating Credit Card Dinamicly
+            //ClientUtils.AddCreditCard(Account);
+            return Account;
         }
 
             
         public void Loan() {
+            //TODO: Fix creating loan automaticly
             Loan loan = (Loan)Container.GetDependency("LoanServices").InvokeMethod("GetFromAccount", Account.AccountNumber);
                 if (loan == null) {
                     

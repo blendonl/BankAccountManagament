@@ -10,8 +10,7 @@ using Controller;
 
 namespace BankAccountManagament.Utils {
     public class ClientUtils {
-        
-         public static void Login() { 
+        public static void Login() { 
              Common.Title("Login"); 
              string clientId = Common.Input("ClientId", 1); 
              
@@ -31,7 +30,6 @@ namespace BankAccountManagament.Utils {
              }
           
          }
-
         public static bool LoopPassword(Client client) {
             
             // geting password from input
@@ -55,8 +53,7 @@ namespace BankAccountManagament.Utils {
 
             return false;
         }
-        
-         public static void AddCreditCard(Account account) { 
+        public static void AddCreditCard(Account account) { 
             if (account.CreditCard == null) {
                  Console.Write("Do you want to request a credit card (Y/N): ");
                  char c = char.Parse(Console.ReadLine());
@@ -71,14 +68,14 @@ namespace BankAccountManagament.Utils {
                  }
             }
             else Console.WriteLine(account.CreditCard.ToString());
-         }
+        }
         
         public static void ChangeAccountStatus(Account account) { 
             string d = ""; // if is deactive it adds "de"
 
             if (account.Active) { 
                 Console.WriteLine(
-                $"{account.Client.Name}'s account is active and {account.Client.Name}'s account balance is: {account.Balance}");
+                $"{account.Client.Emri}'s account is active and {account.Client.Emri}'s account balance is: {account.Balance}");
                 Console.WriteLine();
                 d = "de";
             }
@@ -114,11 +111,9 @@ namespace BankAccountManagament.Utils {
             else {
                 Console.WriteLine("Money couldnt be sended");
             }
-                     
         }
 
         public static void AddLoan(Account account) {
-            Common.Title("Adding Loan");
             decimal amount = Common.LoopInput("Amount you want to loan", 1);
             long months = Common.LoopInput("Months you want to pay", 1);
 

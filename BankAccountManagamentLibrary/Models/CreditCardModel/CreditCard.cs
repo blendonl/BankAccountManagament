@@ -27,7 +27,7 @@ namespace BankAccountManagamentLibrary.Models.CreditCardModel {
         }
 
         public override string ToString() {
-            return $"Card Number: {CreditCardNumber} Card Holder: {Client.Name} {Client.LastName} Experation Date: {ExperationDate()} Pin {Pin} CVV: {Cvv} CreditCardType {CreditCardType.ToString()}";
+            return $"Card Number: {CreditCardNumber} Card Holder: {Client.Emri} {Client.Mbiemri} Experation Date: {ExperationDate()} Pin {Pin} CVV: {Cvv} CreditCardType {CreditCardType.ToString()}";
         }
     }
 }

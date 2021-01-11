@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Sockets;
-using BankAccountManagamentLibrary.DataAccess;
-using BankAccountManagamentLibrary.Models.AccountModel;
+﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models.ClientModel;
 
 namespace BankAccountManagamentLibrary.Services {
@@ -50,13 +45,13 @@ namespace BankAccountManagamentLibrary.Services {
         }
         
         
-        public string GetAll() { 
-            string rez = "";
+        public List<Client> GetAll() { 
+            List<Client> clients = new List<Client>();
         
             foreach (var clinet in Clients) {
-                rez += clinet.ToString() + "\n";
+                clients.Add(clinet);
             }
-            return rez;
+            return clients;
         }
     }
 }

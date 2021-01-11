@@ -1,11 +1,9 @@
 ﻿using System;
 
 namespace BankAccountManagamentLibrary.Models.ClientModel {
-    public abstract class Client {
+    public abstract class Client : Personi.Personi {
         public string ClientId { get; }
         public long PersonalNumber { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
         public string Password { get; set; }
         public string Address { get; set; }
         public long PhoneNumber { get; set; }
@@ -22,8 +20,8 @@ namespace BankAccountManagamentLibrary.Models.ClientModel {
             return
                 $"ClientId: {ClientId} " +
                 $"ClientType: {GetType().Name} " + 
-                $"PersonalNumber: {PersonalNumber} " +
-                $"Name: {Name} LastName {LastName} " +
+                $"PersonalNumber: {NrPersonal} " +
+                $"Name: {Emri} {Mbiemri} " +
                 $"Email {Email} " +
                 $"PhoneNumber: {PhoneNumber} " +
                 $"DateBecameClinet: {DateBecameClient}";

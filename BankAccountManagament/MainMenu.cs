@@ -12,6 +12,7 @@ namespace BankAccountManagament {
     public class MainMenu : Menu {
 
         public void InitialiseBank() {
+            //ToDO Fix Bank Initialisation
             if (String.IsNullOrEmpty(Bank.Admin)) {
                 Common.Title("Initial");
 
@@ -32,14 +33,10 @@ namespace BankAccountManagament {
                 Console.ReadLine();
 
             }
-            
+
             ClientUtils.Login();
 
-        } 
-        
-      
+        }
+
     }
-    
-    
-    
 }

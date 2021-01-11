@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BankAccountManagamentLibrary.DataAccess;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
@@ -45,15 +46,15 @@ namespace BankAccountManagamentLibrary.Services {
 
             return rez;
         } 
-        public string GetAll(string clinetId) {
-             string rez = "";
+        public List<Account> GetAll(string clientId) {
+            List<Account> accounts = new List<Account>();
      
              foreach (var account in Accounts) {
-                 if(account.Client.ClientId.Equals(clinetId))
-                    rez += account.ToString() + "\n";
+                 if(account.Client.ClientId.Equals(clientId))
+                    accounts.Add(account);
              }
  
-             return rez;
+             return accounts;
         }
     }
 }

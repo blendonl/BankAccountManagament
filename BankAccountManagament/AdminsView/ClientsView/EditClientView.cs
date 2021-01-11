@@ -13,36 +13,27 @@ namespace BankAccountManagament.AdminsView.ClientsView {
      
         public EditClientAdminView(Client client)  {
             Client= client;
-        }
-         public void CreateAccount() { 
-             if(CrudOperations.Create<Account>(new Property("Client", "Client", Client) ))
-                 Console.WriteLine("Account added succesfully");
-             else {
-                 Console.WriteLine("Account could not be added");
-             }
-             
-         }
-         public Account GoToMainAccountAdminView() { 
-              Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.ClientId));
+        } 
+        public Property CreateAccount() {
+            return new Property("Client", "Client",Client);
+        } 
+        
+        public Account GoToMainAccountAdminView() { 
+              Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.ClientId);
               Console.WriteLine();
 
               Account account = (Account)Container.GetDependency("AccountServices")
                   .InvokeMethod("Get", Common.LoopInput("Account Number", 8));
 
-              if (account != null)
+              if (account != null) 
                   return account;
-              else {
+              else 
                   return null;
-              }
+        }
 
-         }
-
-         public void RemoveAccount() {
-             long accountNumber = Common.LoopInput("Account Number", 8);
-             if(CrudOperations.Remove<Account>(accountNumber))
-                 Console.WriteLine("Account removed succesfully");
-             else
-                 Console.WriteLine("Account could not be removed");
+         public long RemoveAccount() {
+              Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.ClientId);
+              return Common.LoopInput("Account Number", 8);
          }
           
     }
