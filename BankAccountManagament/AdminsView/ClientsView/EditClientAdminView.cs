@@ -19,14 +19,14 @@ namespace BankAccountManagament.AdminsView.ClientsView {
         } 
         
         public long GoToEditAccountAdminView() { 
-              Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.ClientId);
+              Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.PersoniId);
               Console.WriteLine();
 
               return Common.LoopInput("Account Number", 8);
         }
 
          public long RemoveAccount() {
-              Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.ClientId);
+              Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.PersoniId);
               return Common.LoopInput("Account Number", 8);
          }
           

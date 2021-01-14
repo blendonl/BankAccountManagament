@@ -45,7 +45,7 @@ namespace BankAccountManagamentLibrary.Services {
             List<Account> accounts = new List<Account>();
      
              foreach (var account in Accounts) {
-                 if(account.Client.ClientId.Equals(clientId))
+                 if(account.Client.PersoniId.Equals(clientId))
                     accounts.Add(account);
              }
  
@@ -56,7 +56,7 @@ namespace BankAccountManagamentLibrary.Services {
             List<Account> accounts = new List<Account>();
      
              foreach (var account in Accounts) {
-                 if(account.Client.ClientId.Equals(client.ClientId))
+                 if(account.Client.PersoniId.Equals(client.PersoniId))
                     accounts.Add(account);
              }
  

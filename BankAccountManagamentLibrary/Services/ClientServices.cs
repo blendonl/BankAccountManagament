@@ -21,7 +21,7 @@ namespace BankAccountManagamentLibrary.Services {
 
        
 
-        public bool Remove(string clientId) {
+        public bool Remove(int clientId) {
             int index = FindIndex(clientId);
             if (index != -1) {
                 Clients.Remove(Clients[index]);
@@ -30,15 +30,15 @@ namespace BankAccountManagamentLibrary.Services {
             return false;
         }
 
-        public int FindIndex(string clientId) {
-            return Clients.FindIndex(client => client.ClientId.Equals(clientId));
+        public int FindIndex(int clientId) {
+            return Clients.FindIndex(client => client.PersoniId.Equals(clientId));
         }
 
         private int FindIndex(long personalNumber) {
             return Clients.FindIndex(client => long.Parse(client.NrPersonal) == personalNumber);
         }
 
-        public Client Get(string clientId) {
+        public Client Get(int clientId) {
             int index = FindIndex(clientId);
             return (index != -1) ? Clients[index] : null;
         }

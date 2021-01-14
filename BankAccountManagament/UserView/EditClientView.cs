@@ -11,7 +11,7 @@ namespace BankAccountManagament.UserView {
             this.Client = client;
         }
         public long GoToMainAccountUserView() {
-            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.ClientId));
+            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.PersoniId));
             Console.WriteLine();
               long accountNumber = Common.LoopInput("Account number", 8);
               return accountNumber; 

@@ -26,7 +26,7 @@ namespace BankAccountManagamentLibrary.Models {
 
         public override string ToString() {
             return $"LoanId: {LoanId} " +
-                   $"ClientId: {Client.ClientId} " +
+                   $"ClientId: {Client.PersoniId} " +
                    $"AccountNumber: {Account.AccountNumber} " +
                    $"StartingDate: {StartingDate.Day}/{StartingDate.Month}/{StartingDate.Year} " +
                    $"Month: {MonthlyFee()}";

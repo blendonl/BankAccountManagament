@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Transactions;
 
 namespace Controller {
     
@@ -16,11 +17,16 @@ namespace Controller {
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
-                if((bool)Container.GetDependency($"{(dependency.TypeOfObject.BaseType != null ? dependency.TypeOfObject.BaseType.Name : dependency.TypeOfObject.Name)}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
-                   //if (ClientServices.Add((T)(dependency.ActualObject))) {
+                if((bool)Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
+                {
+                    Console.WriteLine($"{typeof(T).Name} removed succesfully");
                     return true;
+                }
+                else {
+                    Console.WriteLine($"{typeof(T).Name} could not be removed");
+                    return false;
+                }
 
-                return false;
             }
             catch (IndexOutOfRangeException) {
                 return false;
@@ -41,9 +47,16 @@ namespace Controller {
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
-                if((bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
-                   //if (ClientServices.Add((T)(dependency.ActualObject))) {
+
+                if ((bool) Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T))
+                    .InvokeMethod("Add", dependency.ActualObject)) {
+                    Console.WriteLine($"{typeof(T).Name} removed succesfully");
                     return true;
+                }
+                else {
+                    Console.WriteLine($"{typeof(T).Name} could not be removed");
+                    return false;
+                }
 
                 return false;
             }
@@ -65,18 +78,24 @@ namespace Controller {
                 Dependency dependency = Container.GetDependency((choice != -1) ? models[choice] : typeof(T).Name);
 
                 List<Property> properties = GetPropsFromInput(dependency);
-                
-                if(givenProperties != null)
+
+                if (givenProperties != null)
                     properties.AddRange(givenProperties);
-                
+
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
-                if((bool)Container.GetDependency($"{typeof(T).Name}Services").InvokeMethod("Add", dependency.ActualObject))
-                   //if (ClientServices.Add((T)(dependency.ActualObject))) {
-                    return true;
 
-                return false;
+                if ((bool) Container.GetDependency($"{BaseTypeName(typeof(T))}Services")
+                    .InvokeMethod("Add", dependency.ActualObject)) { 
+                    Console.WriteLine($"{typeof(T).Name} removed succesfully");
+                    return true;
+                } else { 
+                    Console.WriteLine($"{typeof(T).Name} could not be removed");
+                    return false;
+                }
+                //if (ClientServices.Add((T)(dependency.ActualObject))) {
+
             }
             catch (IndexOutOfRangeException) {
                 return false;
@@ -109,8 +128,13 @@ namespace Controller {
         }
         
         
-        public static bool Remove<T>(object id) {
-            return (bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Remove", id);
+        public static void Remove<T>(object id) {
+            if ((bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Remove", id)) {
+                Console.WriteLine($"{typeof(T).Name} removed succesfully");
+            }
+            else {
+                Console.WriteLine($"{typeof(T).Name} could not be removed");
+            }
             
         }
         
@@ -144,8 +168,14 @@ namespace Controller {
         }
 
 
-        private static string BaseTypeName<T>() {
-            return (typeof(T).BaseType != null) ? typeof(T).BaseType?.Name : typeof(T).Name;
+        public static string BaseTypeName(Type type) {
+            Type baseType = type.BaseType;
+
+            while (baseType != null) {
+                baseType = baseType.BaseType;
+            }
+
+            return baseType != null ? baseType.Name : type.Name;
         }
     }
 }

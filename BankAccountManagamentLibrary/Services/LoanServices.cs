@@ -98,7 +98,7 @@ namespace BankAccountManagamentLibrary.Services {
             List<Loan> loans =new List<Loan>();
             
             foreach (var loan in Loans) {
-                if(client.ClientId.Equals(loan.Client.ClientId))
+                if(client.PersoniId.Equals(loan.Client.PersoniId))
                   loans.Add(loan); 
             }
         

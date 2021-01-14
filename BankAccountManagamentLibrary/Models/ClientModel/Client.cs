@@ -2,7 +2,6 @@
 
 namespace BankAccountManagamentLibrary.Models.ClientModel {
     public abstract class Client : Personi.Personi {
-        public string ClientId { get; }
         public string Password { get; set; }
         public string Address { get; set; }
         public long PhoneNumber { get; set; }
@@ -11,14 +10,13 @@ namespace BankAccountManagamentLibrary.Models.ClientModel {
 
         private static int count;
         public Client() {
-            ClientId = count++.ToString();
-            PersoniId = count;
+            PersoniId = count++;
             DateBecameClient = DateTime.Now;
         }
 
         public override string ToString() {
             return
-                $"ClientId: {ClientId} " +
+                $"ClientId: {PersoniId} " +
                 $"ClientType: {GetType().Name} " + 
                 $"PersonalNumber: {NrPersonal} " +
                 $"Name: {Emri} {Mbiemri} " +

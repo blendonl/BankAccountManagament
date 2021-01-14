@@ -51,7 +51,7 @@ namespace BankaccountManagamentLibrary.Services {
           public List<Transaction> GetAll(Client client) {
                 List<Transaction> transactions = new List<Transaction>();
                 foreach (var transaction in Transactions) {
-                    if(transaction.Client.ClientId.Equals(client.ClientId))
+                    if(transaction.Client.PersoniId.Equals(client.PersoniId))
                         transactions.Add(transaction);
                 }
     

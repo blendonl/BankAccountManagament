@@ -16,9 +16,9 @@ namespace BankAccountManagamentLibrary.Models.TransactionModel {
 
         public override string ToString() {
             return 
-                $"ClinetId: {Client.ClientId} " +
+                $"ClinetId: {Client.PersoniId} " +
                 $"AccountNumber: {Account.AccountNumber} " +
-                $"{(Client1 != null ? ("ClientId1: " + Client1.ClientId) : "")} " +
+                $"{(Client1 != null ? ("ClientId1: " + Client1.PersoniId) : "")} " +
                 $"{(Account1 != null ? "AccountNumber1" + Account1.AccountNumber.ToString() : "")} " +
                 $"transactionType: {TransactionType.ToString()} amount: {Amount}";
             
