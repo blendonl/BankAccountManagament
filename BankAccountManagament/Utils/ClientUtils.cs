@@ -1,6 +1,7 @@
 ﻿using System;
 using BankAccountManagament.AdminsView;
 using BankAccountManagament.Models;
+using BankAccountManagament.UserView;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
@@ -12,21 +13,26 @@ namespace BankAccountManagament.Utils {
     public class ClientUtils {
         public static void Login() { 
              Common.Title("Login"); 
-             string clientId = Common.Input("ClientId", 1); 
-             
-             if (!clientId.Equals(Bank.Admin)) {
-               //TODO Fix login 
-               // Client client = ClientServices.Get(clientId);
-             
-                // if (LoopPassword(client)) 
-                //     new EditClientUserView(client).Show(); 
-                //
-                // else Console.WriteLine("Client dose not exist"); 
-                
-             } else if(Common.Input("Password", 3).Equals(Bank.AdminPassword))
-                 new MainAdminView().Show();
+             int clientId = (int)Common.LoopInput("ClientId", 1);
+
+             Dependency dependency = Controller.Container.GetDependency("CrudOperations");
+
+             object obj = dependency.InvokeMethod("Select",typeof(Personi.Personi), clientId);
+
+             if (obj != null) {
+
+                 if (obj.GetType().Name.Equals("Admin") ) {
+                     if(Common.Input("Password", 3).Equals(((Admin) obj).Password)) 
+                        new MainAdminView().Show();
+                 }
+                 else if (Common.Input("Password", 3).Equals(((Client) obj).Password)) {
+                     new EditClientUserView((Client)obj).Show(); 
+                 } else {
+                     Console.WriteLine("Password was not correct");
+                 }
+             }
              else {
-                 Console.WriteLine("Password was not correct");
+                 Console.WriteLine("Client does not exists");
              }
         }
         public static bool LoopPassword(Client client) {

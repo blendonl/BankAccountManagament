@@ -8,11 +8,13 @@ namespace Controller {
 
         public abstract bool Remove(int id);
 
-        public List<T> GetAll() { 
+        public abstract T Get(int id);
+        public virtual List<T> GetAll() { 
             List<T> items = new List<T>();
         
             foreach (var item in Items) {
-                items.Add(item);
+                if(item.GetType().Name.Equals(typeof(T).Name))
+                    items.Add(item);
             }
             return items;
         }

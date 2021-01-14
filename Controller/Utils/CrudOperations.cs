@@ -7,16 +7,22 @@ namespace Controller {
     public class CrudOperations {
         public static bool Create<T>() {
             var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
-            int choice = Common.Menu(models);
-            Console.WriteLine();
+            int choice = -1;
+            if (models.Length > 0) {
+                choice = Common.Menu(models);
+                Console.WriteLine();
+            }
+
             try {
-                Dependency dependency = Container.GetDependency(models[choice], typeof(T));
+                Dependency dependency = Container.GetDependency(choice != -1 ? models[choice] : typeof(T).Name, typeof(T));
 
                 List<Property> properties = GetPropsFromInput(dependency);
                 
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
+
+                string baset = BaseTypeName(typeof(T));
                 if((bool)Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
                 {
                     Console.WriteLine($"{typeof(T).Name} removed succesfully");
@@ -129,7 +135,7 @@ namespace Controller {
         
         
         public static void Remove<T>(object id) {
-            if ((bool)Container.GetDependency($"{typeof(T).Name}Services", typeof(T)).InvokeMethod("Remove", id)) {
+            if ((bool)Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)).InvokeMethod("Remove", id)) {
                 Console.WriteLine($"{typeof(T).Name} removed succesfully");
             }
             else {
@@ -140,9 +146,9 @@ namespace Controller {
         
          public static void View<T>() {
             // ReSharper disable once PossibleNullReferenceException
-             Dependency dep = Container.GetDependency($"{typeof(T).Name}Services", typeof(T)); 
+             Dependency dep = Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)); 
              if (dep != null) 
-                 foreach (var variable in (List<T>) dep.InvokeMethod($"GetAll", null)) { 
+                 foreach (var variable in (List<T>) dep.InvokeMethod($"GetAll", typeof(T), null)) { 
                      Console.WriteLine(variable.ToString());
                  }
              
@@ -151,7 +157,7 @@ namespace Controller {
         
         public static void View<T>(object id) {
             // ReSharper disable once PossibleNullReferenceException
-            Dependency dep = Container.GetDependency($"{typeof(T).Name}Services", typeof(T));
+            Dependency dep = Container.GetDependency($"{BaseTypeName(typeof(T))}Services)", typeof(T));
             if (dep != null)
                 foreach (var variable in (List<T>) dep.InvokeMethod($"GetAll", (id != null) ? id : null)) { 
                     Console.WriteLine(variable.ToString());
@@ -161,7 +167,8 @@ namespace Controller {
         }
 
         public static object Select<T>(object parameter) { 
-            Dependency dep = Container.GetDependency($"{typeof(T).Name}Services", typeof(T));
+            Dependency dep = Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T));
+            
             if (dep != null)
                 return dep.InvokeMethod("Get", (parameter));
             return null;
@@ -171,11 +178,11 @@ namespace Controller {
         public static string BaseTypeName(Type type) {
             Type baseType = type.BaseType;
 
-            while (baseType != null) {
+            while (baseType.BaseType != null && !baseType.BaseType.Name.Equals("Object")) {
                 baseType = baseType.BaseType;
             }
 
-            return baseType != null ? baseType.Name : type.Name;
+            return baseType != null && !baseType.Name.Equals("Object") ? baseType.Name : type.Name;
         }
     }
 }

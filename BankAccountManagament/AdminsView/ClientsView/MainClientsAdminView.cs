@@ -18,9 +18,9 @@ namespace BankAccountManagament.AdminsView.ClientsView {
             
         }
 
-        public string RemoveClient() {
+        public int RemoveClient() {
             Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Client), null);
-            return Common.Input("Client Id: ", 1);
+            return (int)Common.LoopInput("Client Id: ", 1);
         }
     }
 }

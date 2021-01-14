@@ -7,6 +7,7 @@ using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Services;
 using Controller;
+using Container = System.ComponentModel.Container;
 
 namespace BankAccountManagament {
     public class MainView : Menu {
@@ -18,14 +19,11 @@ namespace BankAccountManagament {
 
                 string bankTitle = Common.Input("Bank's name: ", 3);
                 decimal initialBalance = Common.LoopMoneyInput("InitialBalance", 2);
-                string admin = Common.Input("Admin's name", 3);
-                string password = Common.Input("Admin's password", 3);
+                Controller.Container.GetDependency("CrudOperations").InvokeMethod("Create", typeof(Admin), null); 
                 decimal intresRate = Common.LoopMoneyInput("Intres Rate", 1);
                 decimal provision = Common.LoopMoneyInput("Provision", 1);
 
                 Bank.BankBalance = initialBalance;
-                Bank.Admin = admin;
-                Bank.AdminPassword = password;
                 Bank.IntresRate = intresRate;
                 Bank.Provision = provision;
                 Bank.BankTitle = bankTitle;
