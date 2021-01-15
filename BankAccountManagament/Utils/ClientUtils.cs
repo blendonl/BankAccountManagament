@@ -21,8 +21,8 @@ namespace BankAccountManagament.Utils {
 
              if (obj != null) {
 
-                 if (obj.GetType().Name.Equals("Admin") ) {
-                     if(Common.Input("Password", 3).Equals(((Admin) obj).Password)) 
+                 if (obj.GetType().Name.Equals("Administrator") ) {
+                     if(Common.Input("Password", 3).Equals(((Administrator) obj).Password)) 
                         new MainAdminView().Show();
                  }
                  else if (Common.Input("Password", 3).Equals(((Client) obj).Password)) {

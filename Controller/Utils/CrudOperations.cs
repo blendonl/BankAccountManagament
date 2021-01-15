@@ -1,111 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Transactions;
+using System.Reflection;
 
 namespace Controller {
     
     public class CrudOperations {
-        public static bool Create<T>() {
+
+        private static Dependency GetModelDependency<T>() {
             var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
             int choice = -1;
             if (models.Length > 0) {
                 choice = Common.Menu(models);
-                Console.WriteLine();
             }
 
-            try {
-                Dependency dependency = Container.GetDependency(choice != -1 ? models[choice] : typeof(T).Name, typeof(T));
+            return Container.GetDependency((choice != -1) ? models[choice] : typeof(T).Name, typeof(T));
+            
+        }
 
-                List<Property> properties = GetPropsFromInput(dependency);
-                
+        public static bool InitialiseProperties<T>(Dependency dependency, List<Property> properties) {
+             try {
+                            
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
 
-                string baset = BaseTypeName(typeof(T));
                 if((bool)Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
                 {
-                    Console.WriteLine($"{typeof(T).Name} removed succesfully");
+                    Console.WriteLine($"{typeof(T).Name} created succesfully");
+                    
                     return true;
                 }
                 else {
-                    Console.WriteLine($"{typeof(T).Name} could not be removed");
+                    Console.WriteLine($"{typeof(T).Name} could not be created");
                     return false;
                 }
-
-            }
-            catch (IndexOutOfRangeException) {
+             }catch (IndexOutOfRangeException) {
                 return false;
-            }
+
+             }
+        }
+       
+
+        public static bool Create<T>() {
+            Dependency dependency = GetModelDependency<T>(); 
+            List<Property> properties =  GetPropsFromInput(dependency);
+
+            return InitialiseProperties<T>(dependency, properties);
+
         }
         public static bool Create<T>(Property givenProperties) {
-            var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
-            int choice = Common.Menu(models);
-            Console.WriteLine();
-            try {
-                Dependency dependency = Container.GetDependency(models[choice], typeof(T));
+            Dependency dependency = GetModelDependency<T>(); 
+            List<Property> properties =  GetPropsFromInput(dependency);
+            
+            if(givenProperties != null)
+                properties.Add(givenProperties);
+            
+            return InitialiseProperties<T>(dependency, properties);
 
-                List<Property> properties = GetPropsFromInput(dependency);
-                
-                if(givenProperties != null)
-                    properties.Add(givenProperties);
-                
-                foreach (var property in properties) {
-                    dependency.InitialiseProp(property);
-                }
-
-                if ((bool) Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T))
-                    .InvokeMethod("Add", dependency.ActualObject)) {
-                    Console.WriteLine($"{typeof(T).Name} removed succesfully");
-                    return true;
-                }
-                else {
-                    Console.WriteLine($"{typeof(T).Name} could not be removed");
-                    return false;
-                }
-
-                return false;
-            }
-            catch (IndexOutOfRangeException) {
-                return false;
-            }
         }
         
         
         public static bool Create<T>(Property[] givenProperties) {
-            var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
-            int choice = -1;
-            if (models != null) {
-                choice = Common.Menu(models);
-            }
-
-            Console.WriteLine();
-            try {
-                Dependency dependency = Container.GetDependency((choice != -1) ? models[choice] : typeof(T).Name);
-
-                List<Property> properties = GetPropsFromInput(dependency);
-
-                if (givenProperties != null)
-                    properties.AddRange(givenProperties);
-
-                foreach (var property in properties) {
-                    dependency.InitialiseProp(property);
-                }
-
-                if ((bool) Container.GetDependency($"{BaseTypeName(typeof(T))}Services")
-                    .InvokeMethod("Add", dependency.ActualObject)) { 
-                    Console.WriteLine($"{typeof(T).Name} removed succesfully");
-                    return true;
-                } else { 
-                    Console.WriteLine($"{typeof(T).Name} could not be removed");
-                    return false;
-                }
-                //if (ClientServices.Add((T)(dependency.ActualObject))) {
-
-            }
-            catch (IndexOutOfRangeException) {
-                return false;
-            }
+            Dependency dependency = GetModelDependency<T>(); 
+            List<Property> properties =  GetPropsFromInput(dependency);
+                
+            if(givenProperties != null)
+                properties.AddRange(givenProperties);
+                
+            return InitialiseProperties<T>(dependency, properties);
         }
          
         public static List<Property> GetPropsFromInput(Dependency dependency) {
@@ -135,7 +97,7 @@ namespace Controller {
         
         
         public static void Remove<T>(object id) {
-            if ((bool)Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)).InvokeMethod("Remove", id)) {
+            if ((bool)GetDependency<T>().InvokeMethod("Remove", id)) {
                 Console.WriteLine($"{typeof(T).Name} removed succesfully");
             }
             else {
@@ -146,7 +108,7 @@ namespace Controller {
         
          public static void View<T>() {
             // ReSharper disable once PossibleNullReferenceException
-             Dependency dep = Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)); 
+            Dependency dep = GetDependency<T>();
              if (dep != null) 
                  foreach (var variable in (List<T>) dep.InvokeMethod($"GetAll", typeof(T), null)) { 
                      Console.WriteLine(variable.ToString());
@@ -157,7 +119,7 @@ namespace Controller {
         
         public static void View<T>(object id) {
             // ReSharper disable once PossibleNullReferenceException
-            Dependency dep = Container.GetDependency($"{BaseTypeName(typeof(T))}Services)", typeof(T));
+            Dependency dep = GetDependency<T>(); 
             if (dep != null)
                 foreach (var variable in (List<T>) dep.InvokeMethod($"GetAll", (id != null) ? id : null)) { 
                     Console.WriteLine(variable.ToString());
@@ -166,8 +128,8 @@ namespace Controller {
             Console.WriteLine();
         }
 
-        public static object Select<T>(object parameter) { 
-            Dependency dep = Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T));
+        public static object Select<T>(object parameter) {
+            Dependency dep = GetDependency<T>();
             
             if (dep != null)
                 return dep.InvokeMethod("Get", (parameter));
@@ -183,6 +145,10 @@ namespace Controller {
             }
 
             return baseType != null && !baseType.Name.Equals("Object") ? baseType.Name : type.Name;
+        }
+
+        private static Dependency GetDependency<T>() {
+           return Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)); 
         }
     }
 }

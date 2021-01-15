@@ -115,11 +115,14 @@ namespace Controller {
          }
         public MethodInfo GetMethod(string method, object parms) {
             var methods =  GetMethods().Where(mth => mth.Name.Equals(method));
+            
             List<Type> paramteres = new List<Type>();
+            
             if(parms != null && parms.GetType().IsArray)
                 foreach (var VARIABLE in (object[])parms) {
                     paramteres.Add(VARIABLE.GetType());
                 }
+            
             if(parms != null && !parms.GetType().IsArray)
                 paramteres.Add(parms.GetType());
 
@@ -203,7 +206,8 @@ namespace Controller {
             return TypeOfObject.GetProperties().Where(prop =>
                 (prop.PropertyType.BaseType.Name.Equals("ValueType")  || 
                  prop.PropertyType.Name.Equals("String")) && prop.CanWrite && !prop.PropertyType.Name.Equals("Boolean")
-            ).OrderBy(pro => pro.DeclaringType.Name.Equals(TypeOfObject.BaseType.Name)).ToArray();
+            ).OrderBy(pro => !pro.DeclaringType.Name.Equals(BaseTypeName(TypeOfObject))).ToArray();
+            
         }
         public string[] GetPropertiesName() {
             string[] rez = new string[GetPropertiesInfos().Length];
@@ -245,7 +249,16 @@ namespace Controller {
             if (TypeOfObject != null)
                return TypeOfObject.GetMethods().Where(method => !method.IsAbstract && !method.IsSpecialName && !method.IsPrivate).ToArray();
             return null;
+
         }
-       
+         public static string BaseTypeName(Type type) {
+            Type baseType = type.BaseType;
+
+            while (baseType.BaseType != null && !baseType.BaseType.Name.Equals("Object")) {
+                baseType = baseType.BaseType;
+            }
+
+            return baseType != null && !baseType.Name.Equals("Object") ? baseType.Name : type.Name;
+        }
     }
 }

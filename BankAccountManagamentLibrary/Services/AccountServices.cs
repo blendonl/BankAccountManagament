@@ -41,7 +41,7 @@ namespace BankAccountManagamentLibrary.Services {
             }
             return items;
          }   
-        public List<Account> GetAll(string clientId) {
+        public List<Account> GetAll(int clientId) {
             List<Account> accounts = new List<Account>();
      
              foreach (var account in Accounts) {

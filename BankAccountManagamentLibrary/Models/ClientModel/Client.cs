@@ -1,4 +1,5 @@
 ﻿using System;
+using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagamentLibrary.Models.ClientModel {
     public abstract class Client : Personi.Personi {
@@ -10,7 +11,7 @@ namespace BankAccountManagamentLibrary.Models.ClientModel {
 
         private static int count;
         public Client() {
-            PersoniId = count++;
+            PersoniId = NumberGenerator.GenerateClientId(); 
             DateBecameClient = DateTime.Now;
         }
 

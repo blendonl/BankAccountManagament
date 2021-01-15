@@ -11,9 +11,9 @@ namespace BankAccountManagament.AdminsView.ClientsView {
            
         }
 
-        public string GoToEditClientAdminView() {
+        public int GoToEditClientAdminView() {
             Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Client), null);
-            return Common.Input("Client Id: ", 1);
+            return (int)Common.LoopInput("Client Id: ", 1);
             //return (Client)Container.GetDependency("ClientServices").InvokeMethod("Get", clientId);
             
         }

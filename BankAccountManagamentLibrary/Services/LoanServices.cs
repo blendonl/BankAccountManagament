@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using BankAccountManagamentLibrary.DataAccess;
+﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
@@ -42,7 +39,7 @@ namespace BankAccountManagamentLibrary.Services {
             int index =Loans.FindIndex(loan => loan.LoanId == loanId);
 
             if (index != -1) {
-                return Loans.Remove(Database.Loans[index]);
+                return Loans.Remove(Loans[index]);
                 return true;
             }
             return false;
