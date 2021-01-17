@@ -39,13 +39,18 @@ namespace Controller{
         }
 
         private void GoToMethod(Dependency dependency, string methodName, object parm) {
+            Dependency dep = Container.GetDependency(methodName.Remove(0, 4), GetType());
+            
             if (parm != null && (parm.GetType().IsPrimitive || parm.GetType().Name.Equals("String"))) {
-                    string modelName = Container.GetAllModels(GetType())
-                        .FirstOrDefault(t => methodName.Contains(t.Name))?.Name;
-                    parm = InvokeCrudMethod( $"Select{modelName}", parm);
+                string[] modelName = dep.GetConstructorParams().Select(item => item.Name).ToArray();
+                        
+                        // Container.GetAllModels(GetType())
+                        // .FirstOrDefault(t => methodName.Contains(t.Name))?.Name;
+                    parm = InvokeCrudMethod( $"Select{modelName[0]}", parm);
                 
             }
-            Dependency dep = Container.GetDependency(methodName.Remove(0, 4), GetType(), (parm != null) ? new[] {parm} : null); 
+
+            dep.Initialise(parm != null ? new [] {parm} : null);
             Container.Add(dep); 
             dep.InvokeMethod("Show", null); 
         }

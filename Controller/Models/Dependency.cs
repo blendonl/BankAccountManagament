@@ -147,11 +147,9 @@ namespace Controller {
         public MethodInfo[] GetMethods() {
            return TypeOfObject
                 .GetMethods()
-                .Where(method => method.IsPublic 
-                                && !method.IsSpecialName 
-                                )
-                .OrderBy(meth => meth.DeclaringType.Name.Equals("Menu") && meth.DeclaringType.Name.Equals(TypeOfObject.Name)).ToArray();
-           
+                .Where(method => method.IsPublic && !method.IsSpecialName)
+                .OrderBy(method => method.DeclaringType.Name.Equals("Menu") && 
+                                 !method.DeclaringType.Name.Equals(BaseTypeName(TypeOfObject))).ToArray();
         } 
        
         public string[] GetMethodsName() {

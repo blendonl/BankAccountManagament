@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Controller { 
     public class Container {
@@ -12,7 +13,7 @@ namespace Controller {
             Dependencies = new List<Dependency>();
         }
 
-        private static Dependency AddDependency(string name, Type type) {
+        public static Dependency AddDependency(string name, Type type) {
             var tpe = (name != type.Name) ? GetType(name, type) : type; 
             
             Dependency dep = new Dependency(tpe);
@@ -49,15 +50,25 @@ namespace Controller {
         private static Dependency InitialiseDependency(string name) {
             
             Dependency dep = AddDependency(name, typeof(Container));
-            dep.Initialise();
-            
+            try {
+                dep.Initialise();
+            }
+            catch (MissingMethodException) {
+                return dep;
+            }
+
             return dep;
         }
        
         private static Dependency InitialiseDependency(Type type) { 
             Dependency dep = AddDependency(type.Name, type);
-            dep.Initialise(); 
-                   
+            try {
+                dep.Initialise();
+            }
+            catch (MissingMethodException) {
+                return dep;
+            }
+
             return dep;
         } 
         private static Dependency InitialiseDependency(string name, object[] parameters) {
@@ -75,7 +86,12 @@ namespace Controller {
 
         private static Dependency InitialiseDependency(string name, Type type) {
             Dependency dep = AddDependency(name, type);
-            dep.Initialise(type);
+            try {
+                dep.Initialise(type);
+            }
+            catch (MissingMethodException) {
+                return dep;
+            }
 
             return dep;
         }
@@ -95,100 +111,93 @@ namespace Controller {
         }
 
         private static Dependency InitialiseDependency(string name, Type type, Type generic, object[] parameters) {
-            Dependency dep = AddDependency(name, type);        
+            Dependency dep = AddDependency(name, type);     
+            
             dep.Initialise(generic, parameters);
                     
             return dep;
         }
         
         public static Dependency GetDependency(Type type) { 
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(type.Name));
-        
-            if (dependency != null) {
-                if (dependency.Initialised) {
-                    return dependency; 
-                }
-                else return null; 
-            }
-                    
-        
-            return InitialiseDependency(type);
-        }
-        
-        public static Dependency GetDependency(string name) {
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
+            Dependency dependency = FindDependency(type.Name);
+           
+           if (dependency != null) {
+               return dependency;
+           }
 
+            return InitialiseDependency(type);
+           
+        }
+
+        public static Dependency FindDependency(string name) {
+             var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
+            
             if (dependency != null) {
                 if (dependency.Initialised) {
                     return dependency;
                 }
-                else return null; 
+            }
+
+            return null;
+        }
+        
+        public static Dependency GetDependency(string name) {
+
+            Dependency dependency = FindDependency(name);
+
+            if (dependency != null) {
+                return dependency;
             }
             
-
             return InitialiseDependency(name);
         }
         
         public static Dependency GetDependency(string name, Type type) {
-             var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
 
-             if (dependency != null) {
-                 if (dependency.Initialised) {
-                     return dependency;
-                 }
-                 else return null; 
-             }
+            var dependency = FindDependency(name);
+
+            if (dependency != null) {
+                return dependency;
+            }
              
-             return InitialiseDependency(name, type);
+            return InitialiseDependency(name, type);
         }
 
         public static Dependency GetDependency(string name, object[] paramters) {
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
-         
+            var dependency = FindDependency(name);
+
             if (dependency != null) {
-                if (dependency.Initialised) {
-                    return dependency;
-                }
-                else return null; 
+                return dependency;
             }
                      
             return InitialiseDependency(name, paramters);
         }
         
         public static Dependency GetDependency(Type type, object[] paramters) {
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(type.Name));
-                 
-            if (dependency != null) {
-                if (dependency.Initialised) {
-                    return dependency;
-                }
-                else return null; 
-            }
+            var dependency = FindDependency(type.Name);
+           
+           if (dependency != null) {
+               return dependency;
+           }
                              
             return InitialiseDependency(type, paramters);
         }
         public static Dependency GetDependency(string name, Type type, Type generic) {
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
-                
-            if (dependency != null) {
-                if (dependency.Initialised) {
-                    return dependency;
-                }
-                else return null; 
-            }
+            var dependency = FindDependency(name);
+           
+           if (dependency != null) {
+               return dependency;
+           }
             return InitialiseDependency(name, type, generic);
             
         }
 
         public static Dependency GetDependency(string name, Type type, object[] parameters) {
 
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
-
+              var dependency = FindDependency(name);
+                        
             if (dependency != null) {
-                if (dependency.Initialised) {
-                    return dependency;
-                }
-                else return null;
+                return dependency;
             }
 
             return InitialiseDependency(name, type, parameters);
@@ -196,14 +205,11 @@ namespace Controller {
         
         public static Dependency GetDependency(string name, Type type, Type generic, object[] parameters) {
                             
-            var dependency = Dependencies.FirstOrDefault(dep => dep.TypeOfObject.Name.Equals(name));
-                         
-            if (dependency != null) {
-                if (dependency.Initialised) {
-                    return dependency;
-                }
-                else return null; 
-            }
+            var dependency = FindDependency(name);
+                                   
+               if (dependency != null) {
+                   return dependency;
+               }
                                      
             return InitialiseDependency(name, type, generic, parameters);
          }
