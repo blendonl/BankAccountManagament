@@ -4,16 +4,26 @@ using BankAccountManagamentLibrary.Models.ClientModel;
 
 namespace BankAccountManagamentLibrary.Models {
     public class Loan {
-        public string LoanId { get; set; }
+        public string LoanId { get;  }
         public Client Client { get; set; }
         public Account Account { get; set; }
         public decimal Amount { get; set; }
-        public decimal Paid { get; set; }
+        public decimal _Paid { get; set; }
+        
+        
         public DateTime StartingDate { get; set; }
-        public int ExperationDateInMonths { get; set; }
-        public decimal InteresRate { get; set; }
+        public int ExperationDateInMonths { get; set;  }
+        public decimal _InteresRate { get; set; }
+
+        private static int count;
+
+        public Loan() {
+            LoanId = count++.ToString();
+        }
+        
+        
         public decimal MonthlyFee() {
-            return Amount / ExperationDateInMonths + InteresRate;
+            return Amount / ExperationDateInMonths + _InteresRate * Amount / ExperationDateInMonths;
         }
 
         public bool IsMonth() {

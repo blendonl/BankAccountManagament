@@ -11,7 +11,7 @@ namespace BankAccountManagament {
             //ToDO Fix Bank Initialisation
             Common.Title("Initialise Bank");
             if (Bank.BankBalance == 0) {
-
+                
                 string bankTitle = Common.Input("Bank's name: ", 3);
                 decimal initialBalance = Common.LoopMoneyInput("InitialBalance", 2);
                 decimal intresRate = Common.LoopMoneyInput("Intres Rate", 1);

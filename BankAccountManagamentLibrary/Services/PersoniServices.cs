@@ -9,7 +9,7 @@ namespace BankAccountManagamentLibrary.Services {
             Items = new List<Personi.Personi>();
         }
         public override bool Add(Personi.Personi item) {
-          if (FindIndex(long.Parse(item.NrPersonal)) == -1 ) {
+          if (FindIndex(item.NrPersonal) == -1 ) {
               Items.Add(item);
               return true;
           }
@@ -29,8 +29,8 @@ namespace BankAccountManagamentLibrary.Services {
             return Items.FindIndex(client => client.PersoniId.Equals(clientId));
         }
         
-        private int FindIndex(long personalNumber) {
-            return Items.FindIndex(client => long.Parse(client.NrPersonal) == personalNumber);
+        private int FindIndex(string personalNumber) {
+            return Items.FindIndex(client => client.NrPersonal == personalNumber);
         }
 
         public override Personi.Personi Get(int clientId) {

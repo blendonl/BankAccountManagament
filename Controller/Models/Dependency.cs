@@ -16,22 +16,17 @@ namespace Controller {
         }
 
        
-        public List<ParameterInfo> GetConstructorParams() {
-            return GetType().GetConstructors()[0].GetParameters().ToList();
+        public List<Type> GetConstructorParams() {
+            var constructors = TypeOfObject.GetConstructors();
+            return constructors.Length > 0 ? constructors[0].GetParameters().Select(parameter => parameter.ParameterType).ToList() : null;
         }
 
         public object? Initialise() {
-            if (GetConstructorParams().Count > 1) { }
-            else {
-                Initialised = true;
-                return ActualObject = Activator.CreateInstance(TypeOfObject);
-            }
-
-            return null;
+            Initialised = true;
+            return ActualObject = Activator.CreateInstance(TypeOfObject);
         } 
         public object? Initialise(Type generic) {
-            if (GetConstructorParams().Count > 1) { }
-            else {
+           
                 Initialised = true;
                 if (TypeOfObject.ContainsGenericParameters) {
                     var gener = TypeOfObject.MakeGenericType(new Type[] {generic});
@@ -41,17 +36,15 @@ namespace Controller {
                     Initialised = true;
                     return ActualObject = Activator.CreateInstance(TypeOfObject);
                 }
-            }
+           
          
-            return null;
+           
         } 
         public object Initialise(object[] paramters) { 
-            if (GetConstructorParams().Count > 1) { }
-            else { 
-                Initialised = true;
-                return ActualObject = TypeOfObject.GetConstructors()[0].Invoke(paramters != null ? paramters.Length > 1 ? new[] {paramters} :  paramters : null); 
-            }
-            return null;
+        
+            Initialised = true;
+            return ActualObject = TypeOfObject.GetConstructors()[0].Invoke(paramters != null ? paramters.Length > 1 ? new[] {paramters} :  paramters : null); 
+            
         }
         
         public object Initialise(Type generic, object[] parameters) {
@@ -200,10 +193,11 @@ namespace Controller {
         }
        
         public PropertyInfo[] GetPropertiesInfos() {
-            
+
             return TypeOfObject.GetProperties().Where(prop =>
-                (prop.PropertyType.BaseType.Name.Equals("ValueType")  || 
-                 prop.PropertyType.Name.Equals("String")) && prop.CanWrite && !prop.PropertyType.Name.Equals("Boolean")
+                (prop.PropertyType.BaseType.Name.Equals("ValueType")  || prop.PropertyType.Name.Equals("String")) 
+                && !prop.Name.StartsWith("_") && prop.CanWrite && !prop.PropertyType.Name.Equals("Boolean") 
+                && !prop.Name.EndsWith("Id")
             ).OrderBy(pro => !pro.DeclaringType.Name.Equals(BaseTypeName(TypeOfObject))).ToArray();
             
         }
@@ -224,7 +218,7 @@ namespace Controller {
             foreach (var property in GetPropertiesInfos()) {
                 properties.Add(new Property() {
                     PropertyName = property.Name,
-                    PropertyType = property.PropertyType.Name,
+                    PropertyType = property.PropertyType,
                     PropertyValue = property.GetValue(ActualObject)
                 });
             }

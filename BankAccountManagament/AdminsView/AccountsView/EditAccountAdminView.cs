@@ -1,8 +1,10 @@
 ﻿using System;
-using BankAccountManagament.CommonViews;
+using BankAccountManagament.UserView.AccountsView;
 using BankAccountManagament.Utils;
 using BankAccountManagamentLibrary.Models;
 using BankAccountManagamentLibrary.Models.AccountModel;
+using BankAccountManagamentLibrary.Models.ClientModel;
+using BankAccountManagamentLibrary.Models.CreditCardModel;
 using BankAccountManagamentLibrary.Services;
 using Controller;
 
@@ -20,40 +22,83 @@ namespace BankAccountManagament.AdminsView.AccountsView {
         }
 
         public void CheckStatus() {
-            ClientUtils.ChangeAccountStatus(Account);
+            string d = ""; // if is deactive it adds "de"
+
+            if (Account.Active) { 
+                Console.WriteLine(
+                $"{Account.Client.Emri}'s account is active and {Account.Client.Emri}'s account balance is: {Account.Balance}");
+                Console.WriteLine();
+                d = "de";
+            }
+            else Console.WriteLine($"{Account.Active}'s account is not active");
+            
+            Console.Write($"Do you want to {d}activated it?(Y/N)");
+        
+            char choice; 
+            if(char.TryParse(Console.ReadLine(), out choice) && (choice == 'y' || choice == 'Y')) {
+                Account.ChangeStatus();
+                Console.WriteLine("Status changed succesfully");
+            }    
         }
 
-        public Account CreateCreditCard() {
-            //TODO Fix Creating Credit Card Dinamicly
-            //ClientUtils.AddCreditCard(Account);
-            return Account;
+        public void RequestCreditCard() {
+            
+            if (Account.CreditCard == null) { 
+                Console.Write("Do you want to request a credit card (Y/N): ");
+                char c = char.Parse(Console.ReadLine());
+                if (c == 'y' || c == 'Y') {
+                     Account.CreditCard = (CreditCard) CrudOperations.Create<CreditCard>(new Property() {
+                         PropertyName = "Client",
+                        PropertyType = typeof(Client),
+                        PropertyValue = Account.Client
+                    });
+                }
+            }
+            else {
+
+                Console.WriteLine(Account.CreditCard);
+            }
+            
         }
 
             
-        public void Loan() {
-            //TODO: Fix creating loan automaticly
-            Loan loan = (Loan)Container.GetDependency(typeof(LoanServices)).InvokeMethod("GetFromAccount", Account.AccountNumber);
-                if (loan == null) {
-                    
-                     ClientUtils.AddLoan(Account); 
-                }
-                else {
-                    Console.WriteLine("Loan Status: " + loan.ToString());
-                    if (loan.Paid < loan.Amount) {
-                        Console.Write("Do you want to make a payment: (Y/N) ");
-                        char c = char.Parse(Console.ReadLine()); 
-                        if (c == 'Y' || c == 'y') {
-                            Container.GetDependency("LoanServices").InvokeMethod("MonthlyFee", loan.LoanId);
-                            loan.Account.WithDraw(loan.MonthlyFee(), 0);
-                            Console.WriteLine("Succesfully");
+        public void RequestLoan() {
+            Loan loan = (Loan)Container.GetDependency(typeof(LoanServices)).InvokeMethod("GetFromAccount", Account.AccountNumber); 
+            if (loan == null) { 
+                loan = AddLoan(); 
+            }
+            else {
+                Console.WriteLine("Loan Status: " + loan.ToString());
+                if (loan._Paid < loan.Amount) {
+                    Console.Write("Do you want to make a payment: (Y/N) ");
+                    char c = char.Parse(Console.ReadLine());
+                    if (c == 'Y' || c == 'y') {
+                        loan.Account.WithDraw(loan.MonthlyFee(), 0);
+                        Console.WriteLine("Succesfully");
                     }
                 }
-                else {
-                    ClientUtils.AddLoan(Account);
+                else { 
+                    loan = AddLoan(); 
                 }
             } 
-        }    
+        } 
+        
+        private Loan AddLoan() {
+          
+            Loan loan = (Loan)CrudOperations.Create<Loan>(new Property() {
+                PropertyName = "Account",
+                PropertyType = typeof(Account),
+                PropertyValue = Account
+            });
 
+            if (loan != null) {
+                Console.WriteLine($"You will have to pay {loan.MonthlyFee()} each month");
+            }
+
+            return loan;
+
+
+        }
       
     
     }

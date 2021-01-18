@@ -3,7 +3,7 @@ using BankAccountManagamentLibrary.Models.CreditCardModel;
 
 
 namespace BankAccountManagamentLibrary.Services {
-    public class CreditCardServices {
+    public class CrediaaatCardServices {
         public bool Add(Account account, CreditCard creditCard) {
             if (account.CreditCard == null) {
                 account.CreditCard = creditCard;

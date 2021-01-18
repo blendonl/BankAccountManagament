@@ -14,6 +14,7 @@ namespace BankAccountManagamentLibrary.Services {
         
 
         public bool Add(Loan loan) {
+            loan._InteresRate = Bank.IntresRate;
             Loans.Add(loan); 
             BankServices.UpdateBalance(loan.Amount, TransactionType.Loan);
             loan.Account.Deposit(loan.Amount, 0);
@@ -26,10 +27,10 @@ namespace BankAccountManagamentLibrary.Services {
         public void MonthlyFee(string loanId) {
             
             Loan loan = Get(loanId);
-            if (loan.Paid < loan.Amount) {
+            if (loan._Paid < loan.Amount) {
                 if (loan.IsMonth()) {
-                    if (!loan.Account.WithDraw(loan.MonthlyFee(), loan.InteresRate)) {
-                        loan.InteresRate++;
+                    if (!loan.Account.WithDraw(loan.MonthlyFee(), loan._InteresRate)) {
+                        loan._InteresRate++;
                     } 
                 }
             }

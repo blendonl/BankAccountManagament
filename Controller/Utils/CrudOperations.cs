@@ -18,56 +18,65 @@ namespace Controller {
         }
 
         public static bool InitialiseProperties<T>(Dependency dependency, List<Property> properties) {
-             try {
-                            
+            try {
+
                 foreach (var property in properties) {
                     dependency.InitialiseProp(property);
                 }
 
-                if((bool)Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)).InvokeMethod("Add", dependency.ActualObject))
-                {
-                    Console.WriteLine($"{typeof(T).Name} created succesfully");
-                    
-                    return true;
-                }
-                else {
-                    Console.WriteLine($"{typeof(T).Name} could not be created");
-                    return false;
-                }
-             }catch (IndexOutOfRangeException) {
+                return ((bool) Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T))
+                    .InvokeMethod("Add", dependency.ActualObject));
+            }
+            catch (IndexOutOfRangeException) {
                 return false;
 
+            }
+            catch (NullReferenceException) {
+                return true;
+            }
+        }
+
+        
+
+        public static bool CreateObject<T>(Dependency dependency, List<Property> properties) {
+             if (InitialiseProperties<T>(dependency, properties)) { 
+                Console.WriteLine($"{typeof(T).Name} created succesfully"); 
+                return true;
+             }
+             else { 
+                Console.WriteLine($"{typeof(T).Name} could not be created"); 
+                return false; 
              }
         }
        
 
-        public static bool Create<T>() {
+        public static object Create<T>() {
             Dependency dependency = GetModelDependency<T>(); 
             List<Property> properties =  GetPropsFromInput(dependency);
-
-            return InitialiseProperties<T>(dependency, properties);
-
+            CreateObject<T>(dependency, properties);
+            return dependency.ActualObject;
         }
-        public static bool Create<T>(Property givenProperties) {
+        public static object Create<T>(Property givenProperties) {
             Dependency dependency = GetModelDependency<T>(); 
             List<Property> properties =  GetPropsFromInput(dependency);
             
             if(givenProperties != null)
                 properties.Add(givenProperties);
             
-            return InitialiseProperties<T>(dependency, properties);
+            CreateObject<T>(dependency, properties);
+            return dependency.ActualObject;
 
         }
         
         
-        public static bool Create<T>(Property[] givenProperties) {
+        public static object Create<T>(Property[] givenProperties) {
             Dependency dependency = GetModelDependency<T>(); 
             List<Property> properties =  GetPropsFromInput(dependency);
                 
             if(givenProperties != null)
                 properties.AddRange(givenProperties);
-                
-            return InitialiseProperties<T>(dependency, properties);
+            CreateObject<T>(dependency, properties);
+            return dependency.ActualObject;
         }
          
         public static List<Property> GetPropsFromInput(Dependency dependency) {
@@ -76,18 +85,21 @@ namespace Controller {
            
 
             for (int i = 0; i < props.Count; i++) {
-                if (props[i].PropertyType.Equals("String"))
+                if (props[i].PropertyType.Name.Equals("String"))
                 
                     props[i].PropertyValue = Common.Input(props[i].PropertyName, 1);
                 
-                else if (props[i].PropertyType.Equals("Decimal")) {
+                else if (props[i].PropertyType.Name.Equals("Decimal")) {
                     
                     props[i].PropertyValue = Common.LoopMoneyInput(props[i].PropertyName, 1);
                     
-                } else if (props[i].PropertyType.Equals("DateTime")){
+                } else if (props[i].PropertyType.Name.Equals("DateTime")){
                     
                     props[i].PropertyValue =  Common.LoopDateInput(props[i].PropertyName, 10);
                     
+                } else if (props[i].PropertyType.Name.StartsWith("Int")) {
+                    props[i].PropertyValue =
+                        Convert.ChangeType(Common.LoopInput(props[i].PropertyName, 1), props[i].PropertyType);
                 }
             }
 

@@ -58,82 +58,12 @@ namespace BankAccountManagament.Utils {
 
             return false;
         }
-        public static void AddCreditCard(Account account) { 
-            if (account.CreditCard == null) {
-                 Console.Write("Do you want to request a credit card (Y/N): ");
-                 char c = char.Parse(Console.ReadLine());
-                 if (c == 'y' || c == 'Y') {
-                     CreditCardType creditCardType = (CreditCardType) Common.LoopInput("Choose: ", 0);
-                     CreditCard creditCard = new CreditCard() {
-                            CreditCardType = creditCardType
-                     };
-                     Container.GetDependency("CreditCardServices").InvokeMethod("Add", new Object[] {account, creditCard});
-                     //CreditCardServices.Add(account, creditCardType);
-                     Console.WriteLine("Credit card added succesfully");
-                 }
-            }
-            else Console.WriteLine(account.CreditCard.ToString());
-        }
+       
         
         public static void ChangeAccountStatus(Account account) { 
-            string d = ""; // if is deactive it adds "de"
-
-            if (account.Active) { 
-                Console.WriteLine(
-                $"{account.Client.Emri}'s account is active and {account.Client.Emri}'s account balance is: {account.Balance}");
-                Console.WriteLine();
-                d = "de";
-            }
-            else Console.WriteLine($"{account.Active}'s account is not active");
             
-            Console.Write($"Do you want to {d}activated it?(Y/N)");
-        
-            char choice; 
-            if(char.TryParse(Console.ReadLine(), out choice) && (choice == 'y' || choice == 'Y')) {
-                account.ChangeStatus();
-                Console.WriteLine("Status changed succesfully");
-            }    
         }
-        public static void SendingMoney(Account account, decimal intresRate) {
-            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", null));
-            Console.WriteLine();
-            Account account1 = (Account)Container.GetDependency("AccountServices").InvokeMethod("Get", Common.LoopInput("Account's number", 0));
-            decimal amount = Common.LoopMoneyInput("Amount", 1);
-
-            Transaction transaction = new Transaction() {
-                Account = account,
-                Account1 = account1,
-                Amount = amount,
-                Client = account.Client,
-                Client1 = account.Client,
-                TransactionType = TransactionType.Send,
-                Provision = Bank.Provision
-            };
-         
-            if ((bool)Container.GetDependency("TransactionServices").InvokeMethod("Add", transaction)) {
-                Console.WriteLine("Money sended succesfully");
-            }
-            else {
-                Console.WriteLine("Money couldnt be sended");
-            }
-        }
-
-        public static void AddLoan(Account account) {
-            decimal amount = Common.LoopInput("Amount you want to loan", 1);
-            long months = Common.LoopInput("Months you want to pay", 1);
-
-            Loan loan = new Loan() {
-                Account = account,
-                Amount = amount,
-                ExperationDateInMonths = (int) months,
-                InteresRate = Bank.IntresRate
-            };
-
-            if ((bool)Container.GetDependency("LoanServices").InvokeMethod("Add",loan)) {
-                Console.WriteLine("Loan added succesfully");
-                Console.WriteLine($"You will have to pay {((Loan)Container.GetDependency("LoanServices").InvokeMethod("GetFromAccount",account.AccountNumber)).MonthlyFee()} each month");
-            }
-            else Console.WriteLine("You cannot loan this amount");
-        }
+      
+       
     }
 }

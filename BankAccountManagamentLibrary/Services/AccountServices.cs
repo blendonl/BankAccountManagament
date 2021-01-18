@@ -12,6 +12,7 @@ namespace BankAccountManagamentLibrary.Services {
         }
         
         public bool Add(Account account) {
+            
             Accounts.Add(account);
 
             return true;

@@ -1,5 +1,5 @@
 ﻿namespace BankAccountManagamentLibrary.Models.ClientModel {
-    public class Bussines: Client {
+    public class Bussines : Client {
         
     }
 }
