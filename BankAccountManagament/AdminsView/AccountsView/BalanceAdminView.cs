@@ -17,7 +17,7 @@ namespace BankAccountManagament.AdminsView.AccountsView {
         public void Deposit() {
     
             // get's amouunt from input
-            decimal amount = Common.LoopInput("Amount", 1);
+            decimal amount = Common.LoopInput<decimal>("Amount", 1);
     
             Transaction transaction = new Transaction() {
                 Account = Account,
@@ -36,7 +36,7 @@ namespace BankAccountManagament.AdminsView.AccountsView {
         
         public void Withdraw() {
             // gets amount from input
-            decimal amount = Common.LoopInput("Amount", 1);
+            decimal amount = Common.LoopInput<decimal>("Amount", 1);
 
             Transaction transaction = new Transaction() {
                 Account = Account,

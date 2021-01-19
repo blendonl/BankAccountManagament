@@ -2,6 +2,7 @@
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
 using Controller;
+using Controller.Utils;
 
 namespace BankAccountManagament.UserView.AccountsView {
     public class MainAccountView : Menu {
@@ -20,8 +21,8 @@ namespace BankAccountManagament.UserView.AccountsView {
         public void SendMoney() {
             CrudOperations.View<Account>();
             Console.WriteLine();
-            Account account1 = (Account)CrudOperations.Select<Account>(Common.LoopInput("Account's number", 0));
-            decimal amount = Common.LoopMoneyInput("Amount", 1);
+            Account account1 = (Account)CrudOperations.Select<Account>(Common.LoopInput<long>("Account's number", 0));
+            decimal amount = Common.LoopInput<decimal>("Amount", 1);
 
             if (account1 != null) {
 

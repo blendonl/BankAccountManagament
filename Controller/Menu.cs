@@ -69,7 +69,7 @@ namespace Controller{
                 string m = method.Remove(0, methd.Length);
                 Type type = Container.GetType(method.Remove(0, methd.Length), GetType());
                 if(type != null)
-                    return crud.InvokeMethod(methd, type, parm != null ? methd.Equals("Create") ? parm.GetType().Name.Equals("Property") ? parm : ToProperty(parm) : parm : null);
+                    return crud.InvokeMethod(methd, type, parm != null ? methd.Equals("Create") ? parm.GetType().Name.Equals("Property") ? new [] {parm} : new [] {ToProperty(parm)} : new [] {parm} : null);
             }
 
             return null;

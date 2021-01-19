@@ -13,11 +13,11 @@ namespace BankAccountManagament.Utils {
     public class ClientUtils {
         public static void Login() { 
              Common.Title("Login"); 
-             int clientId = (int)Common.LoopInput("ClientId", 1);
+             int clientId = (int)Common.LoopInput<int>("ClientId", 1);
 
              Dependency dependency = Controller.Container.GetDependency("CrudOperations");
 
-             object obj = dependency.InvokeMethod("Select",typeof(Personi.Personi), clientId);
+             object obj = dependency.InvokeMethod("Select",typeof(Personi.Personi), new Object[] {clientId});
 
              if (obj != null) {
 

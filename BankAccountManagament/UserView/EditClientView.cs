@@ -13,7 +13,7 @@ namespace BankAccountManagament.UserView {
         public long GoToMainAccountUserView() {
             Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.PersoniId));
             Console.WriteLine();
-              long accountNumber = Common.LoopInput("Account number", 8);
+              long accountNumber = Common.LoopInput<long>("Account number", 8);
               return accountNumber; 
         }
 

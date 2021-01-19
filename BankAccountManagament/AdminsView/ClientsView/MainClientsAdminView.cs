@@ -13,14 +13,14 @@ namespace BankAccountManagament.AdminsView.ClientsView {
 
         public int GoToEditClientAdminView() {
             Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Client), null);
-            return (int)Common.LoopInput("Client Id: ", 1);
+            return (int)Common.LoopInput<int>("Client Id: ", 1);
             //return (Client)Container.GetDependency("ClientServices").InvokeMethod("Get", clientId);
             
         }
 
         public int RemoveClient() {
             Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Client), null);
-            return (int)Common.LoopInput("Client Id: ", 1);
+            return (int)Common.LoopInput<int>("Client Id: ", 1);
         }
     }
 }

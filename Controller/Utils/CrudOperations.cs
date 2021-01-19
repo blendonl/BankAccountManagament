@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
-namespace Controller {
+namespace Controller.Utils {
     
     public class CrudOperations {
 
@@ -80,30 +81,12 @@ namespace Controller {
         }
          
         public static List<Property> GetPropsFromInput(Dependency dependency) {
-
-            List<Property> props = dependency.GetProperties(); 
-           
-
-            for (int i = 0; i < props.Count; i++) {
-                if (props[i].PropertyType.Name.Equals("String"))
-                
-                    props[i].PropertyValue = Common.Input(props[i].PropertyName, 1);
-                
-                else if (props[i].PropertyType.Name.Equals("Decimal")) {
-                    
-                    props[i].PropertyValue = Common.LoopMoneyInput(props[i].PropertyName, 1);
-                    
-                } else if (props[i].PropertyType.Name.Equals("DateTime")){
-                    
-                    props[i].PropertyValue =  Common.LoopDateInput(props[i].PropertyName, 10);
-                    
-                } else if (props[i].PropertyType.Name.StartsWith("Int")) {
-                    props[i].PropertyValue =
-                        Convert.ChangeType(Common.LoopInput(props[i].PropertyName, 1), props[i].PropertyType);
-                }
-            }
-
-            return props;
+            List<Property> properties = dependency.GetProperties();
+            properties.ForEach(prop => 
+                prop.PropertyValue = Container.
+                    GetDependency("Common").InvokeMethod("LoopInputi", prop.PropertyType, new Object[] {prop.PropertyName, 1}));
+            
+            return properties;
             
         }
         

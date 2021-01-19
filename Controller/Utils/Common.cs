@@ -60,67 +60,85 @@ namespace Controller {
         }
 
 
-        /// <summary>
-        /// Loops input in the cases user doesnt press a number
-        /// </summary>
-        /// <param name="title">the title of the input(for example name)</param>
-        /// <returns></returns>
-        public static long LoopInput(string title, int length) {
-
-            // check if the value from user can be converted to long
-            long value;
-            if(!long.TryParse(Input(title, 1), out value)) {
-                
-                // shows message and repeats the above steps
-                Console.WriteLine("Please enter a valid number");
-                return LoopInput(title, length);
-            }
-            else if(value.ToString().Length < length) {
-                Console.WriteLine($"Please enter a {length} digits number");
-                return LoopInput(title, length);
-            } 
-                
-
-            // return the value from user
-            return value;
-
-        }
-        
-         public static decimal LoopMoneyInput(string title, int length) {
+        // /// <summary>
+        // /// Loops input in the cases user doesnt press a number
+        // /// </summary>
+        // /// <param name="title">the title of the input(for example name)</param>
+        // /// <returns></returns>
+        // public static long LoopwwwInput(string title, int length) {
+        //
+        //     // check if the value from user can be converted to long
+        //     long value;
+        //     if(!long.TryParse(Input(title, 1), out value)) {
+        //         
+        //         // shows message and repeats the above steps
+        //         Console.WriteLine("Please enter a valid number");
+        //         return LoopInput(title, length);
+        //     }
+        //     else if(value.ToString().Length < length) {
+        //         Console.WriteLine($"Please enter a {length} digits number");
+        //         return LoopInput(title, length);
+        //     } 
+        //         
+        //
+        //     // return the value from user
+        //     return value;
+        //
+        // }
+         public static T LoopInput<T>(string title, int length) {
              // check if the value from user can be converted to long
-            decimal value;
-            if(!decimal.TryParse(Input(title, 1), out value)) {
+            T value = (T)Convert.ChangeType(Input(title, length), typeof(T));
+            if(value == null) {
                 
                 // shows message and repeats the above steps
                 // Console.WriteLine("Please enter a valid number");
-                return LoopMoneyInput(title, length);
+                return LoopInput<T>(title, length);
             }
             else if(value.ToString().Length < length) { 
                 Console.WriteLine($"Please enter a {length} digits number"); 
-                return LoopMoneyInput(title, length);
+                return LoopInput<T>(title, length);
             } 
             // return the value from user
             
             return value;
         
         }
-
-        public static DateTime LoopDateInput(string title, int length) {
-
-             DateTime value; 
-                 
-             try {
-                 value = Convert.ToDateTime(Input(title, length) + " 00:00:00 AM", new CultureInfo("en-US"));
-                 
-             }
-             catch (Exception) {
-                 Console.WriteLine($"Please enter a valid date (ex: 14/06/2001)");
-                 return LoopDateInput(title, length);
-             }
-            
-            return value;
         
-        }
+        //  public static decimal LoopwwwMoneyInput(string title, int length) {
+        //      // check if the value from user can be converted to long
+        //     decimal value;
+        //     if(!decimal.TryParse(Input(title, 1), out value)) {
+        //         
+        //         // shows message and repeats the above steps
+        //         // Console.WriteLine("Please enter a valid number");
+        //         return LoopMoneyInput(title, length);
+        //     }
+        //     else if(value.ToString().Length < length) { 
+        //         Console.WriteLine($"Please enter a {length} digits number"); 
+        //         return LoopMoneyInput(title, length);
+        //     } 
+        //     // return the value from user
+        //     
+        //     return value;
+        //
+        // }
+        //
+        // public static DateTime LoowwpDateInput(string title, int length) {
+        //
+        //      DateTime value; 
+        //          
+        //      try {
+        //          value = Convert.ToDateTime(Input(title, length) + " 00:00:00 AM", new CultureInfo("en-US"));
+        //          
+        //      }
+        //      catch (Exception) {
+        //          Console.WriteLine($"Please enter a valid date (ex: 14/06/2001)");
+        //          return LoopDateInput(title, length);
+        //      }
+        //     
+        //     return value;
+        //
+        // }
 
     }
 }

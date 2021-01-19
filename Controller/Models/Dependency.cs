@@ -71,13 +71,12 @@ namespace Controller {
                 : null);
         }
 
-         public object? InvokeMethod(string method, Type type, object parameters) {
+         public object? InvokeMethod(string method, Type type, object[] parameters) {
               if (GetMethod(method, parameters).ContainsGenericParameters) {
                   var genericMethod = GetMethod(method, parameters).MakeGenericMethod(new[] {type});
                   return genericMethod.Invoke((GetMethod(method, parameters).IsStatic) ? null : ActualObject,
                       (parameters != null)
-                          ? new[] {parameters}
-                          : null);
+                          ?  parameters : null);
               }
               else {
                   return GetMethod(method, parameters).Invoke(ActualObject, 
@@ -119,7 +118,7 @@ namespace Controller {
             if(parms != null && !parms.GetType().IsArray)
                 paramteres.Add(parms.GetType());
 
-            return ActualObject.GetType().GetMethod(method, paramteres.ToArray()); 
+            return TypeOfObject.GetMethod(method, paramteres.ToArray()); 
 
         }
         

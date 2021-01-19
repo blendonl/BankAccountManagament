@@ -13,9 +13,9 @@ namespace BankAccountManagament {
             if (Bank.BankBalance == 0) {
                 
                 string bankTitle = Common.Input("Bank's name: ", 3);
-                decimal initialBalance = Common.LoopMoneyInput("InitialBalance", 2);
-                decimal intresRate = Common.LoopMoneyInput("Intres Rate", 1);
-                decimal provision = Common.LoopMoneyInput("Provision", 1);
+                decimal initialBalance = Common.LoopInput<decimal>("InitialBalance", 2);
+                decimal intresRate = Common.LoopInput<decimal>("Intres Rate", 1);
+                decimal provision = Common.LoopInput<decimal>("Provision", 1);
                 Container.GetDependency("CrudOperations").InvokeMethod("Create", typeof(Administrator), null); 
 
                 Bank.BankBalance = initialBalance;
