@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Controller.Models;
 
 namespace Controller.Utils {
     
-    public class CrudOperations {
+    public static class CrudOperations {
 
         private static Dependency GetModelDependency<T>() {
-            var models = Container.GetAllThatExtendsToString(typeof(T)).ToArray();
+            var models = TypeManipulations.GetAllTypesThatExtends(typeof(T)).Select(type => type.Name).ToArray();
             int choice = -1;
             if (models.Length > 0) {
-                choice = Common.Menu(models);
+                choice = CommonViews.Menu(models);
             }
 
+            
             return Container.GetDependency((choice != -1) ? models[choice] : typeof(T).Name, typeof(T));
             
         }
@@ -25,7 +26,7 @@ namespace Controller.Utils {
                     dependency.InitialiseProp(property);
                 }
 
-                return ((bool) Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T))
+                return ((bool) Container.GetDependency($"{TypeManipulations.BaseType(typeof(T)).Name}Services", typeof(T))
                     .InvokeMethod("Add", dependency.ActualObject));
             }
             catch (IndexOutOfRangeException) {
@@ -37,26 +38,24 @@ namespace Controller.Utils {
             }
         }
 
-        
-
         public static bool CreateObject<T>(Dependency dependency, List<Property> properties) {
-             if (InitialiseProperties<T>(dependency, properties)) { 
-                Console.WriteLine($"{typeof(T).Name} created succesfully"); 
-                return true;
+             if (InitialiseProperties<T>(dependency, properties)) {
+                 Console.WriteLine($"{typeof(T).Name} created succesfully"); 
+                 return true;
              }
              else { 
-                Console.WriteLine($"{typeof(T).Name} could not be created"); 
-                return false; 
+                 Console.WriteLine($"{typeof(T).Name} could not be created"); 
+                 return false; 
              }
         }
        
-
         public static object Create<T>() {
             Dependency dependency = GetModelDependency<T>(); 
             List<Property> properties =  GetPropsFromInput(dependency);
             CreateObject<T>(dependency, properties);
             return dependency.ActualObject;
         }
+        
         public static object Create<T>(Property givenProperties) {
             Dependency dependency = GetModelDependency<T>(); 
             List<Property> properties =  GetPropsFromInput(dependency);
@@ -84,7 +83,7 @@ namespace Controller.Utils {
             List<Property> properties = dependency.GetProperties();
             properties.ForEach(prop => 
                 prop.PropertyValue = Container.
-                    GetDependency("Common").InvokeMethod("LoopInputi", prop.PropertyType, new Object[] {prop.PropertyName, 1}));
+                    GetDependency("CommonViews").InvokeMethod("LoopInput", prop.PropertyType, new Object[] {prop.PropertyName, 1}));
             
             return properties;
             
@@ -93,9 +92,11 @@ namespace Controller.Utils {
         
         public static void Remove<T>(object id) {
             if ((bool)GetDependency<T>().InvokeMethod("Remove", id)) {
+                
                 Console.WriteLine($"{typeof(T).Name} removed succesfully");
             }
             else {
+                
                 Console.WriteLine($"{typeof(T).Name} could not be removed");
             }
             
@@ -132,18 +133,9 @@ namespace Controller.Utils {
         }
 
 
-        public static string BaseTypeName(Type type) {
-            Type baseType = type.BaseType;
-
-            while (baseType.BaseType != null && !baseType.BaseType.Name.Equals("Object")) {
-                baseType = baseType.BaseType;
-            }
-
-            return baseType != null && !baseType.Name.Equals("Object") ? baseType.Name : type.Name;
-        }
 
         private static Dependency GetDependency<T>() {
-           return Container.GetDependency($"{BaseTypeName(typeof(T))}Services", typeof(T)); 
+           return Container.GetDependency($"{TypeManipulations.BaseType(typeof(T)).Name}Services", typeof(T)); 
         }
     }
 }

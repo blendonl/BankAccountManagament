@@ -1,31 +1,34 @@
 ﻿using System;
 using System.Linq;
-
+using Controller.Models;
+using Controller.Utils;
 
 namespace Controller{
     public abstract class Menu {
 
         public void Show() {
-            Common.Title(StringManipulations.AddSpacesBeetween(GetType().Name));
+            CommonViews.Title(StringManipulations.AddSpacesBeetween(GetType().Name));
             
             Dependency dependency = Container.GetDependency(GetType());
 
-            var methods = dependency.GetMethodsName();
+            var methodsName = dependency.GetMethodsName();
             
-            int choice = Common.Menu(StringManipulations.AddSpacesBeetween(methods));
+            int userChoice = CommonViews.Menu(StringManipulations.AddSpacesBeetween(methodsName).ToArray());
             
-            if (choice < methods.Length && choice >= 0) {
-                string methodName = methods[choice];
+            if (userChoice < methodsName.Count && userChoice >= 0) {
+                string methodName = methodsName[userChoice];
+                
                 if (!methodName.Equals("GoBack")) {
-                    Common.Title(StringManipulations.AddSpacesBeetween(methodName));
-                    object parm = dependency.InvokeMethod(methodName, null);
+                    CommonViews.Title(StringManipulations.AddSpacesBeetween(methodName));
+                    
+                    object methodReturnObject = dependency.InvokeMethod(methodName, null);
 
                     if (methodName.StartsWith("GoTo")) {
-                        GoToMethod(dependency, methodName, parm);
+                        GoToMethod(methodName, methodReturnObject);
                     }
                     else {
 
-                        InvokeCrudMethod( methodName, parm);
+                        InvokeCrudMethod( methodName, methodReturnObject);
                         Console.ReadLine();
                     }
                     Show();
@@ -37,55 +40,46 @@ namespace Controller{
 
         }
 
-        private void GoToMethod(Dependency dependency, string methodName, object parm) {
+        private void GoToMethod(string methodName, object? parameter) {
             Dependency dep = Container.GetDependency(methodName.Remove(0, 4), GetType());
-            string[] modelName = null;
+
+            string[]? modelNames = null;
+            
             try {
 
-                if (parm != null && (parm.GetType().IsPrimitive || parm.GetType().Name.Equals("String"))) {
-                    modelName = dep.GetConstructorParams().Select(item => item.Name).ToArray();
-
-                    // Container.GetAllModels(GetType())
-                    // .FirstOrDefault(t => methodName.Contains(t.Name))?.Name;
-                    parm = InvokeCrudMethod($"Select{modelName[0]}", parm);
+                if (parameter != null && (parameter.GetType().IsPrimitive || parameter.GetType().Name.Equals("String"))) {
+                    modelNames = dep.GetConstructorParams().Select(item => item.Name).ToArray();
+                   
+                    parameter = InvokeCrudMethod($"Select{modelNames[0]}", parameter);
                 }
                 
-                dep.Initialise(parm != null ? new[] {parm} : null);
+                dep.Initialise(parameter);
+                
                 Container.Add(dep);
+                
                 dep.InvokeMethod("Show", null);
             }
             catch (Exception) {
-                Console.WriteLine($"{((modelName != null) ? modelName[0] : "")} does not exists");
+                Console.WriteLine($"{(modelNames?[0] ?? "")} does not exists");
                 Console.ReadLine();
             }
 
 
         }
-        private object InvokeCrudMethod(string method, object parm ) {
-            Dependency crud = Container.GetDependency("CrudOperations");
-            string methd = crud.GetMethodsName().FirstOrDefault(meth => method.StartsWith(meth));
+        private object? InvokeCrudMethod(string methodName, object? parameters ) {
+            Dependency crudDependency = Container.GetDependency("CrudOperations");
+            string method = crudDependency.GetMethodsName().FirstOrDefault(meth => methodName.StartsWith(meth));
             
-            if (!String.IsNullOrEmpty(methd)) {
-                string m = method.Remove(0, methd.Length);
-                Type type = Container.GetType(method.Remove(0, methd.Length), GetType());
-                if(type != null)
-                    return crud.InvokeMethod(methd, type, parm != null ? methd.Equals("Create") ? parm.GetType().Name.Equals("Property") ? new [] {parm} : new [] {ToProperty(parm)} : new [] {parm} : null);
+            if (!String.IsNullOrEmpty(method)) {
+                Type modelType = TypeManipulations.GetType(methodName.Remove(0, method.Length), GetType());
+                
+                if(modelType != null)
+                    return crudDependency.InvokeMethod(method, modelType, parameters != null ? method.Equals("Create") ? parameters.GetType().Name.Equals("Property") ? new [] {parameters} : new [] {TypeManipulations.ToProperty(parameters)} : new [] {parameters} : null);
             }
 
             return null;
         }
 
-        private Property ToProperty(object parm) {
-            Type type = parm.GetType();
-
-            var typeName = type.BaseType != null ? type.BaseType : type;
-            
-            return new Property(typeName.Name, typeName, parm);
-
-        }
-
-      
-        
         public void GoBack() {
         } 
         

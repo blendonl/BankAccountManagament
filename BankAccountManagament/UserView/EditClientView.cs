@@ -1,20 +1,28 @@
 ﻿using System;
-using BankAccountManagament.CommonViews;
+using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
 using Controller;
+using Controller.Models;
+using Controller.Utils;
+
 
 namespace BankAccountManagament.UserView {
-    class EditClientUserView : EditClientView {
-        public override Client Client { get; }
+    class EditClientUserView : Menu {
+        public Client Client { get; }
 
         public EditClientUserView(Client client) {
-            this.Client = client;
+            Client = client;
         }
-        public long GoToMainAccountUserView() {
-            Console.WriteLine(Container.GetDependency("AccountServices").InvokeMethod("GetAll", Client.PersoniId));
-            Console.WriteLine();
-              long accountNumber = Common.LoopInput<long>("Account number", 8);
-              return accountNumber; 
+
+        public Client ViewAccounts() {
+            return Client;
+        }
+        
+        public long GoToMainAccountUserView() { 
+            Container.GetDependency("CrudOperations").InvokeMethod("View", typeof(Account),  Client.PersoniId); 
+            Console.WriteLine(); 
+            
+            return CommonViews.LoopInput<long>("Account number", 8);
         }
 
     }

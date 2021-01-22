@@ -3,16 +3,18 @@ using BankAccountManagamentLibrary.Models.ClientModel;
 using Controller;
 
 namespace BankAccountManagamentLibrary.Services {
-    public class ClientServices {
-        private List<Client> Clients;
+    public class ClientServices : IService<Client> {
+        
+        public List<Client> Items { get; }
 
         public ClientServices() {
-            Clients = new List<Client>();
+            Items = new List<Client>();
         }
+
 
         public bool Add(Client client) {
             if (FindIndex(long.Parse(client.NrPersonal)) == -1 ) {
-                Clients.Add(client);
+                Items.Add(client);
                 return true;
             }
             return false;
@@ -24,28 +26,28 @@ namespace BankAccountManagamentLibrary.Services {
         public bool Remove(int clientId) {
             int index = FindIndex(clientId);
             if (index != -1) {
-                Clients.Remove(Clients[index]);
+                Items.Remove(Items[index]);
                 return true;
             }
             return false;
         }
 
         public int FindIndex(int clientId) {
-            return Clients.FindIndex(client => client.PersoniId.Equals(clientId));
+            return Items.FindIndex(client => client.PersoniId.Equals(clientId));
         }
 
         private int FindIndex(long personalNumber) {
-            return Clients.FindIndex(client => long.Parse(client.NrPersonal) == personalNumber);
+            return Items.FindIndex(client => long.Parse(client.NrPersonal) == personalNumber);
         }
 
         public Client Get(int clientId) {
             int index = FindIndex(clientId);
-            return (index != -1) ? Clients[index] : null;
+            return (index != -1) ? Items[index] : null;
         }
          public List<Client> GetAll() { 
             List<Client> items = new List<Client>();
         
-            foreach (var item in Clients) {
+            foreach (var item in Items) {
                 items.Add(item);
             }
             return items;

@@ -3,12 +3,15 @@ using BankAccountManagamentLibrary.Models.ClientModel;
 using Controller;
 
 namespace BankAccountManagamentLibrary.Services {
-    public class PersoniServices : Services<Personi.Personi> {
-
+    public class PersoniServices : IService<Personi.Personi> {
+        
+        public List<Personi.Personi> Items { get; }
         public PersoniServices() {
             Items = new List<Personi.Personi>();
         }
-        public override bool Add(Personi.Personi item) {
+
+
+        public bool Add(Personi.Personi item) {
           if (FindIndex(item.NrPersonal) == -1 ) {
               Items.Add(item);
               return true;
@@ -16,7 +19,7 @@ namespace BankAccountManagamentLibrary.Services {
           return false;  
         }
 
-        public override bool Remove(int id) {
+        public bool Remove(int id) {
             int index = FindIndex(id);
             if (index != -1) {
                 Items.Remove(Items[index]);
@@ -33,7 +36,7 @@ namespace BankAccountManagamentLibrary.Services {
             return Items.FindIndex(client => client.NrPersonal == personalNumber);
         }
 
-        public override Personi.Personi Get(int clientId) {
+        public Personi.Personi Get(int clientId) {
             int index = FindIndex(clientId);
             return (index != -1) ? Items[index] : null;
         }

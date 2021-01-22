@@ -1,22 +1,28 @@
 ﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
+using Controller;
 
 namespace BankAccountManagamentLibrary.Services {
-    public class AccountServices {
+    public class AccountServices : IService<Account> {
 
         private List<Account> Accounts;
 
         public AccountServices() {
             Accounts = new List<Account>();
         }
-        
+
+        public List<Account> Items { get; }
+
         public bool Add(Account account) {
             
             Accounts.Add(account);
 
             return true;
         }
+
+     
+
 
         public bool Remove(long accountNumber) {
             int index = Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
@@ -33,8 +39,9 @@ namespace BankAccountManagamentLibrary.Services {
             else
                 return null;
         }
+
         
-         public List<Account> GetAll() { 
+        public List<Account> GetAll() { 
             List<Account> items = new List<Account>();
         
             foreach (var item in Accounts) {

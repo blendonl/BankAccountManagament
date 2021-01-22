@@ -4,7 +4,7 @@ namespace Controller {
     public class Property {
         public string PropertyName { get; set; }
         public Type PropertyType { get; set; }
-        public object PropertyValue { get; set; }
+        public object? PropertyValue { get; set; }
 
         public Property() { }
 

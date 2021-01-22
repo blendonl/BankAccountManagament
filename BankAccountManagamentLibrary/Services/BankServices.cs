@@ -6,15 +6,11 @@ using BankAccountManagamentLibrary.Models.TransactionModel;
 namespace BankAccountManagamentLibrary.Services {
     public static class BankServices {
 
-
-        public static void UpdateBalance(decimal amount, TransactionType transactionType) {
-            if (transactionType == TransactionType.Deposit) {
-                Bank.BankBalance += amount;
-            }
-            else if (transactionType == TransactionType.Withdraw) {
-                Bank.BankBalance += amount;
-            } else if (transactionType == TransactionType.Loan) {
-                Bank.BankBalance -= amount;
+        public static void UpdateBalance(ITransaction transaction) {
+            if (transaction.GetType().Name.Equals("Deposit") || transaction.GetType().Name.Equals("Withdraw")) {
+                Bank.BankBalance += transaction.Provision;
+            } else if (transaction.GetType().Name.Equals("Withdraw")) {
+                Bank.BankBalance -= transaction.Provision;
             }
         }
         

@@ -1,4 +1,7 @@
-﻿namespace Controller {
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Controller.Utils {
     public class StringManipulations {
         
          public static string AddSpacesBeetween(string text) {
@@ -13,15 +16,9 @@
             return rez;
          }
                         
-        public static string[] AddSpacesBeetween(string[] text) {
-                    string[] rez =  new string[text.Length];
-        
-                    for (int i = 0; i < text.Length; i++) {
-                        rez[i] = AddSpacesBeetween(text[i]);
-                    }
-        
-                    return rez;
-                }
+        public static List<string> AddSpacesBeetween(List<string> text) {
+            return text.Select(item => item = AddSpacesBeetween(item)).ToList();
+        }
                 
         public static string RemoveSpaces(string text) {
                     string rez = "";

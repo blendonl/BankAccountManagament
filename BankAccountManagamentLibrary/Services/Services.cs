@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Controller {
-    public abstract class Services<T> {
-        public List<T> Items;
-        
-        public abstract bool Add(T item);
+namespace BankAccountManagamentLibrary.Services {
+    public interface IService<T> {
+        public List<T> Items { get; }
 
-        public abstract bool Remove(int id);
-
-        public abstract T Get(int id);
-        public virtual List<T> GetAll() { 
+        bool Add (T item); 
+        virtual List<T> GetAll()  { 
             List<T> items = new List<T>();
         
             foreach (var item in Items) {
