@@ -1,29 +1,28 @@
-﻿using System.Transactions;
-using BankAccountManagamentLibrary.DataAccess;
+﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models;
+using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
-using Transaction = System.Transactions.Transaction;
+using Controller.Models;
 
 namespace BankAccountManagamentLibrary.Services {
     public static class BankServices {
 
-
-        public static void UpdateBalance(decimal amount, TransactionType transactionType) {
-            if (transactionType == TransactionType.Deposit) {
-                Bank.BankBalance += amount;
-            }
-            else if (transactionType == TransactionType.Withdraw) {
-                Bank.BankBalance += amount;
-            } else if (transactionType == TransactionType.Loan) {
-                Bank.BankBalance -= amount;
+        public static void UpdateBalance(ITransaction transaction) {
+            if (transaction.GetType().Name.Equals("Deposit") || transaction.GetType().Name.Equals("Withdraw")) {
+                Bank.BankBalance += transaction.Provision;
+            } else if (transaction.GetType().Name.Equals("Withdraw")) {
+                Bank.BankBalance -= transaction.Provision;
             }
         }
         
         public static decimal GetALlClientsMoney() {
             decimal all = 0;
-            foreach (var account in Database.Accounts) {
+
+            foreach (Account account in (List<Account>) Container.GetDependency(typeof(AccountServices))
+                .InvokeMethod("GetAll") ?? new List<Account>()) {
                 all += account.Balance;
             }
+
             return all;
         }
 

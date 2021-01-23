@@ -14,3 +14,7 @@ C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Deb
 C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.dll
 C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.pdb
 C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\obj\Debug\netcoreapp3.1\BankAccountManagament.genruntimeconfig.cache
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\Controller.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\Controller.pdb
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\Personi.dll
+C:\Users\blend\RiderProjects\BankAccountManagament\BankAccountManagament\bin\Debug\netcoreapp3.1\Personi.pdb

@@ -19,6 +19,9 @@ namespace BankAccountManagamentLibrary.Utils {
             return random.Next(100000000, 1000000000);
         }
 
+        public static int GenerateClientId() {
+            return random.Next(10000, 100000);
+        }
 
         public static long GenerateCreditCardNumber(int length, int startingPoint) {
             StringBuilder number = new StringBuilder(length);

@@ -1,4 +1,3 @@
-
 using BankAccountManagamentLibrary.Models.ClientModel;
 using BankAccountManagamentLibrary.Models.CreditCardModel;
 using BankAccountManagamentLibrary.Utils;
@@ -18,32 +17,17 @@ namespace BankAccountManagamentLibrary.Models.AccountModel {
             Active = true;
         }
         
-
-
-
-        public bool Deposit(decimal amount, decimal provision) {
-            if(Active) {
-                Balance += (amount - provision);
-                return true;
-            }   
-            return false;
-        }
-
-        public bool WithDraw(decimal amount, decimal provision) {
-            if (!Active) return false;
-            if ((amount + provision) > Balance) return false;
-            Balance -= (amount + provision);
-            return true;
-        }
-
+      
         public void ChangeStatus() {
-            this.Active = !this.Active;
+            Active = !Active;
         }
 
 
-        public override string ToString()
-        {
-            return $"AccountNumber: {AccountNumber} AccountType: {GetType().Name} Balance: {Balance} Active: {Active} ";
+        public override string ToString() {
+            return $"AccountNumber: {AccountNumber} " +
+                   $"AccountType: {GetType().Name} " +
+                   $"Balance: {Balance} " +
+                   $"Active: {Active} ";
         }
 
     }

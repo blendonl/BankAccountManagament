@@ -1,30 +1,27 @@
 ﻿using System;
+using BankAccountManagamentLibrary.Utils;
 
 namespace BankAccountManagamentLibrary.Models.ClientModel {
-    public abstract class Client {
-        public string ClientId { get; }
-        public long PersonalNumber { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string Password { get; set; }
+    public abstract class Client : Personi.Personi {
         public string Address { get; set; }
         public long PhoneNumber { get; set; }
         public string Email { get; set; }
         public DateTime DateBecameClient { get; }
+        public string Password { get; set; }
 
-        private static int count;
         public Client() {
-            ClientId = count++.ToString();
+            PersoniId = NumberGenerator.GenerateClientId(); 
             DateBecameClient = DateTime.Now;
         }
 
-        public string ToString() {
+        public override string ToString() {
             return
-                $"ClientId: {ClientId} " +
+                $"ClientId: {PersoniId} " +
                 $"ClientType: {GetType().Name} " + 
-                $"PersonalNumber: {PersonalNumber} " +
-                $"Name: {Name} LastName {LastName} " +
+                $"PersonalNumber: {NrPersonal} " +
+                $"Name: {Emri} {Mbiemri} " +
                 $"Email {Email} " +
+                $"Address: {Address}" +
                 $"PhoneNumber: {PhoneNumber} " +
                 $"DateBecameClinet: {DateBecameClient}";
         }

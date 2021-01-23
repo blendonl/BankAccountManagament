@@ -7,6 +7,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BankAccountManagamentLibrary\BankAccountManagamentLibrary.csproj" />
+      <ProjectReference Include="..\Controller\Controller.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Personi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\Personi\Personi\bin\Debug\Personi.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

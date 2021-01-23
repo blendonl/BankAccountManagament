@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BankAccountManagament.Models {
+﻿namespace BankAccountManagamentLibrary.Models.CreditCardModel {
     public enum CreditCardType {
         VISA = 4,
         VISAElectron = 0,

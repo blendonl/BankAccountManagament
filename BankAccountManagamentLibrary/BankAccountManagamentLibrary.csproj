@@ -4,4 +4,14 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Personi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\Personi\Personi\bin\Debug\Personi.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Controller\Controller.csproj" />
+    </ItemGroup>
+
 </Project>
