@@ -4,14 +4,21 @@ using BankAccountManagamentLibrary.Models.AccountModel;
 namespace BankAccountManagamentLibrary.Models.TransactionModel {
     public class SendMoney : ITransaction {
         
-        public int TransactionId { get; set; }
+        public string TransactionId { get;  }
         public decimal Amount { get; set; }
         public Account Account { get; set; }
         public Account Account1 { get; set; }
         public decimal Provision { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get;  }
 
         public bool TransactionStatus { get; set; }
+
+        public static int count;
+
+        public SendMoney() {
+            TransactionId = "SM" + count++;
+            Date = DateTime.Now;
+        }
 
         public bool MakeTransaction() {
             if (Account.Active && Account.Balance >= Amount && Account1.Active) {
@@ -25,6 +32,7 @@ namespace BankAccountManagamentLibrary.Models.TransactionModel {
         
         public override string ToString() { 
             return 
+                $"TransactionId: {TransactionId} " + 
                 $"ClinetId: {Account.Client.PersoniId} " + 
                 $"AccountNumber: {Account.AccountNumber} " + 
                 $"{(Account.Client != null ? ("ClientId1: " + Account.Client.PersoniId) : "")} " + 

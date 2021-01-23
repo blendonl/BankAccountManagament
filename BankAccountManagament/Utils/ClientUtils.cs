@@ -63,7 +63,6 @@ namespace BankAccountManagament.Utils {
 
             return false;
        }
-        
         public static  void RequestCreditCard(Account account) {
             if (account.CreditCard == null) { 
                 Console.Write("Do you want to request a credit card (Y/N): "); 
@@ -79,7 +78,6 @@ namespace BankAccountManagament.Utils {
                 Console.WriteLine(account.CreditCard);
             }
         }
-        
         public static  void RequestLoan(Account account) {
             Loan loan = (Loan)Container.GetDependency(typeof(TransactionServices)).InvokeMethod("GetAll", account.AccountNumber);
             
@@ -103,7 +101,6 @@ namespace BankAccountManagament.Utils {
                    loan = AddLoan(account);
             } 
         }
-        
         private static Loan AddLoan(Account account) {
            Loan loan = (Loan)CrudOperations.Create<Loan>(new Property() {
                PropertyName = "Account",

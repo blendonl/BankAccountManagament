@@ -3,20 +3,21 @@ using BankAccountManagamentLibrary.Models.AccountModel;
 
 namespace BankAccountManagamentLibrary.Models.TransactionModel {
     public class Loan : ITransaction {
-        public int TransactionId { get; set; }
+        public string TransactionId { get;  }
         public Account Account { get; set; }
         public decimal Provision { get; set; }
         public bool TransactionStatus { get; set; }
         public decimal Amount { get; set; }
         public decimal _Paid { get; set; }
         
-        public DateTime Date { get; set; }
+        public DateTime Date { get;  }
         public int ExperationDateInMonths { get; set;  }
         public decimal _InteresRate { get; set; }
 
         private static int count;
         public Loan() {
-            TransactionId = count++;
+            TransactionId = "L" + count++;
+            Date = DateTime.Now;
         }
         public bool MakeTransaction() {
             if (!Account.Active) return false;

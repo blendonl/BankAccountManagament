@@ -1,41 +1,42 @@
 ﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.ClientModel;
+using BankAccountManagamentLibrary.Utils;
 using Controller;
 
 namespace BankAccountManagamentLibrary.Services {
     public class AccountServices : IService<Account> {
 
-        private List<Account> Accounts;
-
-        public AccountServices() {
-            Accounts = new List<Account>();
-        }
-
         public List<Account> Items { get; }
 
-        public bool Add(Account account) {
-            
-            Accounts.Add(account);
+        public AccountServices() {
+            Items = new List<Account>();
+        }
 
-            return true;
+
+        public bool Add(Account account) {
+            if (Get(account.AccountNumber) == null) {
+                Items.Add(account);
+                return true;
+            }
+            return false;
         }
 
      
 
 
         public bool Remove(long accountNumber) {
-            int index = Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
+            int index = Items.FindIndex(account => account.AccountNumber.Equals(accountNumber));
             if (index != -1)
-                return Accounts.Remove(Accounts[index]);
+                return Items.Remove(Items[index]);
             else
                 return false;
         }
 
         public Account Get(long accountNumber) {
-            int index = Accounts.FindIndex(account => account.AccountNumber.Equals(accountNumber));
+            int index = Items.FindIndex(account => account.AccountNumber.Equals(accountNumber));
             if (index != -1)
-                return Accounts[index];
+                return Items[index];
             else
                 return null;
         }
@@ -44,7 +45,7 @@ namespace BankAccountManagamentLibrary.Services {
         public List<Account> GetAll() { 
             List<Account> items = new List<Account>();
         
-            foreach (var item in Accounts) {
+            foreach (var item in Items) {
                 items.Add(item);
             }
             return items;
@@ -52,7 +53,7 @@ namespace BankAccountManagamentLibrary.Services {
         public List<Account> GetAll(int clientId) {
             List<Account> accounts = new List<Account>();
      
-             foreach (var account in Accounts) {
+             foreach (var account in Items) {
                  if(account.Client.PersoniId.Equals(clientId))
                     accounts.Add(account);
              }
@@ -63,7 +64,7 @@ namespace BankAccountManagamentLibrary.Services {
         public List<Account> GetAll(Client client) {
             List<Account> accounts = new List<Account>();
      
-             foreach (var account in Accounts) {
+             foreach (var account in Items) {
                  if(account.Client.PersoniId.Equals(client.PersoniId))
                     accounts.Add(account);
              }
