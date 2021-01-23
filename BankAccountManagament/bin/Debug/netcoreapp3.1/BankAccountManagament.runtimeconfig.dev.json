@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\blend\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\blend\\.nuget\\packages"
-    ]
-  }
-}
