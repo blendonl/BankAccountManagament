@@ -7,7 +7,9 @@ using System.Reflection;
 namespace Controller.Utils {
     public class TypeManipulations { 
         public static Type? BaseType(Type type) {
-            Type? baseType = type?.BaseType ?? null;
+            Type? baseType = type?.BaseType ?? null ;
+            
+            
 
             while (baseType?.BaseType != null && !baseType.BaseType.Name.Equals("Object")) {
                 baseType = baseType.BaseType;
@@ -120,7 +122,9 @@ namespace Controller.Utils {
             if(rez == null){ 
                 foreach (var assemblyName in type.Assembly.GetReferencedAssemblies()) { 
                     foreach (var tpe in Assembly.Load(assemblyName).GetTypes().Where(t => t.Namespace != null && t.Namespace.Contains(assemblyName?.Name ?? ""))) { 
-                        if ((tpe.ContainsGenericParameters && tpe.Name.Equals(name + "`1")) || tpe.Name.Equals(name) || (tpe.Name + "s").Equals(name)) 
+                        if ((tpe.ContainsGenericParameters && tpe.Name.Equals(name + "`1")) || 
+                            tpe.Name.Equals(name) || (tpe.Name + "s").Equals(name) ||
+                            tpe.IsInterface && (tpe.Name + "s").Equals("I" +name)) 
                             return tpe; 
                     }
                 }
@@ -129,7 +133,7 @@ namespace Controller.Utils {
         }
         
         public static Type GetType(string name ) {
-            return typeof(Container).Assembly.GetTypes().FirstOrDefault(service => (service.ContainsGenericParameters) ? service.Name.Equals(name+"`1") : service.Name.Equals(name));
+            return typeof(Container).Assembly.GetTypes().FirstOrDefault(service => (service.ContainsGenericParameters) ? service.Name.Equals(name+"`1") : service.IsInterface ? service.Name.Equals("I" +name) : service.Name.Equals(name));
         } 
         public static object?[]? ToObjectArray(object? obj) {
              return (obj != null) ? (obj?.GetType().IsArray ?? false ? (object[]) obj! : new [] {obj}) : null;
@@ -140,6 +144,11 @@ namespace Controller.Utils {
              var typeName = type.BaseType != null ? type.BaseType : type;
              
              return new Property(typeName.Name, typeName, parameters);
+        }
+
+
+        public static string RemoveInterfaceFromName(string name) {
+            return name.StartsWith("I") ? name.Substring(1, name.Length - 1) : name;
         }
     }
 }

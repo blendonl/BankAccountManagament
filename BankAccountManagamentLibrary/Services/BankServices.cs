@@ -1,7 +1,8 @@
-﻿
+﻿using System.Collections.Generic;
 using BankAccountManagamentLibrary.Models;
+using BankAccountManagamentLibrary.Models.AccountModel;
 using BankAccountManagamentLibrary.Models.TransactionModel;
-
+using Controller.Models;
 
 namespace BankAccountManagamentLibrary.Services {
     public static class BankServices {
@@ -16,9 +17,12 @@ namespace BankAccountManagamentLibrary.Services {
         
         public static decimal GetALlClientsMoney() {
             decimal all = 0;
-            // foreach (var account in Database.Accounts) {
-            //     all += account.Balance;
-            // }
+
+            foreach (Account account in (List<Account>) Container.GetDependency(typeof(AccountServices))
+                .InvokeMethod("GetAll") ?? new List<Account>()) {
+                all += account.Balance;
+            }
+
             return all;
         }
 

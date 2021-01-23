@@ -26,7 +26,7 @@ namespace Controller.Utils {
                     dependency.InitialiseProp(property);
                 }
 
-                return ((bool) Container.GetDependency($"{TypeManipulations.BaseType(typeof(T)).Name}Services", typeof(T))
+                return ((bool) Container.GetDependency($"{TypeManipulations.RemoveInterfaceFromName(TypeManipulations.BaseType(typeof(T)).Name)}Services", typeof(T))
                     .InvokeMethod("Add", dependency.ActualObject));
             }
             catch (IndexOutOfRangeException) {
@@ -135,7 +135,7 @@ namespace Controller.Utils {
 
 
         private static Dependency GetDependency<T>() {
-           return Container.GetDependency($"{TypeManipulations.BaseType(typeof(T)).Name}Services", typeof(T)); 
+           return Container.GetDependency($"{TypeManipulations.RemoveInterfaceFromName(TypeManipulations.BaseType(typeof(T)).Name)}Services", typeof(T)); 
         }
     }
 }

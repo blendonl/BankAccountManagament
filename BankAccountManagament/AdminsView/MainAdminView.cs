@@ -19,8 +19,5 @@ namespace BankAccountManagament.AdminsView {
           
         }
 
-        public void ViewLoans() {
-          
-        }
     }
 }

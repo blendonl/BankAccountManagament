@@ -29,6 +29,8 @@ namespace BankAccountManagament.AdminsView.AccountsView {
                 Amount = amount, 
                 Provision = Bank.Provision
             };
+
+           transaction.MakeTransaction();
             
             if ((bool)(Container.GetDependency(typeof(TransactionServices)).InvokeMethod("Add", transaction) ?? false))
                 Console.WriteLine("Money deposited succesfully");
@@ -45,6 +47,8 @@ namespace BankAccountManagament.AdminsView.AccountsView {
                 Amount = amount,
                 Provision = Bank.Provision
             };
+
+            transaction.MakeTransaction();
 
             if ((bool)(Container.GetDependency(typeof(TransactionServices)).InvokeMethod("Add", transaction) ?? false))
                 Console.WriteLine("Money withdrawed succesfully");
